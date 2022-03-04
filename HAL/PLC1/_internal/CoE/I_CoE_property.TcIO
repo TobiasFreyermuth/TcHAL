@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <Itf Name="I_CoE_property" Id="{7c1857e7-bee5-07f1-0b20-6cf74deec630}">
+    <Declaration><![CDATA[INTERFACE I_CoE_property
+]]></Declaration>
+    <Property Name="CoE_property_handler" Id="{91922664-d8dd-07af-3101-9d6e03189e03}">
+      <Declaration><![CDATA[PROPERTY CoE_property_handler : I_CoE_property_handler]]></Declaration>
+      <Get Name="Get" Id="{33e63e6b-9402-0002-3803-52403f88ffa7}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{50ad2432-1f12-06bc-0caa-410833dc60a8}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="dataTypeSize" Id="{de387db6-9200-03b5-04ce-c696adad2786}">
+      <Declaration><![CDATA[PROPERTY dataTypeSize : uint]]></Declaration>
+      <Get Name="Get" Id="{d1bf6bb7-1fae-0c67-2a89-9b9671a3ed40}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Method Name="handle_read_callback" Id="{f97bb7a1-54c0-0520-2966-3954b2ce9d96}">
+      <Declaration><![CDATA[METHOD handle_read_callback : BOOL
+VAR_INPUT
+	pt_buffer : POINTER TO CoE_buffer_type_cast_union;
+	errId: UDINT;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="handle_write_callback" Id="{4711a839-42f9-0006-20a7-8f6c7c920378}">
+      <Declaration><![CDATA[METHOD handle_write_callback : BOOL
+VAR_INPUT
+	errId : UDINT;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="Index" Id="{9508ced1-8e4a-0a57-111a-73fd015de83e}">
+      <Declaration><![CDATA[PROPERTY Index : word]]></Declaration>
+      <Get Name="Get" Id="{c674f8d0-a3dd-01cf-25ff-3766a9746bed}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="init_done" Id="{899acaec-934e-0006-179c-e29da311289d}">
+      <Declaration><![CDATA[PROPERTY init_done : bool]]></Declaration>
+      <Get Name="Get" Id="{8fb5aeb2-7d17-0a65-17c2-6df7951761f2}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Method Name="reinit" Id="{e0cf676b-bdca-01f3-3233-1894d274fc8f}">
+      <Declaration><![CDATA[(**
+This method is initializing or reinitializing the property and returns TRUE when this is done.
+In case of an error during the init it returns the ErrorCode related to the error that occurred.
+*)
+METHOD reinit : BOOL
+VAR_OUTPUT
+	errId: UDINT;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="run" Id="{f131b58c-bde9-09c5-32c1-30fd69bb6db7}">
+      <Declaration><![CDATA[METHOD run : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="SlaveAddress" Id="{89c1fe58-92a8-0d41-0ac4-d20f5c5cbc33}">
+      <Declaration><![CDATA[PROPERTY SlaveAddress : UINT]]></Declaration>
+      <Get Name="Get" Id="{0e74ced1-ef9d-0777-16a1-2ca34a2c6040}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{bd601182-a073-0f2e-146e-a99d19e9bd54}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="SubIndex" Id="{f509e4a6-fa46-0f01-30c0-69456455fcf5}">
+      <Declaration><![CDATA[PROPERTY SubIndex : BYTE]]></Declaration>
+      <Get Name="Get" Id="{63318d45-76d3-0cb2-38d8-67ff2123b9b2}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="valueToWrite" Id="{3db24a19-dda7-0bad-0dfa-160770f43209}">
+      <Declaration><![CDATA[PROPERTY valueToWrite : CoE_buffer_type_cast_union]]></Declaration>
+      <Get Name="Get" Id="{1b5edc05-7c6e-0691-3b7b-2ed784d430c5}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+  </Itf>
+</TcPlcObject>

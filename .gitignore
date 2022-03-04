@@ -1,5 +1,10 @@
-# Object file
-*.o
-
-# Ada Library Information
-*.ali
+_Boot/*
+*.library
+*.~u
+*.suo
+*.compileinfo
+*.compiled-library
+/UpgradeLog.htm
+/TrialLicense.tclrs
+/xfelPlcFramework.tsproj.bak
+*.idea*

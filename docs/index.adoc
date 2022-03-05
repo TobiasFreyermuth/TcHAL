@@ -1,1 +1,6 @@
-= HAL
+= TcHAL
+
+
+include::01_introduction_and_goals.adoc[]
+
+include::12_glossary.adoc[]

@@ -1,0 +1,28 @@
+[[section-glossary]]
+== Glossary
+
+
+
+[cols="e,2e" options="header"]
+|===
+|Term |Definition
+
+|PLC
+|Programmable Logic Controller
+
+|TwinCAT 3
+|automation software by  https://www.beckhoff.com/de-de/[Beckhoff GmbH & Co. KG]
+
+|Fieldbus
+|industrial computer networks used for real-time distributed control. https://en.wikipedia.org/wiki/Fieldbus[Wikipedia]
+
+|EtherCAT
+|EtherCAT (Ethernet for Control Automation Technology) is an Ethernet-based fieldbus system invented by https://www.beckhoff.com/de-de/produkte/i-o/ethercat/[Beckhoff GmbH & Co. KG]
+
+|Coupler
+|<definition>
+
+|Terminal
+|<definition>
+
+|===

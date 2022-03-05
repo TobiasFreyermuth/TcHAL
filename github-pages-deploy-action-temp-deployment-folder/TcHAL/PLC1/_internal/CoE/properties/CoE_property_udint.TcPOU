@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="CoE_property_udint" Id="{28879696-492e-0c7b-17c6-1cd73028e6f2}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK CoE_property_udint EXTENDS CoE_property
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	_value : UDINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[SUPER^();
+]]></ST>
+    </Implementation>
+    <Property Name="dataTypeSize" Id="{0370a145-50d5-0ca1-14e3-05c8cf986572}">
+      <Declaration><![CDATA[PROPERTY dataTypeSize : UINT
+]]></Declaration>
+      <Get Name="Get" Id="{ef38bd02-4041-093a-36fe-4d03fbeff813}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[dataTypeSize := SIZEOF(_value);
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="get_value" Id="{9d25b38a-87d5-0d3c-09fd-a0e8f1b5312d}">
+      <Declaration><![CDATA[METHOD get_value : BOOL
+VAR_OUTPUT
+	value : UDINT ;
+	errId : UDINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF init_done THEN
+	value := _value;
+	get_value := TRUE;
+ELSE
+	errId := 2;
+	get_value := FALSE;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="handle_read_callback" Id="{727d44a0-4f30-087c-091b-6bb6f8be6e33}">
+      <Declaration><![CDATA[METHOD handle_read_callback : BOOL
+VAR_INPUT
+	pt_buffer : POINTER TO CoE_buffer_type_cast_union;
+	errId : UDINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+_value := pt_buffer^.value_udint;
+_init_done:=TRUE;
+_read_errId:=errId;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="set_value" Id="{71480052-6765-0c3a-2bdb-c0fb9e05f7e1}">
+      <Declaration><![CDATA[METHOD set_value : BOOL
+VAR_INPUT
+	value : UDINT ;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_valueToWrite.value_udint := value;
+IF THIS^._CoE_property_handler <> 0 THEN 
+	THIS^._CoE_property_handler.add_write_request(THIS^);
+ELSE
+	errId:=1;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

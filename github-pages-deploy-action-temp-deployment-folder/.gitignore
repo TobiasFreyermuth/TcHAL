@@ -1,0 +1,10 @@
+_Boot/*
+*.library
+*.~u
+*.suo
+*.compileinfo
+*.compiled-library
+/UpgradeLog.htm
+/TrialLicense.tclrs
+/xfelPlcFramework.tsproj.bak
+*.idea*

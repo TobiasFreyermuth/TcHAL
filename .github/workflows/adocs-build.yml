@@ -24,8 +24,7 @@ jobs:
     - name: Deploy docs to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
-        deploy_key: ${{ secrets.GITHUB_TOKEN }}
-        publish_branch: gh-pages
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./
     
 #      uses: JamesIves/github-pages-deploy-action@v4.2.5

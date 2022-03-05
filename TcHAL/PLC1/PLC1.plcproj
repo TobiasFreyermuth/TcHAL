@@ -17,18 +17,28 @@
     <LibraryReferences>{9881ff79-dab4-478e-bbb1-f10e60b9e625}</LibraryReferences>
     <Company>none</Company>
     <Released>false</Released>
-    <Title>HAL</Title>
+    <Title>TcHAL</Title>
     <ProjectVersion>0.1.0</ProjectVersion>
-    <DefaultNamespace>HAL</DefaultNamespace>
+    <DefaultNamespace>TcHAL</DefaultNamespace>
     <Author>Tobias Freyermuth</Author>
     <CombineIds>true</CombineIds>
     <Description>Hardware Abstraction Layer of TwinCAT fieldbus devices</Description>
+    <LibraryCategories>
+      <LibraryCategory xmlns="">
+        <Id>{32252c03-017b-4d5d-8258-6e39b72836be}</Id>
+        <Version>1.0.0.0</Version>
+        <DefaultName>TcHAL</DefaultName>
+      </LibraryCategory>
+    </LibraryCategories>
+    <SelectedLibraryCategories>
+      <Id xmlns="">{32252c03-017b-4d5d-8258-6e39b72836be}</Id>
+    </SelectedLibraryCategories>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="PlcTask.TcTTO">
+    <Compile Include="MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\MAIN.TcPOU">
+    <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Project Information\F_GetCompany.TcPOU">
@@ -46,14 +56,63 @@
     <Compile Include="Version\Global_Version.TcGVL">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="_internal\CoE\BeckhoffTerminalConfigEnums\ENU_DT0800EN02.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_internal\CoE\BeckhoffTerminalConfigEnums\ENU_DT0801EN03.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_internal\CoE\buffer\ring_buffer_CoE_read.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_internal\CoE\CoE_buffer_type_cast_union.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_internal\CoE\CoE_property_handler.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_internal\CoE\I_CoE_property.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_internal\CoE\I_CoE_property_handler.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_internal\CoE\properties\CoE_property.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_internal\CoE\properties\CoE_property_bool.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_internal\CoE\properties\CoE_property_dint.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_internal\CoE\properties\CoE_property_int.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_internal\CoE\properties\CoE_property_string.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_internal\CoE\properties\CoE_property_udint.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_internal\CoE\properties\CoE_property_uint.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_internal\CoE\properties\CoE_property_usint.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DUTs" />
-    <Folder Include="GVLs" />
+    <Folder Include="analog_output" />
+    <Folder Include="analog_output\voltage" />
+    <Folder Include="analog_output\_internal" />
     <Folder Include="Project Information" />
     <Folder Include="Version" />
-    <Folder Include="VISUs" />
-    <Folder Include="POUs" />
+    <Folder Include="_internal" />
+    <Folder Include="_internal\CoE" />
+    <Folder Include="_internal\CoE\BeckhoffTerminalConfigEnums" />
+    <Folder Include="_internal\CoE\buffer" />
+    <Folder Include="_internal\CoE\properties" />
   </ItemGroup>
   <ItemGroup>
     <PlaceholderReference Include="Tc2_Standard">
@@ -67,6 +126,10 @@
     <PlaceholderReference Include="Tc3_Module">
       <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc3_Module</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="TcUnit">
+      <DefaultResolution>TcUnit, * (www.tcunit.org)</DefaultResolution>
+      <Namespace>TcUnit</Namespace>
     </PlaceholderReference>
   </ItemGroup>
   <ProjectExtensions>

@@ -17,7 +17,7 @@
 |industrial computer networks used for real-time distributed control. https://en.wikipedia.org/wiki/Fieldbus[Wikipedia]
 
 |EtherCAT
-|EtherCAT (Ethernet for Control Automation Technology) is an Ethernet-based fieldbus system invented by https://www.beckhoff.com/de-de/produkte/i-o/ethercat/[Beckhoff GmbH & Co. KG]
+|EtherCAT (Ethernet for Control Automation Technology) is an Ethernet-based fieldbus system invented by https://www.beckhoff.com/de-de/produkte/i-o/ethercat/[Beckhoff Automation GmbH & Co. KG]
 
 |Coupler
 |<definition>

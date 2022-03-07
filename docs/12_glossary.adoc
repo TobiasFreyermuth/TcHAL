@@ -11,7 +11,7 @@
 |Programmable Logic Controller
 
 |TwinCAT 3
-|automation software by  https://www.beckhoff.com/de-de/[Beckhoff GmbH & Co. KG]
+|automation software by  https://www.beckhoff.com/de-de/[Beckhoff Automation GmbH & Co. KG]
 
 |Fieldbus
 |industrial computer networks used for real-time distributed control. https://en.wikipedia.org/wiki/Fieldbus[Wikipedia]

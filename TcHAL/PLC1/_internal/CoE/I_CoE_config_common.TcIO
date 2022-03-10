@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <Itf Name="I_CoE_config_common" Id="{8f57cce6-20fb-0eb0-13f2-ce58ff639a18}">
+    <Declaration><![CDATA[INTERFACE I_CoE_config_common
+]]></Declaration>
+    <Method Name="get_DeviceName" Id="{5234d935-52c8-0bdf-0656-e498fc8a5628}">
+      <Declaration><![CDATA[METHOD get_DeviceName : BOOL
+VAR_OUTPUT
+	value: STRING;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="get_DeviceType" Id="{ee0ee625-1d31-04f9-11a4-55bcea9a735e}">
+      <Declaration><![CDATA[METHOD get_DeviceType : BOOL
+VAR_OUTPUT
+	value: UDINT;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="get_ProductCode" Id="{44114782-b206-0efa-111c-b53716aa0209}">
+      <Declaration><![CDATA[METHOD get_ProductCode : BOOL
+VAR_OUTPUT
+	value 	: UDINT; 
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="get_Revision" Id="{2bf4ffe5-daa6-0f86-3c8e-3ff9c9c1cd8a}">
+      <Declaration><![CDATA[METHOD get_Revision : BOOL
+VAR_OUTPUT
+	value 	: UDINT; 
+END_VAR
+
+]]></Declaration>
+    </Method>
+    <Method Name="get_SerialNumber" Id="{0c8c48cb-fa6b-09f0-0840-a40125ecd9f3}">
+      <Declaration><![CDATA[METHOD get_SerialNumber : BOOL
+VAR_OUTPUT
+	value 	: UDINT; 
+END_VAR
+
+]]></Declaration>
+    </Method>
+    <Method Name="get_SoftwareVersion" Id="{a9fe7e97-07c3-0e50-1eb0-3082c30674ff}">
+      <Declaration><![CDATA[METHOD get_SoftwareVersion : BOOL
+VAR_OUTPUT
+	value: STRING(2);
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="get_VendorId" Id="{d9a615dc-dae3-005f-2210-7f2e8ac93787}">
+      <Declaration><![CDATA[METHOD get_VendorId : BOOL
+VAR_OUTPUT
+	value: UDINT;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="getHardwareVersion" Id="{1a130764-925a-076b-1072-2ee4ea16fb07}">
+      <Declaration><![CDATA[METHOD getHardwareVersion : BOOL
+VAR_OUTPUT
+	value: STRING(2);
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

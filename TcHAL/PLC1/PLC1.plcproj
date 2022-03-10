@@ -35,6 +35,9 @@
     </SelectedLibraryCategories>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="analog_output\voltage\EL4002.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="analog_output\_internal\HAL_AO_Voltage_Channel.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -75,6 +78,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="_internal\CoE\CoE_property_handler.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_internal\CoE\CoE_TerminalBase.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_internal\CoE\I_CoE_config_common.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="_internal\CoE\I_CoE_property.TcIO">

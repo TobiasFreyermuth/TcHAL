@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="CoE_TerminalBase" Id="{84f99c08-2a0c-0791-15f5-1c0b48cd06a5}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK ABSTRACT CoE_TerminalBase IMPLEMENTS I_CoE_config_common
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	_CoE_property_handler: I_CoE_property_handler;
+	// ===============================================================================
+	// CoE properties 
+	// ==============
+	_p_DeviceName 			: CoE_property_string(Index:=16#1008 , SubIndex:=0, writable:=FALSE, propertyType:=0, pollingInterval:=T#5S);
+	_p_DeviceType 			: CoE_property_udint(Index:=16#1000 , SubIndex:=0, writable:=FALSE, propertyType:=0, pollingInterval:=T#5S);
+	_p_ProductCode 			: CoE_property_udint(Index:=16#1018 , SubIndex:=2, writable:=FALSE, propertyType:=0, pollingInterval:=T#5S);
+	_p_Revision 			: CoE_property_udint(Index:=16#1018 , SubIndex:=3, writable:=FALSE, propertyType:=0, pollingInterval:=T#5S);
+	_p_SerialNumber 		: CoE_property_udint(Index:=16#1018 , SubIndex:=4, writable:=FALSE, propertyType:=0, pollingInterval:=T#5S);	
+	_p_SoftwareVersion		: CoE_property_string(Index:=16#100A , SubIndex:=0, writable:=FALSE, propertyType:=0, pollingInterval:=T#5S);
+	_p_VendorId 			: CoE_property_udint(Index:=16#1018 , SubIndex:=1, writable:=FALSE, propertyType:=0, pollingInterval:=T#5S);
+	_p_HardwareVersion		: CoE_property_string(Index:=16#1009 , SubIndex:=0, writable:=FALSE, propertyType:=0, pollingInterval:=T#5S);
+	// ==============
+	_properties  : ARRAY[1..MAX_NUMBER_OF_PROPERTIES]OF I_CoE_property:=[
+		_p_DeviceName, _p_DeviceType, _p_ProductCode, _p_Revision, _p_SerialNumber, 
+		_p_SoftwareVersion, _p_VendorId, _p_HardwareVersion
+	];
+	// ===============================================================================
+	state: INT;
+	_init_done:BOOL;
+	_i: UINT;
+	_terminal_address: UINT;
+	number_of_properties: UINT;
+	propertyInitErrorCode: UDINT;
+END_VAR
+VAR CONSTANT
+	MAX_NUMBER_OF_PROPERTIES : UINT:=50;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE state OF 
+	0:  // prepare init
+		FOR _i:=1 TO MAX_NUMBER_OF_PROPERTIES DO
+			IF _properties[_i] <> 0 THEN 
+				_properties[_i].SlaveAddress := _terminal_address;
+				_properties[_i].CoE_property_handler := _CoE_property_handler;
+			ELSE
+				number_of_properties := _i -1;
+				EXIT; 
+			END_IF;
+		END_FOR
+		state := 10;
+		_i:=1;
+	
+	10: // initialize all CoE-properties 
+		IF _properties[_i].reinit(errId=> propertyInitErrorCode) THEN 
+			// ToDo add error handling
+			IF _i < number_of_properties THEN
+				_i := _i + 1;
+			ELSE
+				state := 20;
+				_init_done:=TRUE;
+			END_IF
+		END_IF
+	
+	20: // run all CoE-properties 
+		FOR _i:=1 TO number_of_properties DO
+			_properties[_i].run();
+		END_FOR
+		
+		// ==================================
+		// hardware handling will follow here
+		
+		
+END_CASE]]></ST>
+    </Implementation>
+    <Method Name="get_DeviceName" Id="{9686e068-3ae1-0b6c-0b6e-330d47ef31b4}">
+      <Declaration><![CDATA[METHOD get_DeviceName : BOOL
+VAR_OUTPUT
+	value	: STRING;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[get_DeviceName:=_p_DeviceName.get_value(value=>value, errId => );
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="get_DeviceType" Id="{7ef01846-79af-0a1b-0560-2534873cc70a}">
+      <Declaration><![CDATA[METHOD get_DeviceType : BOOL
+VAR_OUTPUT
+	value	: UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[get_DeviceType:=_p_DeviceType.get_value(value=>value, errId => );
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="get_ProductCode" Id="{8335d679-4e22-0307-1e3b-9e9986610a6b}">
+      <Declaration><![CDATA[METHOD get_ProductCode : BOOL
+VAR_OUTPUT
+	value	: UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[get_ProductCode:=_p_ProductCode.get_value(value=>value, errId => );
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="get_Revision" Id="{7b21605a-8419-042a-3214-4cce1fc5da2d}">
+      <Declaration><![CDATA[METHOD get_Revision : BOOL
+VAR_OUTPUT
+	value	: UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[get_Revision:=_p_Revision.get_value(value=>value, errId => );
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="get_SerialNumber" Id="{d080ddd4-1bb4-089e-3c36-651c2aa144b9}">
+      <Declaration><![CDATA[METHOD get_SerialNumber : BOOL
+VAR_OUTPUT
+	value	: UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[get_SerialNumber:=_p_SerialNumber.get_value(value=>value, errId => );
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="get_SoftwareVersion" Id="{db1e8c68-f6a5-0344-1f78-a80fc74b31bb}">
+      <Declaration><![CDATA[METHOD get_SoftwareVersion : BOOL
+VAR_OUTPUT
+	value	: STRING(2);
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[get_SoftwareVersion:=_p_SoftwareVersion.get_value(value=>value, errId => );
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="get_VendorId" Id="{13566155-c18b-0817-1ff6-1be60442db90}">
+      <Declaration><![CDATA[METHOD get_VendorId : BOOL
+VAR_OUTPUT
+	value	: UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[get_VendorId:=_p_VendorId.get_value(value=>value, errId => );
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="getHardwareVersion" Id="{3a856934-06d4-0f07-29b2-2c55e1dc6825}">
+      <Declaration><![CDATA[METHOD getHardwareVersion : BOOL
+VAR_OUTPUT
+	value	: STRING(2);
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[getHardwareVersion:=_p_HardwareVersion.get_value(value=>value, errId => );
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="run" Id="{d1ddb8b9-4fba-0995-0df5-641f62291872}">
+      <Declaration><![CDATA[METHOD run : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^();
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="linear_phy_to_adc" Id="{02fa8b34-458e-08bd-1425-3c0a1e6b777f}" SpecialFunc="None">
+    <Declaration><![CDATA[(**
+This function is sacling a physical value to a adc value with 
+
+*)
+FUNCTION linear_phy_to_adc : BOOL
+VAR_INPUT
+	physical_min : INT;
+	physical_max : INT;
+	adc_min : INT;
+	adc_max : INT;
+	physical_value : REAL;
+END_VAR
+VAR_OUTPUT
+	adc_value : INT;
+	errId 	: UINT;
+END_VAR
+VAR
+	dx: DINT;
+	dy: DINT;
+    
+	m: REAL;
+	b: REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+IF physical_value > INT_TO_REAL(physical_max) THEN
+	linear_phy_to_adc:=FALSE;
+	errId:=1;
+ELSIF physical_value < INT_TO_REAL(physical_min) THEN 
+	linear_phy_to_adc:=FALSE;
+	errId:=2;
+ELSE
+	dx := adc_max - adc_min;
+	dy := physical_max - physical_min;
+	IF dx <= 0 THEN
+		linear_phy_to_adc:=FALSE;
+		errId:=3;
+	ELSE
+		m := DINT_TO_REAL(dy) / DINT_TO_REAL(dx);
+		IF m <= 0 THEN
+			linear_phy_to_adc:=FALSE;
+			errId:=4;
+		ELSE
+			b := INT_TO_REAL(physical_min) - m * INT_TO_REAL(adc_min);
+			adc_value := REAL_TO_INT(physical_value/m - b/m);
+			linear_phy_to_adc:=TRUE;
+		END_IF
+	END_IF
+END_IF
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

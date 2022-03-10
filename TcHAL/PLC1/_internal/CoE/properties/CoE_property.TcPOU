@@ -244,8 +244,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="valueToWrite" Id="{f671e68f-34dc-08aa-3fa7-0dbc6c977bb5}">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY valueToWrite : CoE_buffer_type_cast_union
+      <Declaration><![CDATA[PROPERTY valueToWrite : CoE_buffer_type_cast_union
 ]]></Declaration>
       <Get Name="Get" Id="{dae09c31-b983-0ff6-240f-1eb3ae3a0c98}">
         <Declaration><![CDATA[VAR

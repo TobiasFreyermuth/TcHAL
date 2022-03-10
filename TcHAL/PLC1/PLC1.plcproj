@@ -35,6 +35,12 @@
     </SelectedLibraryCategories>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="analog_output\_internal\HAL_AO_Voltage_Channel.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="analog_output\_internal\I_HAL_AO_Voltage.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -101,6 +107,18 @@
     <Compile Include="_internal\CoE\properties\CoE_property_usint.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="_internal\linear_adc_to_phy.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_internal\linear_phy_to_adc.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_internal\linear_phy_to_adc_test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_internal\linear_adc_to_phy_test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="analog_output" />
@@ -135,6 +153,11 @@
       <DefaultResolution>TcUnit, * (www.tcunit.org)</DefaultResolution>
       <Namespace>TcUnit</Namespace>
     </PlaceholderReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PLC1.tmc">
+      <SubType>Content</SubType>
+    </None>
   </ItemGroup>
   <ProjectExtensions>
     <PlcProjectOptions>

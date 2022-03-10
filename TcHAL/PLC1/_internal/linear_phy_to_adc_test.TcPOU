@@ -1,0 +1,571 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="linear_phy_to_adc_test" Id="{a1d447c4-a5c4-0288-08e2-d19dfadd7b32}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK INTERNAL linear_phy_to_adc_test EXTENDS TcUnit.FB_TestSuite
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[test_physical_values_out_of_range();
+test_typical_setting_and_values_0_to_10();
+test_typical_setting_and_values_4_to_20();  // ToDo, this needs to be verified with real hardware 
+test_typical_setting_and_values_minus_10_to_10();
+test_zero_adc_min_and_max();
+test_zero_physical_min_and_max();
+
+]]></ST>
+    </Implementation>
+    <Method Name="test_physical_values_out_of_range" Id="{6e0b68a8-8118-0790-17d8-5187091fc39d}">
+      <Declaration><![CDATA[METHOD test_physical_values_out_of_range
+VAR_INPUT
+END_VAR
+VAR
+		returned_result			: BOOL;
+		returned_adc_value		: DINT;
+		returned_errId 			: UINT;
+		
+		// call function with physical value = 12.9
+		case_1_expected_result  		: BOOL:=FALSE;
+		case_1_expected_adc_value		: DINT;
+		case_1_expected_errId 			: UINT:=1;
+		
+		// call function with physical value = -12.9
+		case_2_expected_result  		: BOOL:=FALSE;
+		case_2_expected_adc_value		: DINT;
+		case_2_expected_errId 			: UINT:=2;
+
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('test_physical_values_out_of_range');
+
+
+// ======================================
+// Test case 1, 
+// call with physical value 12.9
+// ====
+returned_result:=linear_phy_to_adc(physical_min:=-10 , physical_max:=10 , adc_min:=-32767 , adc_max:=32767 , physical_value:=12.9 , adc_value=>returned_adc_value , errId=>returned_errId );
+
+AssertEquals(Expected := case_1_expected_result,
+             Actual := returned_result,
+             Message := 'Fucntion returns incorrect result,');
+			 
+AssertEquals(Expected := case_1_expected_adc_value,
+             Actual := returned_adc_value,
+             Message := 'Fucntion returns incorrect adc_value,');		 
+
+AssertEquals(Expected :=case_1_expected_errId ,
+             Actual := returned_errId ,
+             Message := 'Fucntion returns incorrect errId,');
+			 
+			 
+// ======================================
+// Test case 2, 
+// call with physical value -12.9
+// ====
+returned_result:=linear_phy_to_adc(physical_min:=-10 , physical_max:=10 , adc_min:=-32767 , adc_max:=32767 , physical_value:=-12.9 , adc_value=>returned_adc_value , errId=>returned_errId );
+
+AssertEquals(Expected := case_2_expected_result,
+             Actual := returned_result,
+             Message := 'Fucntion returns incorrect result,');
+			 
+AssertEquals(Expected := case_2_expected_adc_value,
+             Actual := returned_adc_value,
+             Message := 'Fucntion returns incorrect adc_value,');		 
+
+AssertEquals(Expected :=case_2_expected_errId ,
+             Actual := returned_errId ,
+             Message := 'Fucntion returns incorrect errId,');
+			 
+			 
+		 
+			 
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="test_typical_setting_and_values_0_to_10" Id="{15fbae6a-4c2f-09c7-3c5b-d140b9d15183}">
+      <Declaration><![CDATA[METHOD test_typical_setting_and_values_0_to_10
+VAR_INPUT
+END_VAR
+VAR
+		returned_result			: BOOL;
+		returned_adc_value		: DINT;
+		returned_errId 			: UINT;
+		
+		// call function with physical value = 0
+		case_1_physical_value			: REAL:=0.0;
+		case_1_expected_result  		: BOOL:=TRUE;
+		case_1_expected_adc_value		: DINT:=0;
+		case_1_expected_errId 			: UINT:=0;
+		
+		// call with physical value somewhere in the middle of its range
+		case_2_physical_value			: REAL:=4.95;
+		case_2_expected_result  		: BOOL:=TRUE;
+		case_2_expected_adc_value		: DINT:=16220;
+		case_2_expected_errId 			: UINT:=0;
+		
+		// ccall with physical max value
+		case_3_physical_value			: REAL:=10.0;
+		case_3_expected_result  		: BOOL:=TRUE;
+		case_3_expected_adc_value		: DINT:=32767;
+		case_3_expected_errId 			: UINT:=0;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('test_typical_setting_and_values_0_to_10');
+
+
+// ======================================
+// Test case 1
+// call with physical min value
+// ====
+returned_result:=linear_phy_to_adc(physical_min:=0 , physical_max:=10 , adc_min:=0 , adc_max:=32767 , physical_value:=case_1_physical_value , adc_value=>returned_adc_value , errId=>returned_errId );
+
+AssertEquals(Expected := case_1_expected_result,
+             Actual := returned_result,
+             Message := 'Test case 1 fucntion returns incorrect result,');
+			 
+AssertEquals(Expected := case_1_expected_adc_value,
+             Actual := returned_adc_value,
+             Message := 'Test case 1 fucntion returns incorrect adc_value,');		 
+
+AssertEquals(Expected :=case_1_expected_errId ,
+             Actual := returned_errId ,
+             Message := 'Test case 1 fucntion returns incorrect errId,');
+
+
+// ======================================
+// Test case 2, 
+// call with physical value somewhere in the middle of its range
+// ====
+returned_result:=linear_phy_to_adc(physical_min:=0 , physical_max:=10 , adc_min:=0 , adc_max:=32767 , physical_value:=case_2_physical_value , adc_value=>returned_adc_value , errId=>returned_errId );
+
+AssertEquals(Expected := case_2_expected_result,
+             Actual := returned_result,
+             Message := 'Test case 2 fcntion returns incorrect result,');
+			 
+AssertEquals(Expected := case_2_expected_adc_value,
+             Actual := returned_adc_value,
+             Message := 'Test case 2 fucntion returns incorrect adc_value,');		 
+
+AssertEquals(Expected :=case_2_expected_errId ,
+             Actual := returned_errId ,
+             Message := 'Test case 2 fucntion returns incorrect errId,');
+
+
+// ======================================
+// Test case 3,
+// call with physical max value
+// ====
+returned_result:=linear_phy_to_adc(physical_min:=0 , physical_max:=10 , adc_min:=0 , adc_max:=32767 , physical_value:=case_3_physical_value , adc_value=>returned_adc_value , errId=>returned_errId );
+
+AssertEquals(Expected := case_3_expected_result,
+             Actual := returned_result,
+             Message := 'Test case 3 fucntion returns incorrect result,');
+			 
+AssertEquals(Expected := case_3_expected_adc_value,
+             Actual := returned_adc_value,
+             Message := 'Test case 3 fucntion returns incorrect adc_value,');		 
+
+AssertEquals(Expected :=case_3_expected_errId ,
+             Actual := returned_errId ,
+             Message := 'Test case 3 fucntion returns incorrect errId,');			 
+			 
+			 
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="test_typical_setting_and_values_4_to_20" Id="{e5b6b79e-86b4-0332-0601-f50381b1b05c}">
+      <Declaration><![CDATA[METHOD test_typical_setting_and_values_4_to_20
+VAR_INPUT
+END_VAR
+VAR
+		returned_result			: BOOL;
+		returned_adc_value		: DINT;
+		returned_errId 			: UINT;
+		
+		// call with physical min value
+		case_1_physical_value			: REAL:=0.0;
+		case_1_expected_result  		: BOOL:=TRUE;
+		case_1_expected_adc_value		: DINT:=0;
+		case_1_expected_errId 			: UINT:=0;
+		
+		// call with physical value somewhere in the middle of its range
+		case_2_physical_value			: REAL:=9.95;
+		case_2_expected_result  		: BOOL:=TRUE;
+		case_2_expected_adc_value		: DINT:=16302;
+		case_2_expected_errId 			: UINT:=0;
+		
+		// call with physical max value
+		case_3_physical_value			: REAL:=20.0;
+		case_3_expected_result  		: BOOL:=TRUE;
+		case_3_expected_adc_value		: DINT:=32767;
+		case_3_expected_errId 			: UINT:=0;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('test_typical_setting_and_values_4_to_20');
+
+
+// ======================================
+// Test case 1
+// call with physical min value
+// ====
+returned_result:=linear_phy_to_adc(physical_min:=0 , physical_max:=20 , adc_min:=0 , adc_max:=32767 , physical_value:=case_1_physical_value , adc_value=>returned_adc_value , errId=>returned_errId );
+
+AssertEquals(Expected := case_1_expected_result,
+             Actual := returned_result,
+             Message := 'Test case 1 fucntion returns incorrect result,');
+			 
+AssertEquals(Expected := case_1_expected_adc_value,
+             Actual := returned_adc_value,
+             Message := 'Test case 1 fucntion returns incorrect adc_value,');		 
+
+AssertEquals(Expected :=case_1_expected_errId ,
+             Actual := returned_errId ,
+             Message := 'Test case 1 fucntion returns incorrect errId,');
+
+
+// ======================================
+// Test case 2,
+// call with physical value somewhere in the middle of its range
+// ====
+returned_result:=linear_phy_to_adc(physical_min:=0 , physical_max:=20 , adc_min:=0 , adc_max:=32767 , physical_value:=case_2_physical_value , adc_value=>returned_adc_value , errId=>returned_errId );
+
+AssertEquals(Expected := case_2_expected_result,
+             Actual := returned_result,
+             Message := 'Test case 2 fcntion returns incorrect result,');
+			 
+AssertEquals(Expected := case_2_expected_adc_value,
+             Actual := returned_adc_value,
+             Message := 'Test case 2 fucntion returns incorrect adc_value,');		 
+
+AssertEquals(Expected :=case_2_expected_errId ,
+             Actual := returned_errId ,
+             Message := 'Test case 2 fucntion returns incorrect errId,');
+
+
+// ======================================
+// Test case 3,
+// call with physical max value
+// ====
+returned_result:=linear_phy_to_adc(physical_min:=0 , physical_max:=20 , adc_min:=0 , adc_max:=32767 , physical_value:=case_3_physical_value , adc_value=>returned_adc_value , errId=>returned_errId );
+
+AssertEquals(Expected := case_3_expected_result,
+             Actual := returned_result,
+             Message := 'Test case 3 fucntion returns incorrect result,');
+			 
+AssertEquals(Expected := case_3_expected_adc_value,
+             Actual := returned_adc_value,
+             Message := 'Test case 3 fucntion returns incorrect adc_value,');		 
+
+AssertEquals(Expected :=case_3_expected_errId ,
+             Actual := returned_errId ,
+             Message := 'Test case 3 fucntion returns incorrect errId,');			 
+			 
+			 
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="test_typical_setting_and_values_minus_10_to_10" Id="{7e31826f-5f01-0306-38c5-364c7f7ea5b6}">
+      <Declaration><![CDATA[METHOD test_typical_setting_and_values_minus_10_to_10
+VAR_INPUT
+END_VAR
+VAR
+		returned_result			: BOOL;
+		returned_adc_value		: INT;
+		returned_errId 			: UINT;
+		
+		// call with physical value 0
+		case_1_physical_value			: REAL:=0.0;
+		case_1_expected_result  		: BOOL:=TRUE;
+		case_1_expected_adc_value		: INT:=0;
+		case_1_expected_errId 			: UINT:=0;
+		
+		// call with physical min value
+		case_2_physical_value			: REAL:=-10.0;
+		case_2_expected_result  		: BOOL:=TRUE;
+		case_2_expected_adc_value		: INT:=-32767;
+		case_2_expected_errId 			: UINT:=0;
+		
+		// call with physical max value
+		case_3_physical_value			: REAL:=10.0;
+		case_3_expected_result  		: BOOL:=TRUE;
+		case_3_expected_adc_value		: INT:=32767;
+		case_3_expected_errId 			: UINT:=0;
+		
+		// call with physical value somewhere in the middle of its range
+		case_4_physical_value			: REAL:=4.95;
+		case_4_expected_result  		: BOOL:=TRUE;
+		case_4_expected_adc_value		: INT:=16220;
+		case_4_expected_errId 			: UINT:=0;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('test_typical_setting_and_values_minus_10_to_10');
+
+
+// ======================================
+// Test case 1, 
+// call with physical value 0
+// ====
+returned_result:=linear_phy_to_adc(physical_min:=-10 , physical_max:=10 , adc_min:=-32767 , adc_max:=32767 , physical_value:=case_1_physical_value , adc_value=>returned_adc_value , errId=>returned_errId );
+
+AssertEquals(Expected := case_1_expected_result,
+             Actual := returned_result,
+             Message := 'Test case 1 fucntion returns incorrect result,');
+			 
+AssertEquals(Expected := case_1_expected_adc_value,
+             Actual := returned_adc_value,
+             Message := 'Test case 1 fucntion returns incorrect adc_value,');		 
+
+AssertEquals(Expected :=case_1_expected_errId ,
+             Actual := returned_errId ,
+             Message := 'Test case 1 fucntion returns incorrect errId,');
+
+
+// ======================================
+// Test case 2, 
+// call with physical min value
+// ====
+returned_result:=linear_phy_to_adc(physical_min:=-10 , physical_max:=10 , adc_min:=-32767 , adc_max:=32767 , physical_value:=case_2_physical_value , adc_value=>returned_adc_value , errId=>returned_errId );
+
+AssertEquals(Expected := case_2_expected_result,
+             Actual := returned_result,
+             Message := 'Test case 2 fcntion returns incorrect result,');
+			 
+AssertEquals(Expected := case_2_expected_adc_value,
+             Actual := returned_adc_value,
+             Message := 'Test case 2 fucntion returns incorrect adc_value,');		 
+
+AssertEquals(Expected :=case_2_expected_errId ,
+             Actual := returned_errId ,
+             Message := 'Test case 2 fucntion returns incorrect errId,');
+
+
+// ======================================
+// Test case 3,
+// call with physical max value
+// ====
+returned_result:=linear_phy_to_adc(physical_min:=-10 , physical_max:=10 , adc_min:=-32767 , adc_max:=32767 , physical_value:=case_3_physical_value , adc_value=>returned_adc_value , errId=>returned_errId );
+
+AssertEquals(Expected := case_3_expected_result,
+             Actual := returned_result,
+             Message := 'Test case 3 fucntion returns incorrect result,');
+			 
+AssertEquals(Expected := case_3_expected_adc_value,
+             Actual := returned_adc_value,
+             Message := 'Test case 3 fucntion returns incorrect adc_value,');		 
+
+AssertEquals(Expected :=case_3_expected_errId ,
+             Actual := returned_errId ,
+             Message := 'Test case 3 fucntion returns incorrect errId,');			 
+
+// ======================================
+// Test case 4,
+// call with physical value somewhere in the middle of its range
+// ====
+returned_result:=linear_phy_to_adc(physical_min:=-10 , physical_max:=10 , adc_min:=-32767 , adc_max:=32767 , physical_value:=case_4_physical_value , adc_value=>returned_adc_value , errId=>returned_errId );
+
+AssertEquals(Expected := case_4_expected_result,
+             Actual := returned_result,
+             Message := 'Test case 4 fucntion returns incorrect result,');
+			 
+AssertEquals(Expected := case_4_expected_adc_value,
+             Actual := returned_adc_value,
+             Message := 'Test case 4 fucntion returns incorrect adc_value,');		 
+
+AssertEquals(Expected :=case_4_expected_errId ,
+             Actual := returned_errId ,
+             Message := 'Test case 4 fucntion returns incorrect errId,');	 
+			 
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="test_zero_adc_min_and_max" Id="{49f00c81-e813-02e6-2e69-7d39e8d1727e}">
+      <Declaration><![CDATA[METHOD test_zero_adc_min_and_max
+VAR_INPUT
+END_VAR
+VAR
+		returned_result			: BOOL;
+		returned_adc_value		: DINT;
+		returned_errId 			: UINT;
+		
+		// call function with physical value = 0
+		case_1_expected_result  		: BOOL:=FALSE;
+		case_1_expected_adc_value		: DINT;
+		case_1_expected_errId 			: UINT:=3;
+		
+		// call function with physical value = 5.5
+		case_2_expected_result  		: BOOL:=FALSE;
+		case_2_expected_adc_value		: DINT;
+		case_2_expected_errId 			: UINT:=3;
+		
+		// call function with physical value = -5.5
+		case_3_expected_result  		: BOOL:=FALSE;
+		case_3_expected_adc_value		: DINT;
+		case_3_expected_errId 			: UINT:=2;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('test_zero_adc_min_and_max');
+
+
+// ======================================
+// Test case 1, 
+// call with physical value 0
+// ====
+returned_result:=linear_phy_to_adc(physical_min:=0 , physical_max:=10 , adc_min:=0 , adc_max:=0 , physical_value:=0 , adc_value=>returned_adc_value , errId=>returned_errId );
+
+AssertEquals(Expected := case_1_expected_result,
+             Actual := returned_result,
+             Message := 'Fucntion returns incorrect result,');
+			 
+AssertEquals(Expected := case_1_expected_adc_value,
+             Actual := returned_adc_value,
+             Message := 'Fucntion returns incorrect adc_value,');		 
+
+AssertEquals(Expected :=case_1_expected_errId ,
+             Actual := returned_errId ,
+             Message := 'Fucntion returns incorrect errId,');
+			 
+			 
+// ======================================
+// Test case 2, 
+// call with physical value 5.5
+// ====
+returned_result:=linear_phy_to_adc(physical_min:=0 , physical_max:=10 , adc_min:=0 , adc_max:=0 , physical_value:=5.5 , adc_value=>returned_adc_value , errId=>returned_errId );
+
+AssertEquals(Expected := case_2_expected_result,
+             Actual := returned_result,
+             Message := 'Fucntion returns incorrect result,');
+			 
+AssertEquals(Expected := case_2_expected_adc_value,
+             Actual := returned_adc_value,
+             Message := 'Fucntion returns incorrect adc_value,');		 
+
+AssertEquals(Expected :=case_2_expected_errId ,
+             Actual := returned_errId ,
+             Message := 'Fucntion returns incorrect errId,');
+			 
+			 
+// ======================================
+// Test case 1, 
+// call with physical value 0
+// ====
+returned_result:=linear_phy_to_adc(physical_min:=0 , physical_max:=10 , adc_min:=0 , adc_max:=0 , physical_value:=-5.5 , adc_value=>returned_adc_value , errId=>returned_errId );
+
+AssertEquals(Expected := case_3_expected_result,
+             Actual := returned_result,
+             Message := 'Fucntion returns incorrect result,');
+			 
+AssertEquals(Expected := case_3_expected_adc_value,
+             Actual := returned_adc_value,
+             Message := 'Fucntion returns incorrect adc_value,');		 
+
+AssertEquals(Expected :=case_3_expected_errId ,
+             Actual := returned_errId ,
+             Message := 'Fucntion returns incorrect errId,');
+		 
+			 
+			 
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="test_zero_physical_min_and_max" Id="{06fc33a9-1ac5-04cd-2107-ef71b2b5a1d7}">
+      <Declaration><![CDATA[METHOD test_zero_physical_min_and_max
+VAR_INPUT
+END_VAR
+VAR
+		returned_result			: BOOL;
+		returned_adc_value		: DINT;
+		returned_errId 			: UINT;
+		
+		// call function with physical value = 0
+		case_1_expected_result  		: BOOL:=FALSE;
+		case_1_expected_adc_value		: DINT;
+		case_1_expected_errId 			: UINT:=4;
+		
+		// call function with physical value = 5.5
+		case_2_expected_result  		: BOOL:=FALSE;
+		case_2_expected_adc_value		: DINT;
+		case_2_expected_errId 			: UINT:=1;
+		
+		// call function with physical value = -5.5
+		case_3_expected_result  		: BOOL:=FALSE;
+		case_3_expected_adc_value		: DINT;
+		case_3_expected_errId 			: UINT:=2;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('test_zero_physical_min_and_or_max');
+
+
+// ======================================
+// Test case 1, 
+// call with physical value 0
+// ====
+returned_result:=linear_phy_to_adc(physical_min:=0 , physical_max:=0 , adc_min:=0 , adc_max:=32767 , physical_value:=0 , adc_value=>returned_adc_value , errId=>returned_errId );
+
+AssertEquals(Expected := case_1_expected_result,
+             Actual := returned_result,
+             Message := 'Fucntion returns incorrect result,');
+			 
+AssertEquals(Expected := case_1_expected_adc_value,
+             Actual := returned_adc_value,
+             Message := 'Fucntion returns incorrect adc_value,');		 
+
+AssertEquals(Expected :=case_1_expected_errId ,
+             Actual := returned_errId ,
+             Message := 'Fucntion returns incorrect errId,');
+			 
+			 
+// ======================================
+// Test case 2, 
+// call with physical value 5.5
+// ====
+returned_result:=linear_phy_to_adc(physical_min:=0 , physical_max:=0 , adc_min:=0 , adc_max:=32767 , physical_value:=5.5 , adc_value=>returned_adc_value , errId=>returned_errId );
+
+AssertEquals(Expected := case_2_expected_result,
+             Actual := returned_result,
+             Message := 'Fucntion returns incorrect result,');
+			 
+AssertEquals(Expected := case_2_expected_adc_value,
+             Actual := returned_adc_value,
+             Message := 'Fucntion returns incorrect adc_value,');		 
+
+AssertEquals(Expected :=case_2_expected_errId ,
+             Actual := returned_errId ,
+             Message := 'Fucntion returns incorrect errId,');
+			 
+			 
+// ======================================
+// Test case 1, 
+// call with physical value 0
+// ====
+returned_result:=linear_phy_to_adc(physical_min:=0 , physical_max:=0 , adc_min:=0 , adc_max:=32767 , physical_value:=-5.5 , adc_value=>returned_adc_value , errId=>returned_errId );
+
+AssertEquals(Expected := case_3_expected_result,
+             Actual := returned_result,
+             Message := 'Fucntion returns incorrect result,');
+			 
+AssertEquals(Expected := case_3_expected_adc_value,
+             Actual := returned_adc_value,
+             Message := 'Fucntion returns incorrect adc_value,');		 
+
+AssertEquals(Expected :=case_3_expected_errId ,
+             Actual := returned_errId ,
+             Message := 'Fucntion returns incorrect errId,');
+		 
+			 
+			 
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

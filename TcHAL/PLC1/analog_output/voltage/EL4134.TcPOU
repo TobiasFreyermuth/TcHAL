@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="EL4134" Id="{1ef8ea92-3bd7-01fc-2a74-1a53b0844562}" SpecialFunc="None">
+    <Declaration><![CDATA[(**
+This function block abstracts the Beckhoff EtherCAT terminal EL4134 (-10…10 V, 16 Bit)
+*)
+FUNCTION_BLOCK EL4134 EXTENDS CoE_TerminalBase implements I_terminal_execution
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+	AO_Voltage_channel_1 		: I_HAL_AO_Voltage :=_channel_1;
+	AO_Voltage_channel_2 		: I_HAL_AO_Voltage :=_channel_2;
+	AO_Voltage_channel_3 		: I_HAL_AO_Voltage :=_channel_3;
+	AO_Voltage_channel_4 		: I_HAL_AO_Voltage :=_channel_4;
+END_VAR
+VAR
+	WcState_WcState			AT%I*: BOOL;
+	InfoData_State			AT%I*: UINT;
+	InfoData_AdsAddr_netId  AT%I*: AMSNETID;
+	InfoData_AdsAddr_port 	AT%I*: WORD;
+	
+	AO_Output_Channel_1_Analog_output         AT%Q*: INT;
+	AO_Output_Channel_2_Analog_output         AT%Q*: INT;
+	AO_Output_Channel_3_Analog_output         AT%Q*: INT;
+	AO_Output_Channel_4_Analog_output         AT%Q*: INT;	
+
+	_channel_1 : HAL_AO_Voltage_Channel(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=1);
+	_channel_2 : HAL_AO_Voltage_Channel(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=2);
+	_channel_3 : HAL_AO_Voltage_Channel(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=3);
+	_channel_4 : HAL_AO_Voltage_Channel(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=4);
+END_VAR
+VAR CONSTANT
+	ADC_MIN        	: INT:=-32767;
+	ADC_MAX        	: INT:=32767;
+	PHYSICAL_MIN 	: INT:=-10;
+	PHYSICAL_MAX 	: INT:=10;
+	
+    HARDWARE_REVSION : UINT:=19;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT _init_done THEN 
+	_terminal_address:=InfoData_AdsAddr_port;
+ELSE
+	_channel_1.wcState:= NOT  WcState_WcState;
+	_channel_1.terminal_address := _terminal_address;
+	_channel_2.wcState:= NOT  WcState_WcState;
+	_channel_2.terminal_address := _terminal_address;
+	_channel_3.wcState:= NOT  WcState_WcState;
+	_channel_3.terminal_address := _terminal_address;
+	_channel_4.wcState:= NOT  WcState_WcState;
+	_channel_4.terminal_address := _terminal_address;
+	
+	_channel_1();
+	_channel_2();
+	_channel_3();
+	_channel_4();
+	
+	AO_Output_Channel_1_Analog_output := _channel_1.terminal_value;
+	AO_Output_Channel_2_Analog_output := _channel_2.terminal_value;
+	AO_Output_Channel_3_Analog_output := _channel_3.terminal_value;
+	AO_Output_Channel_4_Analog_output := _channel_4.terminal_value;
+END_IF]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{74602d2c-0f53-07f1-3b0f-a037458e0b41}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	CoE_property_handler: I_CoE_property_handler;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[SUPER^._CoE_property_handler	:=CoE_property_handler;
+_channel_1.CoE_property_handler	:=CoE_property_handler;
+_channel_2.CoE_property_handler	:=CoE_property_handler;
+_channel_3.CoE_property_handler	:=CoE_property_handler;
+_channel_4.CoE_property_handler	:=CoE_property_handler;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="run" Id="{83f08f25-16a0-0ba0-2b32-c4d2734e4b3a}">
+      <Declaration><![CDATA[METHOD run : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[SUPER^();
+THIS^();
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

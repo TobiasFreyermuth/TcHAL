@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="EL4102" Id="{dae8e18e-e475-0078-2c0d-f95204bb3b0e}" SpecialFunc="None">
+    <Declaration><![CDATA[(**
+This function block abstracts the Beckhoff EtherCAT terminal EL4102 (0…10 V, 16 Bit)
+*)
+FUNCTION_BLOCK EL4102 EXTENDS CoE_TerminalBase implements I_terminal_execution
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+	AO_Voltage_channel_1 		: I_HAL_AO_Voltage :=_channel_1;
+	AO_Voltage_channel_2 		: I_HAL_AO_Voltage :=_channel_2;
+END_VAR
+VAR
+	WcState_WcState			AT%I*: BOOL;
+	InfoData_State			AT%I*: UINT;
+	InfoData_AdsAddr_netId  AT%I*: AMSNETID;
+	InfoData_AdsAddr_port 	AT%I*: WORD;
+	
+	Channel_1_Output         AT%Q*: INT;
+	Channel_2_Output         AT%Q*: INT;
+	
+	_channel_1 : HAL_AO_Voltage_Channel(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=1);
+	_channel_2 : HAL_AO_Voltage_Channel(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=2);
+END_VAR
+VAR CONSTANT
+	ADC_MIN        	: INT:=0;
+	ADC_MAX        	: INT:=32767;
+	PHYSICAL_MIN 	: INT:=0;
+	PHYSICAL_MAX 	: INT:=10;
+	
+    HARDWARE_REVSION : UINT:=19;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT _init_done THEN 
+	_terminal_address:=InfoData_AdsAddr_port;
+ELSE
+	_channel_1.wcState:= NOT  WcState_WcState;
+	_channel_1.terminal_address := _terminal_address;
+	_channel_2.wcState:= NOT  WcState_WcState;
+	_channel_2.terminal_address := _terminal_address;
+	
+	_channel_1();
+	_channel_2();
+
+	Channel_1_Output := _channel_1.terminal_value;
+	Channel_2_Output := _channel_2.terminal_value;
+END_IF
+
+]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{5f535ceb-8387-03b9-1756-abac8cf978ae}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	CoE_property_handler: I_CoE_property_handler;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[SUPER^._CoE_property_handler	:=CoE_property_handler;
+_channel_1.CoE_property_handler	:=CoE_property_handler;
+_channel_2.CoE_property_handler	:=CoE_property_handler;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="run" Id="{8f3f20a0-628e-0aa9-1f1d-673154a06f5c}">
+      <Declaration><![CDATA[METHOD run : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[SUPER^();
+THIS^();
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

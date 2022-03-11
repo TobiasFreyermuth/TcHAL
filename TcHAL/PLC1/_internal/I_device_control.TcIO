@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <Itf Name="I_device_control" Id="{78aee326-42e9-066e-38b5-53ace1eb0a9c}">
+    <Declaration><![CDATA[INTERFACE I_device_control
+]]></Declaration>
+    <Method Name="release_control" Id="{1a8ea98b-03dd-0930-21e3-8c1ee3cb9e8e}">
+      <Declaration><![CDATA[METHOD release_control : BOOL
+VAR_INPUT
+	device_id : DWORD;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="request_control" Id="{6da38b05-f347-0a8b-0f59-150cc7bb4a8b}">
+      <Declaration><![CDATA[METHOD request_control : BOOL
+VAR_INPUT
+	device_id : DWORD;
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

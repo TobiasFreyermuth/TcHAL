@@ -38,6 +38,15 @@
     <Compile Include="analog_output\voltage\EL4002.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="analog_output\voltage\EL4102.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="analog_output\voltage\EL4004.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="analog_output\voltage\EL4134.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="analog_output\_internal\HAL_AO_Voltage_Channel.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -114,6 +123,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="_internal\CoE\properties\CoE_property_usint.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_internal\I_device_control.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_internal\I_terminal_execution.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="_internal\linear_adc_to_phy.TcPOU">

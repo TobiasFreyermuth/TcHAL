@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="EK1101" Id="{647f71fd-004f-088b-1128-6eb1f7f03b3a}" SpecialFunc="None">
+    <Declaration><![CDATA[(**
+	This function block abstracts the EtherCAT coupler EK1101.
+	All inputs of this coupler should be linked to the function block.
+	Terminals that are connected to the coupler should be abstracted with the according function blocks and
+	passed into this function block to be executed, based on the state of the coupler and the sync_unit_ok, 
+	which should be provided by the calling program.
+*)
+FUNCTION_BLOCK EK1101 IMPLEMENTS I_coupler_execution
+VAR
+	ID_ID					AT%I*: UINT;
+	WcState_WcState			AT%I*: BOOL;
+	WcState_InputToggle		AT%I*: BOOL;
+	InfoData_State			AT%I*: UINT;
+	
+	_i				: DINT;
+	_sync_unit_ok	: BOOL;
+END_VAR
+VAR_IN_OUT
+	terminals: ARRAY[*] OF I_terminal_execution;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+IF WcState_WcState  AND  _sync_unit_ok THEN
+	FOR _i:=LOWER_BOUND(terminals, 1) TO UPPER_BOUND(terminals, 1) DO
+		terminals[_i].run();
+	END_FOR
+ELSE
+	// ToDo: put terminals in sync unit error state
+	;
+END_IF
+
+
+]]></ST>
+    </Implementation>
+    <Method Name="run" Id="{167f991e-ffac-0542-186d-6150892df1b1}">
+      <Declaration><![CDATA[METHOD run : BOOL
+VAR_INPUT
+	sync_unit_ok	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^._sync_unit_ok := sync_unit_ok;
+THIS^();
+
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

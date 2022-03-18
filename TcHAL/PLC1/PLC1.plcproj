@@ -53,6 +53,9 @@
     <Compile Include="analog_output\_internal\I_HAL_AO_Voltage.TcIO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="coupler\EK1101.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -131,6 +134,9 @@
     <Compile Include="_internal\I_terminal_execution.TcIO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="_internal\I_coupler_execution.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="_internal\linear_adc_to_phy.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -148,6 +154,7 @@
     <Folder Include="analog_output" />
     <Folder Include="analog_output\voltage" />
     <Folder Include="analog_output\_internal" />
+    <Folder Include="coupler" />
     <Folder Include="Project Information" />
     <Folder Include="Version" />
     <Folder Include="_internal" />

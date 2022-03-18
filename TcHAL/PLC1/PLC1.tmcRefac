@@ -16,5 +16,10 @@
       <From>I_terminal_run</From>
       <To>I_terminal_execution</To>
     </RenamedType>
+    <RenamedType>
+      <Type guid="ecc9071b-3ff9-4e19-bbfa-cfa9018e5021">I_TERMINAL_EXECUTION_1</Type>
+      <From>I_terminal_execution_1</From>
+      <To>I_coupler_execution</To>
+    </RenamedType>
   </Renames>
 </Refactors>

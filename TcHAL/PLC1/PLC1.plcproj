@@ -18,7 +18,7 @@
     <Company>none</Company>
     <Released>false</Released>
     <Title>TcHAL</Title>
-    <ProjectVersion>0.1.0</ProjectVersion>
+    <ProjectVersion>0.1.1</ProjectVersion>
     <DefaultNamespace>TcHAL</DefaultNamespace>
     <Author>Tobias Freyermuth</Author>
     <CombineIds>true</CombineIds>

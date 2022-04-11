@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <Itf Name="I_HAL_DO" Id="{91024714-31c5-0650-3137-cca3ae6f3774}">
+    <Declaration><![CDATA[INTERFACE I_HAL_DO
+]]></Declaration>
+    <Property Name="errId" Id="{90300fa2-a256-09dc-3624-09027a35ba7c}">
+      <Declaration><![CDATA[PROPERTY errId : uint]]></Declaration>
+      <Get Name="Get" Id="{7eb76d01-9028-0d44-24b8-237afe51e471}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="xValue" Id="{55752649-a795-0794-08a4-ae321fd150f7}">
+      <Declaration><![CDATA[PROPERTY xValue : bool]]></Declaration>
+      <Get Name="Get" Id="{15d47da7-4646-0791-3c4d-8c21b3b564bd}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{375d98f7-abc5-0f7e-39c7-2a65c1b10b9e}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

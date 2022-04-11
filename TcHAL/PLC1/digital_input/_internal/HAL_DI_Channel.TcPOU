@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="HAL_DI_Channel" Id="{b1d1af24-c998-05f1-3746-9bdeae67a77b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK HAL_DI_Channel IMPLEMENTS I_HAL_DI
+VAR_INPUT
+	terminal_address		: WORD;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	_errId:UINT;
+	_xValue: BOOL;
+	_channel_number: UINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="HAL" Id="{3ba1257c-608d-096a-037f-ba20c8a64160}" />
+    <Folder Name="IO" Id="{494853d3-a77f-0b99-1d9d-50b529669bb4}" />
+    <Property Name="errId" Id="{4dcbf7f9-a5dd-019a-24f5-c34e969e268c}" FolderPath="HAL\">
+      <Declaration><![CDATA[PROPERTY errId : UINT
+]]></Declaration>
+      <Get Name="Get" Id="{07864ee9-bfc1-0814-06ce-68b0256df53d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[errId := _errId;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="FB_init" Id="{13a93988-853b-0f7e-17ed-a973216b4a06}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains 	: BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode 	: BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+    channel_number  : UINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+_channel_number :=channel_number;
+
+
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="terminal_value" Id="{0e7cab75-3369-0048-0aef-636f6b3285a2}" FolderPath="IO\">
+      <Declaration><![CDATA[PROPERTY terminal_value : bool]]></Declaration>
+      <Set Name="Set" Id="{975877ec-8fc6-0b96-29e7-8e4feb8aac1d}">
+        <Declaration><![CDATA[
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_xValue:=terminal_value;
+]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="WcState" Id="{d052cbf9-1a59-0912-3d51-e7a7c12cb554}" FolderPath="IO\">
+      <Declaration><![CDATA[PROPERTY WcState : bool]]></Declaration>
+      <Get Name="Get" Id="{696f6250-c2ce-0e6d-2406-1d7e8d2feab6}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{4e9daffa-df3e-0abd-0de1-ad207a16b216}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="xValue" Id="{1c7b2364-c8f4-0977-1a1d-255b9df12e97}" FolderPath="HAL\">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY xValue : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{8dd4c25e-ae41-06ad-2032-a74ae88739f7}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[xValue:=_xValue;
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+  </POU>
+</TcPlcObject>

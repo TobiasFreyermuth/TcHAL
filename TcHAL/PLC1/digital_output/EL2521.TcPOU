@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="EL2521" Id="{890a7cf9-aee9-0791-1214-b0e2ea2dc3bb}" SpecialFunc="None">
+    <Declaration><![CDATA[(**
+This function block abstracts the Beckhoff EtherCAT terminal EL2521
+*)
+FUNCTION_BLOCK EL2521 IMPLEMENTS I_terminal_execution
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+//	DO_channel_1 		: I_HAL_DO :=_channel_1;
+END_VAR
+VAR
+	WcState_WcState			AT%I*: BOOL;
+	InfoData_State			AT%I*: UINT;
+	InfoData_AdsAddr_netId  AT%I*: AMSNETID;
+	InfoData_AdsAddr_port 	AT%I*: WORD;
+	
+//	Channel_1_Output         AT%Q*: BOOL;
+	
+	_channel_1 : HAL_DO_Channel(channel_number:=1);
+END_VAR
+VAR CONSTANT	
+    HARDWARE_REVSION : UINT:=19;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+_channel_1.wcState:= NOT  WcState_WcState;
+
+_channel_1();
+
+Channel_1_Output := _channel_1.terminal_value;
+]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{69099c41-2749-0bc8-0517-094afab54715}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	CoE_property_handler: I_CoE_property_handler;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="run" Id="{770da0bd-a5ed-021d-391d-438dabbef398}">
+      <Declaration><![CDATA[METHOD run : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^();
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

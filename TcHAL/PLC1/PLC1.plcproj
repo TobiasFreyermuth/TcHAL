@@ -18,7 +18,7 @@
     <Company>none</Company>
     <Released>false</Released>
     <Title>TcHAL</Title>
-    <ProjectVersion>0.1.1</ProjectVersion>
+    <ProjectVersion>0.1.3</ProjectVersion>
     <DefaultNamespace>TcHAL</DefaultNamespace>
     <Author>Tobias Freyermuth</Author>
     <CombineIds>true</CombineIds>
@@ -54,6 +54,75 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="coupler\EK1101.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="digital_input\EL1008.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="digital_input\EL1104.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="digital_input\EL1144.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="digital_input\EL1808.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="digital_input\EL1124.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="digital_input\EL1809.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="digital_input\_internal\HAL_DI_Channel.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="digital_input\_internal\I_HAL_DI.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="digital_output\EL2008.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="digital_output\EL2124.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="digital_output\EL2024_0010.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="digital_output\EL2502.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="digital_output\EL2595.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>false</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="digital_output\EL2612.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="digital_output\EL2521.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="digital_output\EL2004.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="digital_output\EL2634.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="digital_output\EL2808.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="digital_output\EL2624.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="digital_output\EL2794.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="digital_output\_internal\HAL_DO_Channel.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="digital_output\_internal\I_HAL_DO.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MAIN.TcPOU">
@@ -155,6 +224,10 @@
     <Folder Include="analog_output\voltage" />
     <Folder Include="analog_output\_internal" />
     <Folder Include="coupler" />
+    <Folder Include="digital_input\_internal" />
+    <Folder Include="digital_output" />
+    <Folder Include="digital_output\_internal" />
+    <Folder Include="digital_input" />
     <Folder Include="Project Information" />
     <Folder Include="Version" />
     <Folder Include="_internal" />

@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="EL1104" Id="{40229b75-7ac9-0e00-0ed5-907c2e8d8891}" SpecialFunc="None">
+    <Declaration><![CDATA[(**
+This function block abstracts the Beckhoff EtherCAT terminal EL1104
+*)
+FUNCTION_BLOCK EL1104 IMPLEMENTS I_terminal_execution
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+	DI_channel_1 		: I_HAL_DI :=_channel_1;
+	DI_channel_2 		: I_HAL_DI :=_channel_2;
+	DI_channel_3 		: I_HAL_DI :=_channel_3;
+	DI_channel_4 		: I_HAL_DI :=_channel_4;
+END_VAR
+VAR
+	WcState_WcState			AT%I*: BOOL;
+	WcState_InputToggle		AT%I*: BOOL;
+	InfoData_State			AT%I*: UINT;
+	
+	Channel_1_Input         AT%I*: BOOL;
+	Channel_2_Input         AT%I*: BOOL;
+	Channel_3_Input         AT%I*: BOOL;
+	Channel_4_Input         AT%I*: BOOL;
+	
+	_channel_1 : HAL_DI_Channel(channel_number:=1);
+	_channel_2 : HAL_DI_Channel(channel_number:=2);
+	_channel_3 : HAL_DI_Channel(channel_number:=3);
+	_channel_4 : HAL_DI_Channel(channel_number:=4);
+END_VAR
+VAR CONSTANT	
+    HARDWARE_REVSION : UINT:=19;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+_channel_1.wcState:= NOT  WcState_WcState;
+_channel_2.wcState:= NOT  WcState_WcState;
+_channel_3.wcState:= NOT  WcState_WcState;
+_channel_4.wcState:= NOT  WcState_WcState;
+
+_channel_1();
+_channel_2();
+_channel_3();
+_channel_4();
+
+_channel_1.terminal_value:=Channel_1_Input;
+_channel_2.terminal_value:=Channel_2_Input;
+_channel_3.terminal_value:=Channel_3_Input;
+_channel_4.terminal_value:=Channel_4_Input;]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{34dbd1b6-89e5-042c-3d60-fff2e45268f4}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	CoE_property_handler: I_CoE_property_handler;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="run" Id="{2d303a72-c634-02de-2143-5a2a00765957}">
+      <Declaration><![CDATA[METHOD run : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^();
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

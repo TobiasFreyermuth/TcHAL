@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <GVL Name="Settings" Id="{320e7f32-1afe-0a26-1984-b78546ee573b}">
+    <Declaration><![CDATA[VAR_GLOBAL CONSTANT
+	NUMBER_OF_TERMINALS 	: UINT:=200;
+
+	NUMBER_OF_I_HAL_AO_Voltage_INTERFACES		: UINT:=10;
+	NUMBER_OF_I_HAL_AI_Voltage_INTERFACES		: UINT:=10;
+	NUMBER_OF_I_AI_Percentage_INTERFACES		: UINT:=10;
+
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

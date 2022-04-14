@@ -32,7 +32,7 @@ VAR CONSTANT
     HARDWARE_REVSION : UINT:=19;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IF NOT _init_done THEN 
+      <ST><![CDATA[IF NOT SUPER^._init_done THEN 
 	_terminal_address:=InfoData_AdsAddr_port;
 ELSE
 	_channel_1.wcState:= NOT  WcState_WcState;

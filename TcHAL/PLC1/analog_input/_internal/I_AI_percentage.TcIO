@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <Itf Name="I_AI_percentage" Id="{7c155839-ffa7-081a-1ab2-1fc2ce64372b}">
+    <Declaration><![CDATA[INTERFACE I_AI_percentage
+]]></Declaration>
+    <Property Name="max_value" Id="{617c46a4-cae1-0da5-3853-315bb83f6022}">
+      <Declaration><![CDATA[PROPERTY max_value : real]]></Declaration>
+      <Get Name="Get" Id="{ab8a5d21-1836-0e5e-1854-6e31dc52a21f}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{8a08e47d-7d2c-052c-3814-9c217915769a}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="min_value" Id="{72799491-b3e8-0ceb-2cde-fa068e5819ef}">
+      <Declaration><![CDATA[PROPERTY min_value : real]]></Declaration>
+      <Get Name="Get" Id="{6b3a4982-6a44-05be-3ca3-b678209f4f49}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{b888df36-66b5-090a-3393-c34acb69e478}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="value" Id="{60950ce6-f368-0762-0c93-d71ba8461b10}">
+      <Declaration><![CDATA[PROPERTY value : real]]></Declaration>
+      <Get Name="Get" Id="{e1712059-0014-073c-22e2-6150594611d4}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+  </Itf>
+</TcPlcObject>

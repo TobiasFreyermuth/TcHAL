@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <Itf Name="I_HAL_AI_Voltage" Id="{c02f3bf2-d011-0cf8-00c6-b63f55ae0d1f}">
+    <Declaration><![CDATA[INTERFACE I_HAL_AI_Voltage
+]]></Declaration>
+    <Property Name="errId" Id="{1bd7bf6d-928b-064d-1547-c581aa92035d}">
+      <Declaration><![CDATA[PROPERTY errId : uint]]></Declaration>
+      <Get Name="Get" Id="{5b6596ce-6480-0062-1771-ed368dc30ae1}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="rValue" Id="{dd1fe455-e7ca-0b34-3bfb-13e702cf2e53}">
+      <Declaration><![CDATA[PROPERTY rValue : real]]></Declaration>
+      <Get Name="Get" Id="{23242fee-e46a-0a70-1022-0006b5897ed1}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+  </Itf>
+</TcPlcObject>

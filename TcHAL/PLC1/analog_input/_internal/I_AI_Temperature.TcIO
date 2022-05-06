@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <Itf Name="I_AI_Temperature" Id="{c2805ed7-d983-0258-1cf7-3f136f9f8d26}">
+    <Declaration><![CDATA[INTERFACE I_AI_Temperature
+]]></Declaration>
+    <Property Name="errId" Id="{836a5d3f-04cb-042d-0e6c-e058b349aa2d}">
+      <Declaration><![CDATA[PROPERTY errId : HAL_ErrorEnum]]></Declaration>
+      <Get Name="Get" Id="{057fea87-2d92-088e-0d06-72b661a3b8c9}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="value" Id="{2c5b8950-4019-08fb-0243-72fc7f8b242c}">
+      <Declaration><![CDATA[PROPERTY value : real]]></Declaration>
+      <Get Name="Get" Id="{1ce46d9c-0c27-0da5-0ac4-b4ed6c25d830}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+  </Itf>
+</TcPlcObject>

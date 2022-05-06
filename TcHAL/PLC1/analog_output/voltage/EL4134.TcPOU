@@ -8,10 +8,10 @@ FUNCTION_BLOCK EL4134 EXTENDS CoE_TerminalBase implements I_terminal_execution
 VAR_INPUT
 END_VAR
 VAR_OUTPUT
-	AO_Voltage_channel_1 		: I_HAL_AO_Voltage :=_channel_1;
-	AO_Voltage_channel_2 		: I_HAL_AO_Voltage :=_channel_2;
-	AO_Voltage_channel_3 		: I_HAL_AO_Voltage :=_channel_3;
-	AO_Voltage_channel_4 		: I_HAL_AO_Voltage :=_channel_4;
+	AO_Voltage_channel_1 		: I_AO_Voltage :=_channel_1;
+	AO_Voltage_channel_2 		: I_AO_Voltage :=_channel_2;
+	AO_Voltage_channel_3 		: I_AO_Voltage :=_channel_3;
+	AO_Voltage_channel_4 		: I_AO_Voltage :=_channel_4;
 END_VAR
 VAR
 	WcState_WcState			AT%I*: BOOL;
@@ -24,10 +24,10 @@ VAR
 	AO_Output_Channel_3_Analog_output         AT%Q*: INT;
 	AO_Output_Channel_4_Analog_output         AT%Q*: INT;	
 
-	_channel_1 : HAL_AO_Voltage_Channel(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=1);
-	_channel_2 : HAL_AO_Voltage_Channel(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=2);
-	_channel_3 : HAL_AO_Voltage_Channel(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=3);
-	_channel_4 : HAL_AO_Voltage_Channel(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=4);
+	_channel_1 : AO_Voltage_Channel(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=1);
+	_channel_2 : AO_Voltage_Channel(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=2);
+	_channel_3 : AO_Voltage_Channel(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=3);
+	_channel_4 : AO_Voltage_Channel(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=4);
 END_VAR
 VAR CONSTANT
 	ADC_MIN        	: INT:=-32767;

@@ -1,125 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Refactors>
   <Renames>
+    <RenamedSymbol>
+      <Type guid="8bf5d56c-82b4-0d33-0572-cc38ac13af96">MAIN</Type>
+      <From>fb_1</From>
+      <To>interface_manager</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="4fab8e1a-2c25-411a-94ae-718583e106f6">EL3164</Type>
+      <From>terminal_name</From>
+      <To>_terminal_name</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="4fab8e1a-2c25-411a-94ae-718583e106f6">EL3164</Type>
+      <From>_InterfaceManager</From>
+      <To>_I_InterfaceManager</To>
+    </RenamedSymbol>
     <RenamedType>
-      <Type guid="9ffabd3b-356c-48a6-8c63-dd4fdb574747">EL4002_1</Type>
-      <From>EL4002_1</From>
-      <To>EL4004</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="9105290f-4b53-47b0-84ff-3c5126214543">EL4004_1</Type>
-      <From>EL4004_1</From>
-      <To>EL4134</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="9fee139b-4abf-4d93-b270-0c991f5721f4">I_TERMINAL_EXCECUTION</Type>
-      <From>I_terminal_run</From>
-      <To>I_terminal_execution</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="ecc9071b-3ff9-4e19-bbfa-cfa9018e5021">I_TERMINAL_EXECUTION_1</Type>
-      <From>I_terminal_execution_1</From>
-      <To>I_coupler_execution</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="1eff8489-4141-401c-9fbc-eaa138ca3755">I_HAL_AO_VOLTAGE_1</Type>
-      <From>I_HAL_AO_Voltage_1</From>
-      <To>I_HAL_DO</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="870caa18-859b-4f41-ae71-774a0abd6220">EL1808</Type>
-      <From>EL4002_1</From>
-      <To>EL2008</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="41e2a036-8a7f-4b52-a82d-e6bb4004eb01">EL2008_1</Type>
-      <From>EL2008_1</From>
-      <To>EL2624</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="c1cd9d25-6d66-458b-ae03-7b02d2bba754">EL2008_1</Type>
-      <From>EL2008_1</From>
-      <To>EL2808</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="06f7bf64-de6d-41dd-bc9f-96e07c88c39a">EL2008_1</Type>
-      <From>EL2008_1</From>
-      <To>EL2521</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="58247b59-02e3-485b-a037-f1bfc199f8ca">EL2008_1</Type>
-      <From>EL2008_1</From>
-      <To>EL2124</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="02f376b8-1746-43af-900a-808d5b6ab5bd">EL2124_1</Type>
-      <From>EL2124_1</From>
-      <To>EL2024_0010</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="d968a83c-1469-444c-aa71-9f1973c93c06">EL2124_1</Type>
-      <From>EL2124_1</From>
-      <To>EL2612</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="105ca503-98dd-4e96-842a-a76ef26ca2f7">EL2124_1</Type>
-      <From>EL2124_1</From>
-      <To>EL2502</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="77811325-9815-4ce0-a0da-2e04d9598604">EL2808_1</Type>
-      <From>EL2808_1</From>
-      <To>EL2794</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="04ad1681-cb01-4f91-9244-9e70577a7caf">EL2624_1</Type>
-      <From>EL2624_1</From>
-      <To>EL2634</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="2e3e0b02-d7ed-46aa-8b27-cd6fadda50b0">EL2624_1</Type>
-      <From>EL2624_1</From>
-      <To>EL2004</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="3e2c6cb9-b91c-43bd-99cd-bddc38c2a75a">HAL_DO_CHANNEL_1</Type>
-      <From>HAL_DO_Channel_1</From>
-      <To>HAL_DI_Channel</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="71596616-8a69-4e45-959f-b8b65e082141">EL2008_1</Type>
-      <From>EL2008_1</From>
-      <To>EL1008</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="2916d3ee-297c-44e7-8e07-776483bb2120">I_HAL_DI_1</Type>
-      <From>I_HAL_DO_1</From>
-      <To>I_HAL_DI</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="015e1a88-361a-44cf-9fbd-2485937dfaf4">EL1008_1</Type>
-      <From>EL1008_1</From>
-      <To>EL1808</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="027e66bc-dd5f-4144-bc45-61b6baa590b7">EL1808_1</Type>
-      <From>EL1808_1</From>
-      <To>EL1124</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="9776c31a-290e-474d-a91d-001b1a75c757">EL1808_1</Type>
-      <From>EL1808_1</From>
-      <To>EL1809</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="cfdf58e8-0a4d-484c-a05e-b67eb82888b0">EL1124_1</Type>
-      <From>EL1124_1</From>
-      <To>EL1104</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="f003c6d9-3e7e-4066-b36c-eb9856a1746d">EL1104_1</Type>
-      <From>EL1104_1</From>
-      <To>EL1144</To>
+      <Type guid="0e09bbc7-16be-4979-8696-34fc01c9e881">REGISTER_I_AI_PERCENTAGE_1</Type>
+      <From>register_I_AI_Percentage_1</From>
+      <To>register_I_AI_Voltage</To>
     </RenamedType>
   </Renames>
 </Refactors>

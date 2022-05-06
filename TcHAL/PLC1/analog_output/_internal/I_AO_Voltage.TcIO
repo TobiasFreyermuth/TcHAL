@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
-  <Itf Name="I_HAL_AO_Voltage" Id="{b485a4bc-c8f6-08a2-3418-5be1278f5119}">
-    <Declaration><![CDATA[INTERFACE I_HAL_AO_Voltage
+  <Itf Name="I_AO_Voltage" Id="{b485a4bc-c8f6-08a2-3418-5be1278f5119}">
+    <Declaration><![CDATA[INTERFACE I_AO_Voltage
 ]]></Declaration>
     <Property Name="errId" Id="{2c4d432a-2787-00f0-1d0b-5d87567d5e59}">
       <Declaration><![CDATA[PROPERTY errId : uint]]></Declaration>

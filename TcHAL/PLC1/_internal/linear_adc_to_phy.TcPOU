@@ -12,7 +12,7 @@ VAR_INPUT
 END_VAR
 VAR_OUTPUT
 	physical_value : REAL;
-	errId 	: UINT;
+	errId 	: HAL_ErrorEnum;
 END_VAR
 VAR
 	dx: DINT;

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
-  <POU Name="HAL_AO_Voltage_Channel" Id="{7a808b44-79c8-08bf-225e-7b89c2155b05}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK HAL_AO_Voltage_Channel IMPLEMENTS I_HAL_AO_Voltage
+  <POU Name="AO_Voltage_Channel" Id="{7a808b44-79c8-08bf-225e-7b89c2155b05}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK AO_Voltage_Channel IMPLEMENTS I_AO_Voltage
 VAR_INPUT
 	terminal_address		: WORD;
 	CoE_property_handler	: I_CoE_property_handler;

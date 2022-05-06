@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <DUT Name="I_AO_Voltage_register" Id="{8cc011da-56e8-0eb1-1377-bf4a032bc3aa}">
+    <Declaration><![CDATA[TYPE I_AO_Voltage_register :
+STRUCT
+	registered_interface			: I_AO_Voltage;
+	terminal_id 					: UINT;
+	channel_number 					: USINT;
+	connected_device_id				: UINT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -35,6 +35,27 @@
     </SelectedLibraryCategories>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="analog_input\temperature\EL3202_0010.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="analog_input\voltage\EL3164.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="analog_input\_internal\AI_Voltage_Channel.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="analog_input\_internal\AI_Temperature_Channel.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="analog_input\_internal\I_AI_percentage.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="analog_input\_internal\I_AI_Temperature.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="analog_input\_internal\I_AI_Voltage.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="analog_output\voltage\EL4002.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -47,10 +68,10 @@
     <Compile Include="analog_output\voltage\EL4134.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="analog_output\_internal\HAL_AO_Voltage_Channel.TcPOU">
+    <Compile Include="analog_output\_internal\AO_Voltage_Channel.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="analog_output\_internal\I_HAL_AO_Voltage.TcIO">
+    <Compile Include="analog_output\_internal\I_AO_Voltage.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="coupler\EK1101.TcPOU">
@@ -125,6 +146,27 @@
     <Compile Include="digital_output\_internal\I_HAL_DO.TcIO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="HAL_ErrorEnum.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InterfaceManager\InterfaceManager.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InterfaceManager\InterfaceManager_test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InterfaceManager\I_AI_Percentage_register.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InterfaceManager\I_AO_Voltage_register.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InterfaceManager\I_AI_Voltage_register.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InterfaceManager\I_InterfaceManager.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -143,8 +185,16 @@
       <SubType>Code</SubType>
       <SystemCall>true</SystemCall>
     </Compile>
+    <Compile Include="Settings.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
     <Compile Include="Version\Global_Version.TcGVL">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_internal.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
     </Compile>
     <Compile Include="_internal\CoE\BeckhoffTerminalConfigEnums\ENU_DT0800EN02.TcDUT">
       <SubType>Code</SubType>
@@ -220,6 +270,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="analog_input\temperature" />
+    <Folder Include="analog_input\voltage" />
+    <Folder Include="analog_input\_internal" />
     <Folder Include="analog_output" />
     <Folder Include="analog_output\voltage" />
     <Folder Include="analog_output\_internal" />
@@ -228,6 +281,8 @@
     <Folder Include="digital_output" />
     <Folder Include="digital_output\_internal" />
     <Folder Include="digital_input" />
+    <Folder Include="analog_input" />
+    <Folder Include="InterfaceManager" />
     <Folder Include="Project Information" />
     <Folder Include="Version" />
     <Folder Include="_internal" />

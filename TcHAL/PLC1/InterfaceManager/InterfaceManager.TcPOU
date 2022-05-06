@@ -1,0 +1,299 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="InterfaceManager" Id="{09735c53-c5e4-0c27-3d8a-e6e385a6c40c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK InterfaceManager IMPLEMENTS I_InterfaceManager
+VAR
+	registrations_in_cycle 	: UINT;
+	terminals : ARRAY[1..NUMBER_OF_Terminals] OF STRING;
+	I_AO_Voltage_interfaces 	: ARRAY[0..NUMBER_OF_I_HAL_AO_Voltage_INTERFACES] OF I_AO_Voltage_register;
+	I_AI_Voltage_interfaces 	: ARRAY[0..NUMBER_OF_I_HAL_AI_Voltage_INTERFACES] OF I_AI_Voltage_register;
+	I_AI_Percentage_interfaces 	: ARRAY[0..NUMBER_OF_I_AI_Percentage_INTERFACES] OF I_AI_Percentage_register;
+END_VAR
+VAR CONSTANT 
+	MAX_REGISTRATIONS_PER_CYCLE : UINT:=100;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[registrations_in_cycle:=0;]]></ST>
+    </Implementation>
+    <Folder Name="I_AI_Percentage" Id="{577303f0-b576-0bf1-21c6-ff672185f680}" />
+    <Folder Name="I_AI_Voltage" Id="{3acb5ed8-9878-020f-1ed4-2f1e5d205398}" />
+    <Method Name="FB_init" Id="{4f52967f-62d2-04ad-05eb-d519f626e9cc}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+END_VAR
+
+VAR
+	tmp: UINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF _internal.InterfaceManager_InstanceCounter > 0 THEN
+	;
+ELSE
+	_internal.InterfaceManager_InstanceCounter := 1;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="get_terminal_id" Id="{08db7f9d-9b50-06c7-1ca8-3efceb871ca0}">
+      <Declaration><![CDATA[METHOD get_terminal_id : BOOL
+VAR_INPUT
+	terminal_name: STRING;
+END_VAR
+VAR_OUTPUT
+	terminal_id : uint;
+	errId: HAL_ErrorEnum;
+END_VAR
+VAR
+	i: UINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FOR i:=1 TO NUMBER_OF_TERMINALS DO
+	IF terminals[i] = terminal_name THEN
+		terminal_id := i;
+		get_terminal_id := TRUE;
+		RETURN;
+	END_IF
+END_FOR
+get_terminal_id := FALSE;
+errId := HAL_ErrorEnum.terminal_not_found;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="register_I_AI_Percentage" Id="{a6219479-5f77-067f-3013-d05915f3a425}" FolderPath="I_AI_Percentage\">
+      <Declaration><![CDATA[METHOD register_I_AI_Percentage : BOOL
+VAR_INPUT
+	interface_to_be_registered		: I_AI_Percentage;
+	terminal_name 					: STRING;
+	channel_number 					: USINT; 
+END_VAR
+VAR
+	i: UINT;
+	terminal_id 					: UINT;
+END_VAR
+VAR_OUTPUT
+	errId		: HAL_ErrorEnum;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[register_I_AI_Percentage:=FALSE;
+IF registrations_in_cycle >= MAX_REGISTRATIONS_PER_CYCLE THEN
+	register_I_AI_Percentage := FALSE;
+	errId := HAL_ErrorEnum.max_registration_limit_per_cycle_reached;
+	RETURN;
+ELSE
+	registrations_in_cycle := registrations_in_cycle + 1; 
+END_IF
+
+// terminal_id
+ IF NOT THIS^.get_terminal_id(
+	terminal_name	:= terminal_name, 
+	terminal_id		=> terminal_id, 
+	errId			=>  errId)
+THEN 
+	RETURN;
+END_IF
+
+IF interface_to_be_registered = 0 THEN
+	errId := HAL_ErrorEnum.interface_can_not_be_null;
+ELSIF terminal_id = 0 THEN
+	errId := HAL_ErrorEnum.terminal_name_can_not_be_empty;
+ELSIF channel_number = 0 THEN
+	errId := HAL_ErrorEnum.channel_number_out_of_range;
+ELSE
+	FOR i:=0 TO NUMBER_OF_I_AI_Percentage_INTERFACES DO
+		IF I_AI_Percentage_interfaces[i].registered_interface = 0 THEN
+			I_AI_Percentage_interfaces[i].channel_number 		:= channel_number;
+			I_AI_Percentage_interfaces[i].registered_interface 	:= interface_to_be_registered;
+			I_AI_Percentage_interfaces[i].terminal_id 			:= terminal_id;
+			register_I_AI_Percentage:=TRUE;
+			RETURN;
+		END_IF
+	END_FOR
+	errId := HAL_ErrorEnum.no_empty_space_found_in_register;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="register_I_AI_Voltage" Id="{81f4785a-663a-0f35-281d-12fe976ce8a0}" FolderPath="I_AI_Voltage\">
+      <Declaration><![CDATA[METHOD register_I_AI_Voltage : BOOL
+VAR_INPUT
+	interface_to_be_registered		: I_AI_Voltage;
+	terminal_name 					: STRING;
+	channel_number 					: USINT; 
+END_VAR
+VAR
+	i: UINT;
+	terminal_id 					: UINT;
+END_VAR
+VAR_OUTPUT
+	errId		: HAL_ErrorEnum;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[register_I_AI_Voltage:=FALSE;
+IF registrations_in_cycle >= MAX_REGISTRATIONS_PER_CYCLE THEN
+	register_I_AI_Voltage := FALSE;
+	errId := HAL_ErrorEnum.max_registration_limit_per_cycle_reached;
+	RETURN;
+ELSE
+	registrations_in_cycle := registrations_in_cycle + 1; 
+END_IF
+
+// terminal_id
+ IF NOT THIS^.get_terminal_id(
+	terminal_name	:= terminal_name, 
+	terminal_id		=> terminal_id, 
+	errId			=>  errId)
+THEN 
+	RETURN;
+END_IF
+
+IF interface_to_be_registered = 0 THEN
+	errId := HAL_ErrorEnum.interface_can_not_be_null;
+ELSIF terminal_id = 0 THEN
+	errId := HAL_ErrorEnum.terminal_name_can_not_be_empty;
+ELSIF channel_number = 0 THEN
+	errId := HAL_ErrorEnum.channel_number_out_of_range;
+ELSE
+	FOR i:=0 TO NUMBER_OF_I_HAL_AI_Voltage_INTERFACES DO
+		IF I_AI_Voltage_interfaces[i].registered_interface = 0 THEN
+			I_AI_Voltage_interfaces[i].channel_number 		:= channel_number;
+			I_AI_Voltage_interfaces[i].registered_interface := interface_to_be_registered;
+			I_AI_Voltage_interfaces[i].terminal_id 			:= terminal_id;
+			register_I_AI_Voltage:=TRUE;
+			RETURN;
+		END_IF
+	END_FOR
+	errId := HAL_ErrorEnum.no_empty_space_found_in_register;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="register_terminal" Id="{94654e77-eb1d-0f6f-0c70-9ba97a9da1a5}">
+      <Declaration><![CDATA[METHOD register_terminal : BOOL
+VAR_INPUT
+	terminal_name : STRING;
+END_VAR
+VAR_OUTPUT
+	errId : HAL_ErrorEnum;
+END_VAR
+VAR
+	i: UINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FOR i:=1 TO NUMBER_OF_TERMINALS DO
+	IF len(terminals[i]) = 0 THEN
+		terminals[i] := terminal_name;
+		register_terminal := TRUE;
+		RETURN;
+	END_IF
+	errId := HAL_ErrorEnum.no_empty_space_found_in_register;
+END_FOR
+register_terminal:=FALSE;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="release_I_AI_Percentage" Id="{3835c1fa-b016-0895-3393-c057a6d07e43}" FolderPath="I_AI_Percentage\">
+      <Declaration><![CDATA[METHOD release_I_AI_Percentage : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="request_I_AI_Percentage" Id="{2e19d361-655f-0616-323f-f9dc3b0cf5db}" FolderPath="I_AI_Percentage\">
+      <Declaration><![CDATA[METHOD request_I_AI_Percentage : BOOL
+VAR_INPUT
+	terminal_name 					: STRING;
+	channel_number 					: USINT; 
+	device_id						: UINT;
+END_VAR
+VAR_OUTPUT
+	_interface	: I_AI_Percentage;
+	errId	: INT;
+END_VAR
+VAR
+	i :UINT;
+	terminal_id: UINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[request_I_AI_Percentage:=FALSE;
+IF terminal_name = '' THEN
+	errId := HAL_ErrorEnum.terminal_name_can_not_be_empty;
+ELSIF channel_number = 0 THEN
+	errId := HAL_ErrorEnum.channel_number_out_of_range;
+ELSIF device_id = 0 THEN
+	errId := HAL_ErrorEnum.device_id_can_not_be_null;
+ELSE
+	THIS^.get_terminal_id(terminal_name, terminal_id=>terminal_id, errId=>errId);
+	IF errId <> 0 THEN
+		RETURN; 
+	END_IF
+	FOR i:=0 TO NUMBER_OF_I_AI_Percentage_INTERFACES DO
+		IF  I_AI_Percentage_interfaces[i].registered_interface <> 0 AND
+			I_AI_Percentage_interfaces[i].terminal_id = terminal_id AND
+			I_AI_Percentage_interfaces[i].channel_number = channel_number  
+		THEN
+			IF I_AI_Percentage_interfaces[i].connected_device_id = 0 THEN
+				I_AI_Percentage_interfaces[i].connected_device_id 	:= device_id;
+				_interface := I_AI_Percentage_interfaces[i].registered_interface;
+				request_I_AI_Percentage:=TRUE;
+			ELSE		
+				errId := HAL_ErrorEnum.interface_already_in_use;
+			END_IF
+			RETURN;
+		END_IF
+	END_FOR
+	errId := HAL_ErrorEnum.requested_interface_not_found;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="request_I_AI_Voltage" Id="{fae1dc22-06d4-0e2a-3579-53050be2d99e}" FolderPath="I_AI_Voltage\">
+      <Declaration><![CDATA[METHOD request_I_AI_Voltage : BOOL
+VAR_INPUT
+	terminal_name 					: STRING;
+	channel_number 					: USINT; 
+	device_id						: UINT;
+END_VAR
+VAR_OUTPUT
+	_interface	: I_AI_Voltage;
+	errId	: INT;
+END_VAR
+VAR
+	i :UINT;
+	terminal_id: UINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF terminal_name = '' THEN
+	errId := HAL_ErrorEnum.terminal_name_can_not_be_empty;
+ELSIF channel_number = 0 THEN
+	errId := HAL_ErrorEnum.channel_number_out_of_range;
+ELSIF device_id = 0 THEN
+	errId := HAL_ErrorEnum.device_id_can_not_be_null;
+ELSE
+	THIS^.get_terminal_id(terminal_name, terminal_id=>terminal_id, errId=>errId);
+	IF errId <> 0 THEN
+		RETURN; 
+	END_IF
+	FOR i:=0 TO NUMBER_OF_I_HAL_AI_Voltage_INTERFACES DO
+		IF  I_AI_Voltage_interfaces[i].registered_interface <> 0 AND
+			I_AI_Voltage_interfaces[i].terminal_id = terminal_id AND
+			I_AI_Voltage_interfaces[i].channel_number = channel_number  
+		THEN
+			IF I_AI_Percentage_interfaces[i].connected_device_id = 0 THEN
+				errId := HAL_ErrorEnum.interface_already_in_use;
+			ELSE		
+				I_AI_Percentage_interfaces[i].connected_device_id 	:= device_id;
+				_interface := I_AI_Voltage_interfaces[i].registered_interface;
+			END_IF
+			EXIT;
+		END_IF
+	END_FOR
+	errId := HAL_ErrorEnum.requested_interface_not_found;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

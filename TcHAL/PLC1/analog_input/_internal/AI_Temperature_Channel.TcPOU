@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
-  <POU Name="HAL_AI_Voltage_Channel" Id="{a9eb9616-cff5-0827-067d-e3d8fc2ad6ed}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK HAL_AI_Voltage_Channel IMPLEMENTS I_HAL_AI_Voltage, I_AI_percentage
+  <POU Name="AI_Temperature_Channel" Id="{6bbe721b-eb3d-04ba-01ae-2009e4a41bd1}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK AI_Temperature_Channel IMPLEMENTS I_AI_Temperature, I_AI_percentage
 VAR_INPUT
 	terminal_address		: WORD;
 	CoE_property_handler	: I_CoE_property_handler;
@@ -48,7 +48,7 @@ VAR
 	_min_value 	: REAL:=0.0;
 	_value: REAL;
 	
-	_errId: uINT;
+	_errId: HAL_ErrorEnum;
 END_VAR
 VAR CONSTANT 
 	MAX_NUMBER_OF_PROPERTIES		: UINT:=11;
@@ -98,13 +98,13 @@ IF NOT _wcState THEN
 END_IF
 ]]></ST>
     </Implementation>
-    <Folder Name="config" Id="{6e95f78d-af40-017b-398f-1cfce5df96aa}" />
-    <Folder Name="HAL" Id="{50c8dfcf-1b07-0129-1c22-dd74d1561fc6}" />
-    <Folder Name="IO" Id="{447316ab-5715-0154-19ed-19ab5d050206}" />
-    <Property Name="errId" Id="{0ad3798c-3d03-013a-0b79-9367dd73f1f9}" FolderPath="HAL\">
-      <Declaration><![CDATA[PROPERTY errId : UINT
+    <Folder Name="config" Id="{bb2195d8-7083-08cc-32cb-38091d042fe0}" />
+    <Folder Name="HAL" Id="{6c0feffb-c4d0-0d64-1a03-4b31aee82e86}" />
+    <Folder Name="IO" Id="{3507ca37-d29f-093d-3619-545f2b15d211}" />
+    <Property Name="errId" Id="{30eadb91-2fc6-03c4-3e0c-22123c9f8a94}" FolderPath="HAL\">
+      <Declaration><![CDATA[PROPERTY errId : HAL_ErrorEnum
 ]]></Declaration>
-      <Get Name="Get" Id="{ebd85208-d23f-0df1-0fce-04d86fee8ca1}">
+      <Get Name="Get" Id="{89495df1-107f-02e7-3f39-5c962767d6e1}">
         <Declaration><![CDATA[VAR
 
 END_VAR
@@ -115,7 +115,7 @@ END_VAR
         </Implementation>
       </Get>
     </Property>
-    <Method Name="FB_init" Id="{4d1b6160-fba5-057f-31ef-cb86db1f0e5a}">
+    <Method Name="FB_init" Id="{922758f3-0b9f-0c30-218f-0a42385c584d}">
       <Declaration><![CDATA[METHOD FB_init : BOOL
 VAR_INPUT
 	bInitRetains 	: BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
@@ -152,7 +152,7 @@ END_CASE
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="get_Default_output" Id="{074310da-87dd-0adf-2228-0564330cb5ef}" FolderPath="config\">
+    <Method Name="get_Default_output" Id="{7427f853-14c9-0a2e-2baa-c4fa4c9b0918}" FolderPath="config\">
       <Declaration><![CDATA[METHOD get_Default_output : BOOL
 VAR_OUTPUT
 	value	: INT;
@@ -163,7 +163,7 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="get_Default_output_ramp" Id="{111c4c32-eda4-0062-3662-c4e8f1fe4d25}" FolderPath="config\">
+    <Method Name="get_Default_output_ramp" Id="{fac8043d-224a-046c-3bc5-7ccc20cb6905}" FolderPath="config\">
       <Declaration><![CDATA[METHOD get_Default_output_ramp : BOOL
 VAR_OUTPUT
 	value	: UINT;
@@ -174,7 +174,7 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="get_Enable_user_calibration" Id="{720b04a7-51ca-0f3b-1036-877897060bd7}" FolderPath="config\">
+    <Method Name="get_Enable_user_calibration" Id="{253a4690-52c4-0a69-1f9e-fd2e16030921}" FolderPath="config\">
       <Declaration><![CDATA[METHOD get_Enable_user_calibration : BOOL
 VAR_OUTPUT
 	value	: BOOL;
@@ -185,7 +185,7 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="get_Enable_user_scale" Id="{cdb70095-dd15-02d0-2666-7069ec2234bd}" FolderPath="config\">
+    <Method Name="get_Enable_user_scale" Id="{c8577104-d830-03d1-3d11-85cfcfe93a61}" FolderPath="config\">
       <Declaration><![CDATA[METHOD get_Enable_user_scale : BOOL
 VAR_OUTPUT
 	value	: BOOL;
@@ -196,7 +196,7 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="get_Enable_vendor_calibration" Id="{15bd38fd-4126-0dd4-3b8d-e0ecb2c6d16f}" FolderPath="config\">
+    <Method Name="get_Enable_vendor_calibration" Id="{f1657459-6fc9-0987-363b-f57e47b889b2}" FolderPath="config\">
       <Declaration><![CDATA[METHOD get_Enable_vendor_calibration : BOOL
 VAR_OUTPUT
 	value	: BOOL;
@@ -207,7 +207,7 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="get_Gain" Id="{075624a3-7200-0631-09c9-3a48a64f6122}" FolderPath="config\">
+    <Method Name="get_Gain" Id="{0378892b-0be5-0128-151d-c53069676214}" FolderPath="config\">
       <Declaration><![CDATA[METHOD get_Gain : BOOL
 VAR_OUTPUT
 	value	: DINT;
@@ -219,7 +219,7 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="get_Offset" Id="{3e6bc243-9e0e-0b2e-1047-c1021645c501}" FolderPath="config\">
+    <Method Name="get_Offset" Id="{875fb64f-aa95-0b6c-18b9-f83d0a09f168}" FolderPath="config\">
       <Declaration><![CDATA[METHOD get_Offset : BOOL
 VAR_OUTPUT
 	value	: INT;
@@ -230,7 +230,7 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="get_Presentation" Id="{704dbd5e-d689-03b8-0471-aeafbb59e816}" FolderPath="config\">
+    <Method Name="get_Presentation" Id="{013ad0f9-4b38-06b8-2755-04279490b138}" FolderPath="config\">
       <Declaration><![CDATA[METHOD get_Presentation : BOOL
 VAR_OUTPUT
 	value	: ENU_DT0801EN03;
@@ -245,7 +245,7 @@ value:=USINT_TO_INT(tmp);
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="get_User_calibration_gain" Id="{b7b7709e-eeee-0fbf-2b5b-c6d92e219c65}" FolderPath="config\">
+    <Method Name="get_User_calibration_gain" Id="{48d2e637-48d9-0313-0747-ae61d5d29f7c}" FolderPath="config\">
       <Declaration><![CDATA[METHOD get_User_calibration_gain : BOOL
 VAR_OUTPUT
 	value	: UINT;
@@ -256,7 +256,7 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="get_User_calibration_offset" Id="{68b6ad2c-ca34-0131-2f63-01c61040c6ac}" FolderPath="config\">
+    <Method Name="get_User_calibration_offset" Id="{32dbbe99-4b0f-0c99-3cc8-ede93d249979}" FolderPath="config\">
       <Declaration><![CDATA[METHOD get_User_calibration_offset : BOOL
 VAR_OUTPUT
 	value	: INT;
@@ -267,7 +267,7 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="get_Watchdog" Id="{ff9bb105-4298-0354-361d-085733f94dce}" FolderPath="config\">
+    <Method Name="get_Watchdog" Id="{b8075401-7e9f-060b-3ed1-949acdcf1937}" FolderPath="config\">
       <Declaration><![CDATA[METHOD get_Watchdog : BOOL
 VAR_OUTPUT
 	value	: ENU_DT0800EN02;
@@ -281,9 +281,9 @@ END_VAR]]></Declaration>
 value := USINT_TO_INT(tmp);]]></ST>
       </Implementation>
     </Method>
-    <Property Name="io_status_Error" Id="{4f587263-934e-028a-23a4-e2eb8f44d448}" FolderPath="IO\">
+    <Property Name="io_status_Error" Id="{b301b5fa-842b-0581-1acf-871c72bcc9ae}" FolderPath="IO\">
       <Declaration><![CDATA[PROPERTY io_status_Error : bool]]></Declaration>
-      <Get Name="Get" Id="{f0a8cd60-77e7-0006-1efa-f18585d02154}">
+      <Get Name="Get" Id="{f41f8146-8cd1-0b51-18cf-30f4c7059e51}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -291,7 +291,7 @@ END_VAR
           <ST><![CDATA[]]></ST>
         </Implementation>
       </Get>
-      <Set Name="Set" Id="{dfabe549-60df-02c5-3f3e-d2eb844bcfa5}">
+      <Set Name="Set" Id="{ff93eaca-5456-0de1-1a93-4e7d8ca568ec}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -300,9 +300,9 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Property Name="io_status_Limit_1_greater_value" Id="{4ca9cd80-bda2-0847-1dd8-d8a8585e8076}" FolderPath="IO\">
+    <Property Name="io_status_Limit_1_greater_value" Id="{cb696e6a-0e97-001d-26b9-34533094c579}" FolderPath="IO\">
       <Declaration><![CDATA[PROPERTY io_status_Limit_1_greater_value : bool]]></Declaration>
-      <Get Name="Get" Id="{e717a93b-fb9f-061e-105e-325471459ec3}">
+      <Get Name="Get" Id="{65dbc163-02cd-0043-131c-4bf4e5d6aee8}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -310,7 +310,7 @@ END_VAR
           <ST><![CDATA[]]></ST>
         </Implementation>
       </Get>
-      <Set Name="Set" Id="{d8c12c33-f55f-02ab-1226-2561d14eded1}">
+      <Set Name="Set" Id="{b9ec8874-a90d-0ced-1805-d747f575c6ee}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -319,9 +319,9 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Property Name="io_status_Limit_1_smaller_value" Id="{bca0c5b9-bba5-0eb6-308e-8de2e327ebbb}" FolderPath="IO\">
+    <Property Name="io_status_Limit_1_smaller_value" Id="{c981e412-e11d-0d11-3778-9d82e4e97f33}" FolderPath="IO\">
       <Declaration><![CDATA[PROPERTY io_status_Limit_1_smaller_value : bool]]></Declaration>
-      <Get Name="Get" Id="{06285c25-06e4-0cc6-1c34-19100fcab178}">
+      <Get Name="Get" Id="{a2b858c9-26bf-05c7-1b1d-28ac79eb9b14}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -329,7 +329,7 @@ END_VAR
           <ST><![CDATA[]]></ST>
         </Implementation>
       </Get>
-      <Set Name="Set" Id="{dc3a191f-2ee8-09d0-0783-35e506bab7ff}">
+      <Set Name="Set" Id="{afe2d63b-cb6d-055d-169f-6abd4953db83}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -338,9 +338,9 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Property Name="io_status_Limit_2_greater_value" Id="{60227dc3-ef45-04dc-399f-8cebe16a6fc0}" FolderPath="IO\">
+    <Property Name="io_status_Limit_2_greater_value" Id="{0327c59f-eba8-09df-244f-99c5a7c56ec5}" FolderPath="IO\">
       <Declaration><![CDATA[PROPERTY io_status_Limit_2_greater_value : bool]]></Declaration>
-      <Get Name="Get" Id="{e23b5f89-3f3d-07e6-075d-953add26851f}">
+      <Get Name="Get" Id="{9f94b768-bbfd-0169-2eb6-45ee37b304fb}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -348,7 +348,7 @@ END_VAR
           <ST><![CDATA[]]></ST>
         </Implementation>
       </Get>
-      <Set Name="Set" Id="{50e91f2b-32dc-00cf-114c-356e247690f8}">
+      <Set Name="Set" Id="{a77150a2-3e78-051b-2513-d0c987742a25}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -357,9 +357,9 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Property Name="io_status_Limit_2_smaller_value" Id="{2aa5839c-553c-0441-1afc-019479fa80ea}" FolderPath="IO\">
+    <Property Name="io_status_Limit_2_smaller_value" Id="{8558f92e-10be-0652-30b4-2f7d5ecabbb0}" FolderPath="IO\">
       <Declaration><![CDATA[PROPERTY io_status_Limit_2_smaller_value : bool]]></Declaration>
-      <Get Name="Get" Id="{61bb6baf-d82f-0025-1ffb-93bbaade3b72}">
+      <Get Name="Get" Id="{29f65031-684e-02da-0af4-8485e4f44869}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -367,7 +367,7 @@ END_VAR
           <ST><![CDATA[]]></ST>
         </Implementation>
       </Get>
-      <Set Name="Set" Id="{18ad9517-6275-0a72-045f-2b81607baf30}">
+      <Set Name="Set" Id="{a1a1ad77-c1b2-0843-084f-933b1fb4411f}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -376,9 +376,9 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Property Name="io_status_Overrange" Id="{07ff03d7-516d-047e-0bab-dbb7d76bb1a4}" FolderPath="IO\">
+    <Property Name="io_status_Overrange" Id="{a7432bc9-fe33-051d-27b7-5108bd7fa008}" FolderPath="IO\">
       <Declaration><![CDATA[PROPERTY io_status_Overrange : bool]]></Declaration>
-      <Get Name="Get" Id="{2a36f394-64da-0fa1-0503-0a6ea99f974e}">
+      <Get Name="Get" Id="{b7e93c44-5d3f-09a7-338f-2fc8b07ede3e}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -386,7 +386,7 @@ END_VAR
           <ST><![CDATA[]]></ST>
         </Implementation>
       </Get>
-      <Set Name="Set" Id="{a3531943-57ba-04b3-055c-16a6ace03c93}">
+      <Set Name="Set" Id="{324e2887-2d21-0344-3038-b2f145d66248}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -395,9 +395,9 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Property Name="io_status_Sync_error" Id="{11e98533-97d1-04e6-2fbf-8ccd43b18b41}" FolderPath="IO\">
+    <Property Name="io_status_Sync_error" Id="{6a9fcfb3-ac71-09d4-0a1d-90c8f350fab0}" FolderPath="IO\">
       <Declaration><![CDATA[PROPERTY io_status_Sync_error : bool]]></Declaration>
-      <Get Name="Get" Id="{58744187-1f92-0498-3534-2a06cbbbbf96}">
+      <Get Name="Get" Id="{86825138-291c-019a-3724-49a74208cee6}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -405,7 +405,7 @@ END_VAR
           <ST><![CDATA[]]></ST>
         </Implementation>
       </Get>
-      <Set Name="Set" Id="{48284a31-700f-0a4a-1b3c-f47616a40e79}">
+      <Set Name="Set" Id="{c33cd3ca-780c-0937-1e38-67680fd5128b}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -414,9 +414,9 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Property Name="io_status_TxPDO_State" Id="{7fb8d441-dd54-0085-3a44-6f3672a349b9}" FolderPath="IO\">
+    <Property Name="io_status_TxPDO_State" Id="{45c99470-3221-042b-0ccc-0d0e2f9a0fb7}" FolderPath="IO\">
       <Declaration><![CDATA[PROPERTY io_status_TxPDO_State : bool]]></Declaration>
-      <Get Name="Get" Id="{36201053-9914-0cc0-3f26-35d636dff58d}">
+      <Get Name="Get" Id="{1b358420-7941-0aca-3d0c-cf34ba599ddb}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -424,7 +424,7 @@ END_VAR
           <ST><![CDATA[]]></ST>
         </Implementation>
       </Get>
-      <Set Name="Set" Id="{3086c5ff-3589-0a65-3fdb-c6b3187a1957}">
+      <Set Name="Set" Id="{320448fc-9043-09b1-0911-686536b38603}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -433,9 +433,9 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Property Name="io_status_TxPDO_Toggle" Id="{8f76822d-3e6b-014c-3155-24e9f609b97e}" FolderPath="IO\">
+    <Property Name="io_status_TxPDO_Toggle" Id="{f0c72f6c-ab77-0e01-3056-dea2d31d5105}" FolderPath="IO\">
       <Declaration><![CDATA[PROPERTY io_status_TxPDO_Toggle : bool]]></Declaration>
-      <Get Name="Get" Id="{85940300-fbf4-05c0-3f24-0f92de84dabf}">
+      <Get Name="Get" Id="{3b6bbf86-c457-025f-2a65-47ed72327b47}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -443,7 +443,7 @@ END_VAR
           <ST><![CDATA[]]></ST>
         </Implementation>
       </Get>
-      <Set Name="Set" Id="{22408c69-16bb-0ca7-1323-eccb433741a5}">
+      <Set Name="Set" Id="{25f115a3-c71e-078a-360a-ee19b1d7fe5e}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -452,9 +452,9 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Property Name="io_status_Underrange" Id="{60bdb40a-7b48-032b-326c-7f978ccdcc10}" FolderPath="IO\">
+    <Property Name="io_status_Underrange" Id="{545964b2-4f8e-0ac8-239f-be6b9b1aeb83}" FolderPath="IO\">
       <Declaration><![CDATA[PROPERTY io_status_Underrange : bool]]></Declaration>
-      <Get Name="Get" Id="{0de34480-df09-0ad3-1b30-2c7cbbee41a8}">
+      <Get Name="Get" Id="{8035c8a8-e3d5-075b-1335-0a3918e7da58}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -462,7 +462,7 @@ END_VAR
           <ST><![CDATA[]]></ST>
         </Implementation>
       </Get>
-      <Set Name="Set" Id="{2a11c50c-7c44-00ef-31c1-58c0cf11a7ee}">
+      <Set Name="Set" Id="{8786be1a-f7d7-0670-30e7-72ec09619d56}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -471,10 +471,10 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Property Name="max_value" Id="{2ffc640f-c8d1-0d07-1555-3025aba206a1}" FolderPath="HAL\">
+    <Property Name="max_value" Id="{41924a96-b9bb-06f3-2986-05878bd58d97}" FolderPath="HAL\">
       <Declaration><![CDATA[PROPERTY max_value : REAL
 ]]></Declaration>
-      <Get Name="Get" Id="{d4c33a74-189c-0b8c-1b76-854853a85f53}">
+      <Get Name="Get" Id="{9ed71e7f-2071-0687-1504-44d3f0f7bc0a}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -482,7 +482,7 @@ END_VAR
           <ST><![CDATA[max_value := _max_value;]]></ST>
         </Implementation>
       </Get>
-      <Set Name="Set" Id="{1c2a2e7b-126b-052e-05bd-e2428e892e08}">
+      <Set Name="Set" Id="{98876934-9793-0b65-1258-874be1423bce}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -496,10 +496,10 @@ END_IF
         </Implementation>
       </Set>
     </Property>
-    <Property Name="min_value" Id="{81cce327-7da8-0ff5-1f67-c778cdbd4d50}" FolderPath="HAL\">
+    <Property Name="min_value" Id="{75265f7f-1c0a-09c6-14d2-ff3db43460d6}" FolderPath="HAL\">
       <Declaration><![CDATA[PROPERTY min_value : REAL
 ]]></Declaration>
-      <Get Name="Get" Id="{c03509be-d439-00cf-3992-9bfd63fda541}">
+      <Get Name="Get" Id="{44a260da-2638-0d4d-37bd-c205aaa17587}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -507,7 +507,7 @@ END_VAR
           <ST><![CDATA[min_value := _min_value;]]></ST>
         </Implementation>
       </Get>
-      <Set Name="Set" Id="{b92f030e-e2b8-0576-27e6-c97c251266fe}">
+      <Set Name="Set" Id="{355c3a65-f520-0f98-2458-4e7ec12585e0}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -517,10 +517,10 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Property Name="rValue" Id="{f8a3909e-6aab-059b-371a-65a5c3276b43}" FolderPath="HAL\">
+    <Property Name="rValue" Id="{0ef95a23-2848-052e-1f94-5118a5eab3bc}" FolderPath="HAL\">
       <Declaration><![CDATA[PROPERTY rValue : REAL
 ]]></Declaration>
-      <Get Name="Get" Id="{292803fb-ca76-0a21-2eaa-bbd229584787}">
+      <Get Name="Get" Id="{6586983f-bec8-0b4e-0f34-dfafb3f79d78}">
         <Declaration><![CDATA[VAR    
 END_VAR
 ]]></Declaration>
@@ -530,7 +530,7 @@ END_VAR
 ]]></ST>
         </Implementation>
       </Get>
-      <Set Name="Set" Id="{bf9253c3-a6bc-0334-09d3-e37102fcc14a}">
+      <Set Name="Set" Id="{7ce133b4-5134-0008-1aae-4a0494bd588e}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -546,7 +546,7 @@ END_IF
         </Implementation>
       </Set>
     </Property>
-    <Method Name="set_Default_output" Id="{e6089786-e413-06ef-2e45-ea00e807dad4}" FolderPath="config\">
+    <Method Name="set_Default_output" Id="{80e2a255-8654-03c1-0a95-90ae41b7d10a}" FolderPath="config\">
       <Declaration><![CDATA[METHOD set_Default_output : BOOL
 VAR_INPUT
 	value	: INT;
@@ -557,7 +557,7 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="set_Default_output_ramp" Id="{77f81493-bcae-07b4-333b-b608dde02dcc}" FolderPath="config\">
+    <Method Name="set_Default_output_ramp" Id="{4f5bf14a-46c9-0f57-28ab-832af1aec365}" FolderPath="config\">
       <Declaration><![CDATA[METHOD set_Default_output_ramp : BOOL
 VAR_INPUT
 	value	: UINT;
@@ -568,7 +568,7 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="set_Enable_user_calibration" Id="{e2beeee8-e64b-00f7-14d5-2aaa600e7b03}" FolderPath="config\">
+    <Method Name="set_Enable_user_calibration" Id="{f42a704b-c420-0d63-0a2d-3e58b804b97a}" FolderPath="config\">
       <Declaration><![CDATA[METHOD set_Enable_user_calibration : BOOL
 VAR_INPUT
 	value	: BOOL;
@@ -579,7 +579,7 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="set_Enable_user_scale" Id="{f36eac0e-477e-00f1-0615-8e73436e554a}" FolderPath="config\">
+    <Method Name="set_Enable_user_scale" Id="{096c7aef-c307-0e2f-0f2a-19c7ac4a4165}" FolderPath="config\">
       <Declaration><![CDATA[METHOD set_Enable_user_scale : BOOL
 VAR_INPUT
 	value	: BOOL;
@@ -590,7 +590,7 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="set_Enable_vendor_calibration" Id="{c0600be3-4c4d-0cde-2588-2a999b07da0d}" FolderPath="config\">
+    <Method Name="set_Enable_vendor_calibration" Id="{c2dcebc2-8e9a-0dd7-1092-05ac0efba035}" FolderPath="config\">
       <Declaration><![CDATA[METHOD set_Enable_vendor_calibration : BOOL
 VAR_INPUT
 	value	: BOOL;
@@ -601,7 +601,7 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="set_Gain" Id="{92ebbfb7-4adf-0ae0-3dd5-fd39287150b9}" FolderPath="config\">
+    <Method Name="set_Gain" Id="{de30f028-a28e-0126-12a8-0fab9b34f94a}" FolderPath="config\">
       <Declaration><![CDATA[METHOD set_Gain : BOOL
 VAR_INPUT
 	value	: DINT;
@@ -612,7 +612,7 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="set_Offset" Id="{cacbf544-c8b1-0de5-3d68-1d99aa5c238b}" FolderPath="config\">
+    <Method Name="set_Offset" Id="{80eca5c9-6ae1-0a49-193a-2c332611c617}" FolderPath="config\">
       <Declaration><![CDATA[METHOD set_Offset : BOOL
 VAR_INPUT
 	value	: INT;
@@ -623,7 +623,7 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="set_Presentation" Id="{a6cabedf-f725-0edb-3137-3e68da40540c}" FolderPath="config\">
+    <Method Name="set_Presentation" Id="{5a20384b-dff8-06aa-3c3e-1fc798c4c674}" FolderPath="config\">
       <Declaration><![CDATA[METHOD set_Presentation : BOOL
 VAR_INPUT
 	value	: ENU_DT0801EN03;
@@ -634,7 +634,7 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="set_User_calibration_gain" Id="{9abb9f40-74a1-0a94-0da7-86fe65c89382}" FolderPath="config\">
+    <Method Name="set_User_calibration_gain" Id="{81ae2f78-c6a2-0462-1bbc-8e57925e4f97}" FolderPath="config\">
       <Declaration><![CDATA[METHOD set_User_calibration_gain : BOOL
 VAR_INPUT
 	value	: UINT;
@@ -645,7 +645,7 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="set_User_calibration_offset" Id="{abc8d8b6-9030-0da7-31de-952bf1b8b90f}" FolderPath="config\">
+    <Method Name="set_User_calibration_offset" Id="{7b2fe8ba-0327-04a5-1711-d0f89c395523}" FolderPath="config\">
       <Declaration><![CDATA[METHOD set_User_calibration_offset : BOOL
 VAR_INPUT
 	value	: INT;
@@ -656,7 +656,7 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="set_Watchdog" Id="{4b79494c-923c-0d02-16aa-9d699443fb7a}" FolderPath="config\">
+    <Method Name="set_Watchdog" Id="{a58f1101-5e77-0090-1b75-82d4f86d3414}" FolderPath="config\">
       <Declaration><![CDATA[METHOD set_Watchdog : BOOL
 VAR_INPUT
 	value	: ENU_DT0800EN02;
@@ -667,9 +667,9 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Property Name="terminal_value" Id="{cb53a4e2-11e8-0b8a-0a00-77e57fb6814c}" FolderPath="IO\">
+    <Property Name="terminal_value" Id="{967080f2-c801-0524-0a1d-95eb8af69e09}" FolderPath="IO\">
       <Declaration><![CDATA[PROPERTY terminal_value : int]]></Declaration>
-      <Set Name="Set" Id="{f2cf97d7-d0fe-0e4e-214b-abc61aa74c67}">
+      <Set Name="Set" Id="{cd92f733-70c4-0b4a-090c-3157f4ede09e}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -698,10 +698,10 @@ linear_adc_to_phy(
         </Implementation>
       </Set>
     </Property>
-    <Property Name="value" Id="{ea5265c9-483d-0ec4-350c-7dba9a2caecb}" FolderPath="HAL\">
+    <Property Name="value" Id="{4018688d-f092-0037-20fb-77031041f7a5}" FolderPath="HAL\">
       <Declaration><![CDATA[PROPERTY value : REAL
 ]]></Declaration>
-      <Get Name="Get" Id="{2844bb48-11c7-0649-05e0-84d339f83eb5}">
+      <Get Name="Get" Id="{b27b22ad-23da-0676-0121-1b7f9afff176}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -711,9 +711,9 @@ END_VAR
         </Implementation>
       </Get>
     </Property>
-    <Property Name="wcState" Id="{cb51ccbf-8d8c-00c4-26c7-fc40b833e060}" FolderPath="IO\">
+    <Property Name="wcState" Id="{049b3df0-6b4d-012d-2d34-772f314d1142}" FolderPath="IO\">
       <Declaration><![CDATA[PROPERTY wcState : bool]]></Declaration>
-      <Get Name="Get" Id="{bb7d6896-34c6-0753-33fe-6891eb64cc59}">
+      <Get Name="Get" Id="{43e4ad3b-fbdc-008b-148b-6ae6f331fb44}">
         <Declaration><![CDATA[
 VAR
 END_VAR
@@ -723,7 +723,7 @@ END_VAR
 ]]></ST>
         </Implementation>
       </Get>
-      <Set Name="Set" Id="{111396d4-ccd6-06d1-2a6b-ad95656a812b}">
+      <Set Name="Set" Id="{496749e1-9e1a-00f0-0aa0-4f167c0e5976}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>

@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <Itf Name="I_InterfaceManager" Id="{bf3d7090-2db7-020e-0254-b2be8a58f566}">
+    <Declaration><![CDATA[INTERFACE I_InterfaceManager
+]]></Declaration>
+    <Method Name="register_I_AI_Percentage" Id="{7c1c0fdc-f79f-071e-3ef6-8d21c118dda6}">
+      <Declaration><![CDATA[METHOD register_I_AI_Percentage : BOOL
+VAR_INPUT
+	interface_to_be_registered		: I_AI_Percentage;
+	terminal_name 					: STRING;
+	channel_number 					: USINT; 
+END_VAR
+VAR_OUTPUT
+	errId		: HAL_ErrorEnum;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="register_I_AI_Voltage" Id="{ff6d860c-40ea-058f-1b45-45b6e01389e4}">
+      <Declaration><![CDATA[METHOD register_I_AI_Voltage : BOOL
+VAR_INPUT
+	interface_to_be_registered		: I_AI_Voltage;
+	terminal_name 					: STRING;
+	channel_number 					: USINT; 
+END_VAR
+VAR_OUTPUT
+	errId		: HAL_ErrorEnum;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="register_terminal" Id="{ff771fff-318e-0cec-18eb-a3ebd10d2480}">
+      <Declaration><![CDATA[METHOD register_terminal : BOOL
+VAR_INPUT
+	terminal_name : STRING;
+END_VAR
+VAR_OUTPUT
+	errId : HAL_ErrorEnum;
+END_VAR]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

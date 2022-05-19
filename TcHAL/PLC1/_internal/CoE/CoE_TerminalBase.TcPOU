@@ -7,7 +7,7 @@ END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
-	_CoE_property_handler: I_CoE_property_handler;
+	_CoE_communication_handler: I_CoE_communication_handler;
 	// ===============================================================================
 	// CoE properties 
 	// ==============
@@ -42,7 +42,7 @@ END_VAR
 		FOR _i:=1 TO MAX_NUMBER_OF_PROPERTIES DO
 			IF _properties[_i] <> 0 THEN 
 				_properties[_i].SlaveAddress := _terminal_address;
-				_properties[_i].CoE_property_handler := _CoE_property_handler;
+				_properties[_i].CoE_communication_handler := _CoE_communication_handler;
 			ELSE
 				number_of_properties := _i -1;
 				EXIT; 

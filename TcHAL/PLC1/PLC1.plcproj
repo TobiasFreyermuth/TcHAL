@@ -208,10 +208,13 @@
     <Compile Include="_internal\CoE\CoE_buffer_type_cast_union.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="_internal\CoE\CoE_property_handler.TcPOU">
+    <Compile Include="_internal\CoE\CoE_communication_handler.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="_internal\CoE\CoE_TerminalBase.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="_internal\CoE\CoE_UML_Class Diagram.TcCD">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="_internal\CoE\I_CoE_config_common.TcIO">
@@ -220,7 +223,7 @@
     <Compile Include="_internal\CoE\I_CoE_property.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="_internal\CoE\I_CoE_property_handler.TcIO">
+    <Compile Include="_internal\CoE\I_CoE_communication_handler.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="_internal\CoE\properties\CoE_property.TcPOU">

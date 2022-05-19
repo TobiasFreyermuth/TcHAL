@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
-  <Itf Name="I_CoE_property_handler" Id="{b4af1cd9-bdfe-0ee1-2d64-f13c9b6da31f}">
-    <Declaration><![CDATA[INTERFACE I_CoE_property_handler
+  <Itf Name="I_CoE_communication_handler" Id="{b4af1cd9-bdfe-0ee1-2d64-f13c9b6da31f}">
+    <Declaration><![CDATA[INTERFACE I_CoE_communication_handler
 ]]></Declaration>
     <Method Name="add_read_request" Id="{4b6a293e-3229-075a-2c2a-594477e299fa}">
       <Declaration><![CDATA[METHOD add_read_request : BOOL

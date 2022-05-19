@@ -4,7 +4,7 @@
     <Declaration><![CDATA[FUNCTION_BLOCK AI_Temperature_Channel IMPLEMENTS I_AI_Temperature, I_AI_percentage
 VAR_INPUT
 	terminal_address		: WORD;
-	CoE_property_handler	: I_CoE_property_handler;
+	CoE_communication_handler	: I_CoE_communication_handler;
 END_VAR
 VAR_OUTPUT
 END_VAR
@@ -74,7 +74,7 @@ IF NOT _init_done THEN
 	END_IF
 	IF _properties[_init_step] <> 0 THEN
 		IF _init_step <> _old_init_step THEN 
-			CoE_property_handler.add_read_request(_properties[_init_step]);
+			CoE_communication_handler.add_read_request(_properties[_init_step]);
 			_old_init_step:=_init_step;
 		END_IF
 	ELSE

@@ -14,7 +14,7 @@ VAR
 	_SlaveAddress	: WORD;
 	_propertyType	: UINT;
 	_pollingInterval: TIME;
-	_CoE_property_handler: I_CoE_property_handler;
+	_I_CoE_communication_handler: I_CoE_communication_handler;
 	
 	_read_errId		: UDINT;
 	_write_errId	: UDINT;
@@ -35,16 +35,16 @@ END_VAR
 	1:  // polling 
 		pollingTimer(IN:=NOT pollingTimer.q, PT:=_pollingInterval);
 		IF pollingTimer.Q THEN
-			IF THIS^._CoE_property_handler <> 0 THEN 
-				THIS^._CoE_property_handler.add_read_request(THIS^);
+			IF THIS^._I_CoE_communication_handler <> 0 THEN 
+				THIS^._I_CoE_communication_handler.add_read_request(THIS^);
 			ELSE
 				errId:=1;
 			END_IF
 		END_IF
 	
 	2: // on request
-		IF THIS^._CoE_property_handler <> 0 THEN 
-			THIS^._CoE_property_handler.add_read_request(THIS^);
+		IF THIS^._I_CoE_communication_handler <> 0 THEN 
+			THIS^._I_CoE_communication_handler.add_read_request(THIS^);
 		ELSE
 			errId:=1; 
 		END_IF
@@ -53,14 +53,14 @@ ELSE
 	errId:=2; 
 END_CASE]]></ST>
     </Implementation>
-    <Property Name="CoE_property_handler" Id="{41443338-f88e-057f-2a53-60a637a72aec}">
-      <Declaration><![CDATA[PROPERTY CoE_property_handler : I_CoE_property_handler]]></Declaration>
+    <Property Name="CoE_communication_handler" Id="{41443338-f88e-057f-2a53-60a637a72aec}">
+      <Declaration><![CDATA[PROPERTY CoE_communication_handler : I_CoE_communication_handler]]></Declaration>
       <Get Name="Get" Id="{f1d614f3-ef34-0c15-379c-8bb05239b83a}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[CoE_property_handler:=_CoE_property_handler;]]></ST>
+          <ST><![CDATA[CoE_communication_handler:=_I_CoE_communication_handler;]]></ST>
         </Implementation>
       </Get>
       <Set Name="Set" Id="{2a291f26-afc4-0090-3fb7-9dbae000bc11}">
@@ -68,7 +68,7 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[_CoE_property_handler:=CoE_property_handler;
+          <ST><![CDATA[_I_CoE_communication_handler:=CoE_communication_handler;
 ]]></ST>
         </Implementation>
       </Set>
@@ -179,8 +179,8 @@ CASE _init_state OF
 	0:  // add read request and continue
 		_init_done:=FALSE;
 		reinit:=FALSE;
-		IF THIS^._CoE_property_handler <> 0 THEN 
-			THIS^._CoE_property_handler.add_read_request(THIS^);
+		IF THIS^._I_CoE_communication_handler <> 0 THEN 
+			THIS^._I_CoE_communication_handler.add_read_request(THIS^);
 		ELSE
 			errId:=1;
 		END_IF

@@ -3,8 +3,8 @@
   <Itf Name="I_CoE_property" Id="{7c1857e7-bee5-07f1-0b20-6cf74deec630}">
     <Declaration><![CDATA[INTERFACE I_CoE_property
 ]]></Declaration>
-    <Property Name="CoE_property_handler" Id="{91922664-d8dd-07af-3101-9d6e03189e03}">
-      <Declaration><![CDATA[PROPERTY CoE_property_handler : I_CoE_property_handler]]></Declaration>
+    <Property Name="CoE_communication_handler" Id="{91922664-d8dd-07af-3101-9d6e03189e03}">
+      <Declaration><![CDATA[PROPERTY CoE_communication_handler : I_CoE_communication_handler]]></Declaration>
       <Get Name="Get" Id="{33e63e6b-9402-0002-3803-52403f88ffa7}">
         <Declaration><![CDATA[]]></Declaration>
       </Get>

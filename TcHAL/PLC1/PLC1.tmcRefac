@@ -21,5 +21,20 @@
       <From>register_I_AI_Percentage_1</From>
       <To>register_I_AI_Voltage</To>
     </RenamedType>
+    <RenamedType>
+      <Type guid="806d0e3f-7128-4324-889c-f1af17bb295a">COE_PROPERTY_HANDLER</Type>
+      <From>CoE_property_handler</From>
+      <To>CoE_communication_handler</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="3b52df44-cd7a-48ad-83ef-d73e0dc8a33e">I_COE_PROPERTY_HANDLER</Type>
+      <From>I_CoE_property_handler</From>
+      <To>I_CoE_communication_handler</To>
+    </RenamedType>
+    <RenamedSymbol>
+      <Type guid="fd6d274a-9d3d-4008-ac4b-412fbb73d39e">CoE_property</Type>
+      <From>_CoE_property_handler</From>
+      <To>_I_CoE_communication_handler</To>
+    </RenamedSymbol>
   </Renames>
 </Refactors>

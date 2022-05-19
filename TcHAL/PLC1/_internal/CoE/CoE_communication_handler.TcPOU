@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
-  <POU Name="CoE_property_handler" Id="{0f90cda2-01ac-0568-2617-d7ad811e297b}" SpecialFunc="None">
+  <POU Name="CoE_communication_handler" Id="{0f90cda2-01ac-0568-2617-d7ad811e297b}" SpecialFunc="None">
     <Declaration><![CDATA[(**
 This function bock handles ADS read and write requests.
-To read or write an ADS property pass an object compliant to the "I_CoE_property" interface through the "add_read_request" or "add_write_request" method.
+To read or write an ADS property pass an object that implements the "I_CoE_property" interface through the "add_read_request" or "add_write_request" method.
 All requests will be added to an internal read or write buffer and executed one by one.
-The object will be updated through the call be interface when the read or write process is done.
+The object will be updated through the callback interface when the read or write process is done.
 *)
-FUNCTION_BLOCK CoE_property_handler IMPLEMENTS I_CoE_property_handler
+FUNCTION_BLOCK CoE_communication_handler IMPLEMENTS I_CoE_communication_handler
 VAR_INPUT
 	amsNetId	: T_AmsNetId;
 END_VAR

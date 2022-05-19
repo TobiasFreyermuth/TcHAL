@@ -77,7 +77,7 @@ Channel_8_Output := _channel_8.terminal_value;
 VAR_INPUT
 	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
 	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
-	CoE_property_handler: I_CoE_property_handler;
+	CoE_communication_handler : I_CoE_communication_handler;
 END_VAR
 ]]></Declaration>
       <Implementation>

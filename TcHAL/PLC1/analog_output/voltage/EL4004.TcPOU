@@ -66,15 +66,15 @@ END_IF]]></ST>
 VAR_INPUT
 	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
 	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
-	CoE_property_handler: I_CoE_property_handler;
+	CoE_communication_handler: I_CoE_communication_handler;
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[SUPER^._CoE_property_handler	:=CoE_property_handler;
-_channel_1.CoE_property_handler	:=CoE_property_handler;
-_channel_2.CoE_property_handler	:=CoE_property_handler;
-_channel_3.CoE_property_handler	:=CoE_property_handler;
-_channel_4.CoE_property_handler	:=CoE_property_handler;
+        <ST><![CDATA[SUPER^._CoE_communication_handler	    := CoE_communication_handler;
+_channel_1.CoE_communication_handler	:= CoE_communication_handler;
+_channel_2.CoE_communication_handler	:= CoE_communication_handler;
+_channel_3.CoE_communication_handler	:= CoE_communication_handler;
+_channel_4.CoE_communication_handler	:= CoE_communication_handler;
 ]]></ST>
       </Implementation>
     </Method>

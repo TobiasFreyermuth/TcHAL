@@ -3,8 +3,8 @@
   <POU Name="AO_Voltage_Channel" Id="{7a808b44-79c8-08bf-225e-7b89c2155b05}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK AO_Voltage_Channel IMPLEMENTS I_AO_Voltage
 VAR_INPUT
-	terminal_address		: WORD;
-	CoE_property_handler	: I_CoE_property_handler;
+	terminal_address		    : WORD;
+	CoE_communication_handler	: I_CoE_communication_handler;
 END_VAR
 VAR_OUTPUT
 END_VAR
@@ -17,6 +17,7 @@ VAR
 	_rValue			: REAL;
 	_wcState		: BOOL;
 	
+    _CoE_prop_handler       : CoE_property_handler;
 	// ===============================================================================
 	// CoE properties 
 	// ==============
@@ -33,7 +34,7 @@ VAR
 	_p_User_calibration_offset  	: CoE_property_int(Index:=index_1 , SubIndex:=21, writable:=TRUE, propertyType:=0, pollingInterval:=T#5S);
 	_p_User_calibration_gain    	: CoE_property_uint(Index:=index_1 , SubIndex:=22, writable:=TRUE, propertyType:=0, pollingInterval:=T#5S);
 	// ==============
-	_properties  : ARRAY[1..MAX_NUMBER_OF_PROPERTIES]OF I_CoE_property:=[
+	_properties  : ARRAY[1..11]OF I_CoE_property:=[
 		_p_Enable_user_scale, _p_Presentation, _p_Watchdog, _p_Enable_user_calibration, _p_Enable_vendor_calibration, _p_Offset,
 		_p_Gain, _p_Default_output, _p_Default_output_ramp, _p_User_calibration_offset, _p_User_calibration_gain];
 	// ===============================================================================
@@ -45,40 +46,13 @@ VAR
 
 	_errId: uINT;
 END_VAR
-VAR CONSTANT 
-	MAX_NUMBER_OF_PROPERTIES		: UINT:=11;
-END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[FOR i:=1 TO MAX_NUMBER_OF_PROPERTIES DO
-	IF _properties[i] <> 0 THEN
-		_properties[i].SlaveAddress:=terminal_address;
-	ELSE
-		EXIT;
-	END_IF
-END_FOR
+      <ST><![CDATA[// CoE Property handling 
+_CoE_prop_handler(terminal_address:=terminal_address, CoE_communication_handler:=CoE_communication_handler, CoE_properties:=_properties);
 
 // =========================================
-// Property handling 
-// =================
-
-// init casehd proerties 
-IF NOT _init_done THEN 
-	IF _properties[_init_step].init_done THEN
-		_init_step := _init_step + 1;
-	END_IF
-	IF _properties[_init_step] <> 0 THEN
-		IF _init_step <> _old_init_step THEN 
-			CoE_property_handler.add_read_request(_properties[_init_step]);
-			_old_init_step:=_init_step;
-		END_IF
-	ELSE
-		_init_done:=TRUE;
-	END_IF
-END_IF
-// =========================================
-
-
+(*
 IF NOT _wcState THEN 
 	_init_step:=1;
 	_old_init_step:=0;
@@ -91,7 +65,7 @@ IF NOT _wcState THEN
 		END_IF
 	END_FOR
 END_IF
-]]></ST>
+*)]]></ST>
     </Implementation>
     <Folder Name="config" Id="{c09423e9-9a7e-0d13-1f89-0dc3fec0181b}" />
     <Folder Name="HAL" Id="{f63628dc-b6fb-031b-03d9-429eea80ccb9}" />

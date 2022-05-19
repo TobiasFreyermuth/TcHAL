@@ -64,8 +64,8 @@ VAR_INPUT
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[_valueToWrite.value_bool := value;
-IF THIS^._CoE_property_handler <> 0 THEN 
-	THIS^._CoE_property_handler.add_write_request(THIS^);
+IF THIS^._I_CoE_communication_handler <> 0 THEN 
+	THIS^._I_CoE_communication_handler.add_write_request(THIS^);
 ELSE
 	errId:=1;
 END_IF]]></ST>

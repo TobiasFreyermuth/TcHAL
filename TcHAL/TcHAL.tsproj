@@ -20,7 +20,7 @@
 			</Format>
 		</DataType>
 	</DataTypes>
-	<Project ProjectGUID="{3E1C35D3-F291-46EE-8792-CCD26F1B70ED}" TargetNetId="172.18.130.202.1.1" Target64Bit="true" ShowHideConfigurations="#x106">
+	<Project ProjectGUID="{3E1C35D3-F291-46EE-8792-CCD26F1B70ED}" TargetNetId="172.18.130.202.1.1" ShowHideConfigurations="#x106">
 		<System>
 			<Tasks>
 				<Task Id="3" Priority="20" CycleTime="100000" AmsPort="350" AdtTasks="true">
@@ -36,171 +36,282 @@
 					<Vars VarGrpType="1">
 						<Name>PlcTask Inputs</Name>
 						<Var>
-							<Name>MAIN.term_1.WcState_WcState</Name>
+							<Name>MAIN.Terminal_2.WcState_WcState</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_2.WcState_InputToggle</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_2.InfoData_State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_2.Channel_1_Input</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_2.Channel_2_Input</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_2.Channel_3_Input</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_2.Channel_4_Input</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_2.Channel_5_Input</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_2.Channel_6_Input</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_2.Channel_7_Input</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_2.Channel_8_Input</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_3.WcState_WcState</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_3.InfoData_State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_4.WcState_WcState</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_4.InfoData_State</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_4.InfoData_AdsAddr_netId</Name>
+							<Type GUID="{18071995-0000-0000-0000-000000000041}">AMSNETID</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_4.InfoData_AdsAddr_port</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_6.WcState_WcState</Name>
 							<Comment><![CDATA[ == IO Mapping ==============================================================
  The channel status Limits 1 and 2 have to be defined as BYTE since they are 
  of BIT2 in the terminal, but there is no such datatype in the PLC.]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.InfoData_State</Name>
+							<Name>MAIN.Terminal_6.InfoData_State</Name>
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.InfoData_AdsAddr_netId</Name>
+							<Name>MAIN.Terminal_6.InfoData_AdsAddr_netId</Name>
 							<Type GUID="{18071995-0000-0000-0000-000000000041}">AMSNETID</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.InfoData_AdsAddr_port</Name>
+							<Name>MAIN.Terminal_6.InfoData_AdsAddr_port</Name>
 							<Type>WORD</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_1_Value</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_1_Value</Name>
 							<Comment><![CDATA[ Channel 1]]></Comment>
 							<Type>INT</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_1_Status_Underrange</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_1_Status_Underrange</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_1_Status_Overrange</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_1_Status_Overrange</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_1_Status_Limit_1</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_1_Status_Limit_1</Name>
 							<Type>BYTE</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_1_Status_Limit_2</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_1_Status_Limit_2</Name>
 							<Type>BYTE</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_1_Status_Error</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_1_Status_Error</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_1_Status_Sync_error</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_1_Status_Sync_error</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_1_Status_TxPDO_State</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_1_Status_TxPDO_State</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_1_Status_TxPDO_Toggle</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_1_Status_TxPDO_Toggle</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_2_Value</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_2_Value</Name>
 							<Comment><![CDATA[ Channel 2]]></Comment>
 							<Type>INT</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_2_Status_Underrange</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_2_Status_Underrange</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_2_Status_Overrange</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_2_Status_Overrange</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_2_Status_Limit_1</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_2_Status_Limit_1</Name>
 							<Type>BYTE</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_2_Status_Limit_2</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_2_Status_Limit_2</Name>
 							<Type>BYTE</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_2_Status_Error</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_2_Status_Error</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_2_Status_Sync_error</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_2_Status_Sync_error</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_2_Status_TxPDO_State</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_2_Status_TxPDO_State</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_2_Status_TxPDO_Toggle</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_2_Status_TxPDO_Toggle</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_3_Value</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_3_Value</Name>
 							<Comment><![CDATA[ Channel 3]]></Comment>
 							<Type>INT</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_3_Status_Underrange</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_3_Status_Underrange</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_3_Status_Overrange</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_3_Status_Overrange</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_3_Status_Limit_1</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_3_Status_Limit_1</Name>
 							<Type>BYTE</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_3_Status_Limit_2</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_3_Status_Limit_2</Name>
 							<Type>BYTE</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_3_Status_Error</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_3_Status_Error</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_3_Status_Sync_error</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_3_Status_Sync_error</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_3_Status_TxPDO_State</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_3_Status_TxPDO_State</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_3_Status_TxPDO_Toggle</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_3_Status_TxPDO_Toggle</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_4_Value</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_4_Value</Name>
 							<Comment><![CDATA[ Channel 4]]></Comment>
 							<Type>INT</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_4_Status_Underrange</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_4_Status_Underrange</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_4_Status_Overrange</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_4_Status_Overrange</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_4_Status_Limit_1</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_4_Status_Limit_1</Name>
 							<Type>BYTE</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_4_Status_Limit_2</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_4_Status_Limit_2</Name>
 							<Type>BYTE</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_4_Status_Error</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_4_Status_Error</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_4_Status_Sync_error</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_4_Status_Sync_error</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_4_Status_TxPDO_State</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_4_Status_TxPDO_State</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.term_1.AI_Standard_Channel_4_Status_TxPDO_Toggle</Name>
+							<Name>MAIN.Terminal_6.AI_Standard_Channel_4_Status_TxPDO_Toggle</Name>
 							<Type>BOOL</Type>
+						</Var>
+					</Vars>
+					<Vars VarGrpType="2" AreaNo="1">
+						<Name>PlcTask Outputs</Name>
+						<Var>
+							<Name>MAIN.Terminal_3.Channel_1_Output</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_3.Channel_2_Output</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_3.Channel_3_Output</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_3.Channel_4_Output</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_3.Channel_5_Output</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_3.Channel_6_Output</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_3.Channel_7_Output</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_3.Channel_8_Output</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_4.AO_Outputs_Channel_1_Analog_output</Name>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Terminal_4.AO_Outputs_Channel_2_Analog_output</Name>
+							<Type>INT</Type>
 						</Var>
 					</Vars>
 					<Contexts>

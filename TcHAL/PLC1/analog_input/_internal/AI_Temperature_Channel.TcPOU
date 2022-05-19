@@ -4,7 +4,7 @@
     <Declaration><![CDATA[FUNCTION_BLOCK AI_Temperature_Channel IMPLEMENTS I_AI_Temperature, I_AI_percentage
 VAR_INPUT
 	terminal_address		: WORD;
-	CoE_property_handler	: I_CoE_property_handler;
+	CoE_communication_handler	: I_CoE_communication_handler;
 END_VAR
 VAR_OUTPUT
 END_VAR
@@ -18,9 +18,12 @@ VAR
 	_wcState		: BOOL;
 	
 	// ===============================================================================
-	// CoE properties 
-	// ==============
-	index_1 						: WORD:= 16#8000 + INT_TO_WORD(_CoE_channel_offset);
+	// CoE handling  
+    // ==============
+    _CoE_prop_handler      : CoE_property_handler;
+    _CoE_channel_offset     : INT;
+    index_1 				: WORD:= 16#8000 + INT_TO_WORD(_CoE_channel_offset);	
+    // ====  CoE properties  ===========
 	_p_Enable_user_scale    		: CoE_property_bool(Index:=index_1 , SubIndex:=1, writable:=TRUE, propertyType:=0, pollingInterval:=T#5S);
 	_p_Presentation 				: CoE_property_usint(Index:=index_1 , SubIndex:=2, writable:=TRUE, propertyType:=0, pollingInterval:=T#5S);			// DT0800EN03
 	_p_Watchdog 					: CoE_property_usint(Index:=index_1 , SubIndex:=5, writable:=TRUE, propertyType:=0, pollingInterval:=T#5S);			// DT0801EN02
@@ -33,15 +36,11 @@ VAR
 	_p_User_calibration_offset  	: CoE_property_int(Index:=index_1 , SubIndex:=21, writable:=TRUE, propertyType:=0, pollingInterval:=T#5S);
 	_p_User_calibration_gain    	: CoE_property_uint(Index:=index_1 , SubIndex:=22, writable:=TRUE, propertyType:=0, pollingInterval:=T#5S);
 	// ==============
-	_properties  : ARRAY[1..MAX_NUMBER_OF_PROPERTIES]OF I_CoE_property:=[
+	_properties  : ARRAY[1..11]OF I_CoE_property:=[
 		_p_Enable_user_scale, _p_Presentation, _p_Watchdog, _p_Enable_user_calibration, _p_Enable_vendor_calibration, _p_Offset,
 		_p_Gain, _p_Default_output, _p_Default_output_ramp, _p_User_calibration_offset, _p_User_calibration_gain];
 	// ===============================================================================
-	_CoE_channel_offset: INT;
-	i: UINT;
-	_init_done: BOOL;
-	_init_step: INT:=1;
-	_old_init_step: INT;
+    
 	
 	//  ====  I_AI_percentage  ====
 	_max_value 	: REAL:=10.0;
@@ -49,54 +48,17 @@ VAR
 	_value: REAL;
 	
 	_errId: HAL_ErrorEnum;
-END_VAR
-VAR CONSTANT 
-	MAX_NUMBER_OF_PROPERTIES		: UINT:=11;
+    neg_wcState: f_trig;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[FOR i:=1 TO MAX_NUMBER_OF_PROPERTIES DO
-	IF _properties[i] <> 0 THEN
-		_properties[i].SlaveAddress:=terminal_address;
-	ELSE
-		EXIT;
-	END_IF
-END_FOR
+      <ST><![CDATA[// CoE Property handling 
+_CoE_prop_handler(terminal_address:=terminal_address, CoE_communication_handler:=CoE_communication_handler, CoE_properties:=_properties);
 
-// =========================================
-// Property handling 
-// =================
-
-// init casehd proerties 
-IF NOT _init_done THEN 
-	IF _properties[_init_step].init_done THEN
-		_init_step := _init_step + 1;
-	END_IF
-	IF _properties[_init_step] <> 0 THEN
-		IF _init_step <> _old_init_step THEN 
-			CoE_property_handler.add_read_request(_properties[_init_step]);
-			_old_init_step:=_init_step;
-		END_IF
-	ELSE
-		_init_done:=TRUE;
-	END_IF
-END_IF
-// =========================================
-
-
-IF NOT _wcState THEN 
-	_init_step:=1;
-	_old_init_step:=0;
-	_init_done:=FALSE;
-	FOR i:=1 TO MAX_NUMBER_OF_PROPERTIES DO
-		IF _properties[i] <> 0 THEN
-			_properties[i].reinit();
-		ELSE
-			EXIT;
-		END_IF
-	END_FOR
-END_IF
-]]></ST>
+neg_wcState(CLK:=_wcState);
+IF neg_wcState.Q THEN
+    ;
+END_IF]]></ST>
     </Implementation>
     <Folder Name="config" Id="{bb2195d8-7083-08cc-32cb-38091d042fe0}" />
     <Folder Name="HAL" Id="{6c0feffb-c4d0-0d64-1a03-4b31aee82e86}" />

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
   <POU Name="EL3202_0010" Id="{dc64da8e-52ce-0127-3956-bc9ada04c25c}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK EL3202_0010 EXTENDS CoE_TerminalBase IMPLEMENTS I_terminal_execution
+    <Declaration><![CDATA[FUNCTION_BLOCK EL3202_0010 IMPLEMENTS I_terminal_execution
 VAR_INPUT
 END_VAR
 VAR_OUTPUT
@@ -41,10 +41,34 @@ VAR
 	_channel_1 : AI_Temperature_Channel(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=1);
 	_channel_2 : AI_Temperature_Channel(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=2);
 
-	_InterfaceManager 	: I_InterfaceManager;
-	terminal_name 		: STRING;
-	reg_errId			: HAL_ErrorEnum;
-	_InitState			: INT;
+    
+	// ===============================================================================
+	// CoE handling  
+	// ==============
+    _I_CoE_com_handler      : I_CoE_communication_handler;
+    _CoE_prop_handler       : CoE_property_handler;
+    // ====  CoE properties  ===========
+	_p_DeviceName 			: CoE_property_string(Index:=16#1008 , SubIndex:=0, writable:=FALSE, propertyType:=0, pollingInterval:=T#5S);
+	_p_DeviceType 			: CoE_property_udint(Index:=16#1000 , SubIndex:=0, writable:=FALSE, propertyType:=0, pollingInterval:=T#5S);
+	_p_ProductCode 			: CoE_property_udint(Index:=16#1018 , SubIndex:=2, writable:=FALSE, propertyType:=0, pollingInterval:=T#5S);
+	_p_Revision 			: CoE_property_udint(Index:=16#1018 , SubIndex:=3, writable:=FALSE, propertyType:=0, pollingInterval:=T#5S);
+	_p_SerialNumber 		: CoE_property_udint(Index:=16#1018 , SubIndex:=4, writable:=FALSE, propertyType:=0, pollingInterval:=T#5S);
+	_p_SoftwareVersion		: CoE_property_string(Index:=16#100A , SubIndex:=0, writable:=FALSE, propertyType:=0, pollingInterval:=T#5S);
+	_p_VendorId 			: CoE_property_udint(Index:=16#1018 , SubIndex:=1, writable:=FALSE, propertyType:=0, pollingInterval:=T#5S);
+	_p_HardwareVersion		: CoE_property_string(Index:=16#1009 , SubIndex:=0, writable:=FALSE, propertyType:=0, pollingInterval:=T#5S);
+	// ==============
+	_properties  : ARRAY[1..8]OF I_CoE_property:=[
+		_p_DeviceName, _p_DeviceType, _p_ProductCode, _p_Revision, _p_SerialNumber, 
+		_p_SoftwareVersion, _p_VendorId, _p_HardwareVersion
+	];
+	// ===============================================================================
+    
+    
+	_I_InterfaceManager : I_InterfaceManager;
+	_terminal_name      : STRING;
+	reg_errId           : HAL_ErrorEnum;
+	_InitState          : INT;
+    neg_wcState: f_trig;
 END_VAR
 VAR CONSTANT
 	ADC_MIN        	: INT:=0;
@@ -58,31 +82,40 @@ END_VAR
     <Implementation>
       <ST><![CDATA[CASE _InitState OF 
 	0:  // init parent
-		IF SUPER^._init_done THEN
+        IF _I_InterfaceManager <> 0 AND 
+            _I_CoE_com_handler <> 0
+        THEN
+            _InitState := 5;
+		END_IF
+		
+	5: 
+		IF NOT _I_InterfaceManager.register_terminal(terminal_name:=_terminal_name , errId=>reg_errId ) THEN
+			RETURN;
+		ELSE
 			_InitState := 10;
-		END_IF 
+		END_IF
+        
 	10: // register channel 1 percentage interface 
-		IF _InterfaceManager.register_I_AI_Percentage(_channel_1, terminal_name, channel_number := 1, errId=>reg_errId) THEN 
+		IF _I_InterfaceManager.register_I_AI_Percentage(_channel_1, _terminal_name, channel_number := 1, errId=>reg_errId) THEN 
 			_InitState := 20;
 		END_IF
 	20: // register channel 2 percentage interface 
-		IF _InterfaceManager.register_I_AI_Percentage(_channel_2, terminal_name, channel_number := 2, errId=>reg_errId) THEN 
+		IF _I_InterfaceManager.register_I_AI_Percentage(_channel_2, _terminal_name, channel_number := 2, errId=>reg_errId) THEN 
 			_InitState := 30;
 		END_IF
 
 	30: // register channel 1 voltage interface 
-		IF _InterfaceManager.register_I_AI_Percentage(_channel_1, terminal_name, channel_number := 1, errId=>reg_errId) THEN 
+		IF _I_InterfaceManager.register_I_AI_Percentage(_channel_1, _terminal_name, channel_number := 1, errId=>reg_errId) THEN 
 			_InitState := 40;
 		END_IF
 		
 	40: // register channel 2 voltage interface 
-		IF _InterfaceManager.register_I_AI_Percentage(_channel_2, terminal_name, channel_number := 2, errId=>reg_errId) THEN 
+		IF _I_InterfaceManager.register_I_AI_Percentage(_channel_2, _terminal_name, channel_number := 2, errId=>reg_errId) THEN 
 			_InitState := 50;
 		END_IF
 ELSE
 	// Channel 1
-	_channel_1.wcState							:= NOT  WcState_WcState;
-	_channel_1.terminal_address 				:= _terminal_address;	
+	_channel_1.wcState							:= WcState_WcState;
 	_channel_1.terminal_value 					:= RTD_Inputs_Channel_1_Value;
 	_channel_1.io_status_Underrange 			:= RTD_Inputs_Channel_1_Status_Underrange;
 	_channel_1.io_status_Overrange 				:= RTD_Inputs_Channel_1_Status_Overrange;
@@ -95,8 +128,7 @@ ELSE
 	_channel_1.io_status_TxPDO_Toggle 			:= RTD_Inputs_Channel_1_Status_TxPDO_Toggle;
 	
 	// Channel 2
-	_channel_2.wcState							:= NOT  WcState_WcState;
-	_channel_2.terminal_address 				:= _terminal_address;	
+	_channel_2.wcState							:= WcState_WcState;
 	_channel_2.terminal_value 					:= RTD_Inputs_Channel_2_Value;
 	_channel_2.io_status_Underrange 			:= RTD_Inputs_Channel_2_Status_Underrange;
 	_channel_2.io_status_Overrange 				:= RTD_Inputs_Channel_2_Status_Overrange;
@@ -108,9 +140,16 @@ ELSE
 	_channel_2.io_status_TxPDO_State 			:= RTD_Inputs_Channel_2_Status_TxPDO_State;
 	_channel_2.io_status_TxPDO_Toggle 			:= RTD_Inputs_Channel_2_Status_TxPDO_Toggle;
 
-	_channel_1();
-	_channel_2();
+	_channel_1(terminal_address:=InfoData_AdsAddr_port, CoE_communication_handler:=_I_CoE_com_handler);
+	_channel_2(terminal_address:=InfoData_AdsAddr_port, CoE_communication_handler:=_I_CoE_com_handler);
 END_CASE
+
+_CoE_prop_handler(terminal_address:=InfoData_AdsAddr_port, CoE_communication_handler:=_I_CoE_com_handler, CoE_properties:=_properties);
+
+neg_wcState(CLK:=WcState_WcState);
+IF neg_wcState.Q THEN
+    ;
+END_IF
 ]]></ST>
     </Implementation>
     <Method Name="FB_init" Id="{f249a4fa-d425-0a5a-2fba-2d3136440562}">
@@ -118,13 +157,13 @@ END_CASE
 VAR_INPUT
 	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
 	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
-	CoE_property_handler: I_CoE_property_handler;
+	CoE_communication_handler: I_CoE_communication_handler;
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[SUPER^._CoE_property_handler	:=CoE_property_handler;
-_channel_1.CoE_property_handler	:=CoE_property_handler;
-_channel_2.CoE_property_handler	:=CoE_property_handler;
+        <ST><![CDATA[THIS^._I_CoE_com_handler                := CoE_communication_handler;
+_channel_1.CoE_communication_handler	:= CoE_communication_handler;
+_channel_2.CoE_communication_handler	:= CoE_communication_handler;
 ]]></ST>
       </Implementation>
     </Method>
@@ -132,7 +171,7 @@ _channel_2.CoE_property_handler	:=CoE_property_handler;
       <Declaration><![CDATA[METHOD run : BOOL
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[THIS^();]]></ST>
       </Implementation>
     </Method>
   </POU>

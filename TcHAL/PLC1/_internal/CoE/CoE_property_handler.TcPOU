@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="CoE_property_handler" Id="{01d8459a-b74c-0d3b-31a2-f5fbcf425100}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FINAL CoE_property_handler
+VAR_INPUT
+    terminal_address            :  WORD;
+    CoE_communication_handler   : I_CoE_communication_handler;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+    // _I_CoE_com_handler : I_CoE_communication_handler;
+	index: DINT;
+    state : INT;
+    propertyInitErrorCode: UDINT;
+	_init_done: BOOL;
+	init_index: DINT;
+	number_of_properties: DINT;
+END_VAR
+VAR_IN_OUT
+	CoE_properties: ARRAY[*] OF I_CoE_property;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+CASE state OF 
+    0:  // pre init
+        init_index := LOWER_BOUND(CoE_properties, 1);
+        number_of_properties :=  UPPER_BOUND(CoE_properties, 1) - LOWER_BOUND(CoE_properties, 1);
+        state := 5;
+        
+    5:
+        IF terminal_address <> 0 AND CoE_communication_handler <> 0 THEN
+            FOR index := LOWER_BOUND(CoE_properties, 1) TO UPPER_BOUND(CoE_properties, 1) DO
+                CoE_properties[index].SlaveAddress := terminal_address;
+                CoE_properties[index].CoE_communication_handler := CoE_communication_handler;
+            END_FOR	
+            state := 10;
+		END_IF
+        
+	10: // initialize all CoE-properties 
+		IF CoE_properties[init_index].reinit(errId=> propertyInitErrorCode) THEN 
+			// ToDo add error handling
+			IF init_index < number_of_properties THEN
+				init_index := init_index + 1;
+			ELSE
+				state := 20;
+				_init_done:=TRUE; 
+			END_IF
+		END_IF
+	
+	20: // run all CoE-properties 
+        FOR index := LOWER_BOUND(CoE_properties, 1) TO UPPER_BOUND(CoE_properties, 1) DO
+            CoE_properties[index].run();
+        END_FOR		
+END_CASE]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

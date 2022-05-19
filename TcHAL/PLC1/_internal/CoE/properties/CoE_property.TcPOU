@@ -102,6 +102,7 @@ END_VAR
 _SubIndex:=SubIndex;
 _propertyType:=propertyType;
 _pollingInterval:=pollingInterval;
+
 ]]></ST>
       </Implementation>
     </Method>

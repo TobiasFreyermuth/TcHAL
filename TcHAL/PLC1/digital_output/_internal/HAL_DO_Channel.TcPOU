@@ -9,7 +9,7 @@ VAR_OUTPUT
 END_VAR
 VAR
 	_terminal_value: BOOL;
-	_errId:UINT;
+	_errId:HAL_ErrorEnum;
 	_xValue: BOOL;
 	_channel_number: UINT;
 END_VAR
@@ -20,7 +20,7 @@ END_VAR
     <Folder Name="HAL" Id="{4d92782d-af7a-0573-1cd5-f1b8218525dd}" />
     <Folder Name="IO" Id="{5c56663d-53d8-0172-3815-e08520cf184c}" />
     <Property Name="errId" Id="{7c6bdd6e-b6f5-06fb-2802-0ffb22035f06}" FolderPath="HAL\">
-      <Declaration><![CDATA[PROPERTY errId : UINT
+      <Declaration><![CDATA[PROPERTY errId : HAL_ErrorEnum
 ]]></Declaration>
       <Get Name="Get" Id="{12faf0f8-1c53-0a55-3856-3e132c58eb46}">
         <Declaration><![CDATA[VAR
@@ -79,8 +79,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="xValue" Id="{6dddd416-6bcf-07da-2740-e7b561c5554d}" FolderPath="HAL\">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY xValue : BOOL
+      <Declaration><![CDATA[PROPERTY xValue : BOOL
 ]]></Declaration>
       <Get Name="Get" Id="{b777ab7b-d03e-0284-1db8-8eee7fbd572b}">
         <Declaration><![CDATA[VAR

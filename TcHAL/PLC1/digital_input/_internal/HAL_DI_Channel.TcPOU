@@ -79,8 +79,7 @@ END_VAR
       </Set>
     </Property>
     <Property Name="xValue" Id="{1c7b2364-c8f4-0977-1a1d-255b9df12e97}" FolderPath="HAL\">
-      <Declaration><![CDATA[{warning 'add property implementation'}
-PROPERTY xValue : BOOL
+      <Declaration><![CDATA[PROPERTY xValue : BOOL
 ]]></Declaration>
       <Get Name="Get" Id="{8dd4c25e-ae41-06ad-2032-a74ae88739f7}">
         <Declaration><![CDATA[VAR

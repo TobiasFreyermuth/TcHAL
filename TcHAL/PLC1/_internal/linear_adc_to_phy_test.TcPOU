@@ -27,7 +27,7 @@ END_VAR
 VAR
 		returned_result			: BOOL;
 		returned_phy_value		: REAL;
-		returned_errId 			: UINT;
+		returned_errId 			: HAL_ErrorEnum;
 		
 		// call with adc value 23000
 		case_1_expected_result  		: BOOL:=FALSE;
@@ -95,7 +95,7 @@ END_VAR
 VAR
 		returned_result			: BOOL;
 		returned_phy_value		: REAL;
-		returned_errId 			: UINT;
+		returned_errId 			: HAL_ErrorEnum;
 		
 		// call function with physical value = 0
 		case_1_adc_value				: INT:=0;
@@ -189,7 +189,7 @@ END_VAR
 VAR
 		returned_result			: BOOL;
 		returned_adc_value		: DINT;
-		returned_errId 			: UINT;
+		returned_errId 			: HAL_ErrorEnum;
 		
 		// call with physical min value
 		case_1_physical_value			: REAL:=0.0;
@@ -281,7 +281,7 @@ END_VAR
 VAR
 		returned_result			: BOOL;
 		returned_phy_value		: REAL;
-		returned_errId 			: UINT;
+		returned_errId 			: HAL_ErrorEnum;
 		
 		// call with physical value 0
 		case_1_adc_value				: INT:=0;
@@ -398,7 +398,7 @@ END_VAR
 VAR
 		returned_result			: BOOL;
 		returned_phy_value		: REAL;
-		returned_errId 			: UINT;
+		returned_errId 			: HAL_ErrorEnum;
 		
 		// call function with adc value = 0
 		case_1_adc_value				: INT:=0;
@@ -491,7 +491,7 @@ END_VAR
 VAR
 		returned_result			: BOOL;
 		returned_phy_value		: REAL;
-		returned_errId 			: UINT;
+		returned_errId 			: HAL_ErrorEnum;
 		
 		// call function with adc value = 0
 		case_1_adc_value				: INT:=0;

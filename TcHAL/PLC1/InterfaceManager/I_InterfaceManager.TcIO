@@ -37,6 +37,28 @@ VAR_OUTPUT
 	errId		: HAL_ErrorEnum;
 END_VAR]]></Declaration>
     </Method>
+    <Method Name="register_I_AO_Percentage" Id="{4f753d45-8b3b-047f-3d82-c7f4687dbc45}">
+      <Declaration><![CDATA[METHOD register_I_AO_Percentage : BOOL
+VAR_INPUT
+	interface_to_be_registered		: I_AO_Percentage;
+	terminal_id 					: UINT;
+	channel_number 					: USINT; 
+END_VAR
+VAR_OUTPUT
+	errId		: HAL_ErrorEnum;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="register_I_AO_Voltage" Id="{9956dc00-c384-03ba-1ef8-26f87ab0796a}">
+      <Declaration><![CDATA[METHOD register_I_AO_Voltage : BOOL
+VAR_INPUT
+	interface_to_be_registered		: I_AO_Voltage;
+	terminal_id 					: UINT;
+	channel_number 					: USINT; 
+END_VAR
+VAR_OUTPUT
+	errId		: HAL_ErrorEnum;
+END_VAR]]></Declaration>
+    </Method>
     <Method Name="register_terminal" Id="{ff771fff-318e-0cec-18eb-a3ebd10d2480}">
       <Declaration><![CDATA[METHOD register_terminal : BOOL
 VAR_INPUT

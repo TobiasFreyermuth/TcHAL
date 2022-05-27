@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
   <POU Name="AO_Voltage_Channel" Id="{7a808b44-79c8-08bf-225e-7b89c2155b05}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK AO_Voltage_Channel IMPLEMENTS I_AO_Voltage
+    <Declaration><![CDATA[FUNCTION_BLOCK AO_Voltage_Channel IMPLEMENTS I_AO_Voltage, I_AO_percentage
 VAR_INPUT
 	terminal_address		    : WORD;
 	CoE_communication_handler	: I_CoE_communication_handler;
@@ -13,7 +13,7 @@ VAR
     _adc_max        : INT;
 	_physical_min 	: INT;
 	_physical_max 	: INT;
-	_channel_number : UINT;
+	_channel_number : USINT;
 	_rValue			: REAL;
 	_wcState		: BOOL;
 	
@@ -44,7 +44,12 @@ VAR
 	_init_step: INT:=1;
 	_old_init_step: INT;
 
-	_errId: uINT;
+	_errId: HAL_ErrorEnum;
+
+	//  ====  I_AI_percentage  ====
+	_max_value 	: REAL:=10.0;
+	_min_value 	: REAL:=0.0;
+	_value      : REAL;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -69,9 +74,10 @@ END_IF
     </Implementation>
     <Folder Name="config" Id="{c09423e9-9a7e-0d13-1f89-0dc3fec0181b}" />
     <Folder Name="HAL" Id="{f63628dc-b6fb-031b-03d9-429eea80ccb9}" />
+    <Folder Name="Init" Id="{161df44e-e52c-0128-3d47-818557722d03}" />
     <Folder Name="IO" Id="{e7acd88b-4ffa-019b-3b65-a2cd0e994975}" />
     <Property Name="errId" Id="{56c6a3e1-6731-0e6a-1ebe-09d87b611d63}" FolderPath="HAL\">
-      <Declaration><![CDATA[PROPERTY errId : UINT
+      <Declaration><![CDATA[PROPERTY errId : HAL_ErrorEnum
 ]]></Declaration>
       <Get Name="Get" Id="{cc223ae9-b027-023e-33df-9347080a75ad}">
         <Declaration><![CDATA[VAR
@@ -93,7 +99,7 @@ VAR_INPUT
     adc_max         : INT;
 	physical_min 	: INT;
 	physical_max 	: INT;
-	channel_number  : UINT;
+	channel_number  : USINT;
 END_VAR
 
 VAR
@@ -248,6 +254,96 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[get_Watchdog:=_p_Watchdog.get_value(value=>tmp, errId => );
 value := USINT_TO_INT(tmp);]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="max_value" Id="{c2cb8473-1c98-096f-1cf8-9d720885b58d}" FolderPath="HAL\">
+      <Declaration><![CDATA[PROPERTY max_value : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{b28ff03b-5287-045c-1305-0851a5d6fa36}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[max_value := _max_value;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{e2db06ac-42b0-0252-090b-04267979f5eb}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF max_value <= 0 THEN
+	_max_value := 0.0001;
+ELSE
+	_max_value := max_value;
+END_IF
+]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="min_value" Id="{d50717a0-061b-0411-26e5-b26b3531fa70}" FolderPath="HAL\">
+      <Declaration><![CDATA[PROPERTY min_value : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{db2e0e3b-0d3f-0494-2388-7fe859f73385}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[min_value := _min_value;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{c9fdbcd3-3b95-024e-20a1-7d688dcaaebc}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_min_value := min_value;
+]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="register_channel" Id="{73eb06d9-dcba-0c28-20bf-59932cc05428}" FolderPath="Init\">
+      <Declaration><![CDATA[METHOD register_channel : BOOL
+VAR_INPUT
+    terminalId : UINT;
+    I_interface_manager : I_interfaceManager;
+END_VAR
+VAR_OUTPUT
+	errId		: HAL_ErrorEnum;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.register_I_AO_percentage(terminalId:=terminalId , I_interface_manager:=I_interface_manager , errId=>errId );
+IF errId = HAL_ErrorEnum.no_error THEN
+	THIS^.register_I_AO_Voltage(terminalId:=terminalId , I_interface_manager:=I_interface_manager , errId=>errId );
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="register_I_AO_percentage" Id="{1734a819-f982-012c-348c-a49b7743ca74}" FolderPath="Init\">
+      <Declaration><![CDATA[METHOD register_I_AO_percentage : BOOL
+VAR_INPUT
+    terminalId : UINT;
+    I_interface_manager : I_interfaceManager;
+END_VAR
+VAR_OUTPUT
+	errId		: HAL_ErrorEnum;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[register_I_AO_percentage:= I_interface_manager.register_I_AO_Percentage(THIS^, terminalId, channel_number := THIS^._channel_number, errId=>errId);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="register_I_AO_Voltage" Id="{f0f17c95-0828-0ab2-21eb-64fbb1261963}" FolderPath="Init\">
+      <Declaration><![CDATA[METHOD register_I_AO_Voltage : BOOL
+VAR_INPUT
+    terminalId : UINT;
+    I_interface_manager : I_interfaceManager;
+END_VAR
+VAR_OUTPUT
+	errId		: HAL_ErrorEnum;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[register_I_AO_Voltage:= I_interface_manager.register_I_AO_Voltage(THIS^, terminalId, channel_number := THIS^._channel_number, errId=>errId);
+]]></ST>
       </Implementation>
     </Method>
     <Property Name="rValue" Id="{46243ce6-edb0-05b7-0dfb-81b6d8f23c14}" FolderPath="HAL\">
@@ -418,7 +514,29 @@ linear_phy_to_adc(
 	errId			=> _errId 
 );
 	
-]]></ST>
+(*
+linear_phy_to_adc(
+	physical_min	:= 0 , 
+	physical_max	:= 100 , 
+	adc_min			:= REAL_TO_INT(_min_value) , 
+	adc_max			:= REAL_TO_INT(_max_value) , 
+	physical_value	:= _value , 
+	adc_value		=> terminal_value , 
+	errId			=> _errId 
+);
+*)]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="value" Id="{39d42859-81c7-0351-0fa2-6c2626da2c77}" FolderPath="HAL\">
+      <Declaration><![CDATA[PROPERTY value : REAL
+]]></Declaration>
+      <Get Name="Get" Id="{189944ed-9a8f-0465-29d4-0cbfdece670f}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[value := _value;]]></ST>
         </Implementation>
       </Get>
     </Property>

@@ -72,6 +72,9 @@
     <Compile Include="analog_output\_internal\AO_Voltage_Channel.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="analog_output\_internal\I_AO_percentage.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="analog_output\_internal\I_AO_Voltage.TcIO">
       <SubType>Code</SubType>
     </Compile>
@@ -157,6 +160,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="InterfaceManager\I_AI_Percentage_register.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InterfaceManager\I_AO_Percentage_register.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="InterfaceManager\I_AO_Voltage_register.TcDUT">

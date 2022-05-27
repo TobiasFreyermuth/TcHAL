@@ -13,7 +13,7 @@ VAR
 	// Terminal_1 : EK1101
 	Terminal_2 : EL1808(CoE_communication_handler:=coe_handler );
 	Terminal_3 : EL2808(CoE_communication_handler:=coe_handler );
-	Terminal_4 : EL4002(CoE_communication_handler:=coe_handler );
+	Terminal_4 : EL4002(CoE_communication_handler:=coe_handler, InterfaceManager:=interface_manager, name:='Terminal_4');
 	// Terminal_5 : 
 	Terminal_6 : EL3164(CoE_communication_handler:=coe_handler, InterfaceManager:=interface_manager, name:='Terminal_6');
 	// Terminal_7 :

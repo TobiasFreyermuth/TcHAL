@@ -15,7 +15,7 @@ VAR_INPUT
 END_VAR
 VAR_OUTPUT
 	adc_value : INT;
-	errId 	: UINT;
+	errId 	  : HAL_ErrorEnum;
 END_VAR
 VAR
 	dx: DINT;
@@ -29,21 +29,21 @@ END_VAR
       <ST><![CDATA[
 IF physical_value > INT_TO_REAL(physical_max) THEN
 	linear_phy_to_adc:=FALSE;
-	errId:=1;
+	errId := HAL_ErrorEnum.physical_value_too_big;
 ELSIF physical_value < INT_TO_REAL(physical_min) THEN 
 	linear_phy_to_adc:=FALSE;
-	errId:=2;
+	errId := HAL_ErrorEnum.physical_value_too_small;
 ELSE
 	dx := adc_max - adc_min;
 	dy := physical_max - physical_min;
 	IF dx <= 0 THEN
 		linear_phy_to_adc:=FALSE;
-		errId:=3;
+		errId := HAL_ErrorEnum.dx_zero_or_smaller;
 	ELSE
 		m := DINT_TO_REAL(dy) / DINT_TO_REAL(dx);
 		IF m <= 0 THEN
 			linear_phy_to_adc:=FALSE;
-			errId:=4;
+			errId := HAL_ErrorEnum.m_zero_or_smaller;
 		ELSE
 			b := INT_TO_REAL(physical_min) - m * INT_TO_REAL(adc_min);
 			adc_value := REAL_TO_INT(physical_value/m - b/m);

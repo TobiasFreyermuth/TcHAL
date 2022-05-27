@@ -6,5 +6,40 @@
       <From>EL3164_0000_0019_1</From>
       <To>EL3164_0000_0020</To>
     </RenamedType>
+    <RenamedType>
+      <Type guid="98c96b84-8906-4760-9a07-8299e1e6ca55">REGISTER_I_AI_PERCENTAGE</Type>
+      <From>register_I_AI_percentage</From>
+      <To>register_I_AO_percentage</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="7f0cbf08-78ac-4cfe-8f60-42f927831942">REGISTER_I_AI_VOLTAGE</Type>
+      <From>register_I_AI_Voltage</From>
+      <To>register_I_AO_Voltage</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="16ab1f9d-b300-45f6-b073-00faec15794b">REGISTER_I_AI_VOLTAGE_1</Type>
+      <From>register_I_AI_Voltage_1</From>
+      <To>register_I_AO_Voltage</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="c088fed8-fbbf-4233-9309-e1f6fed8bc64">REGISTER_I_AI_PERCENTAGE_1</Type>
+      <From>register_I_AI_Percentage_1</From>
+      <To>register_I_AO_Percentage</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="4e3f91ea-87ba-48cf-918a-b6cc30060078">I_AI_PERCENTAGE_REGISTER_1</Type>
+      <From>I_AI_Percentage_register_1</From>
+      <To>I_AO_Percentage_register</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="d23d34ea-5e82-4157-b8e6-8b3d4d132d98">I_AO_VOLTAGE_1</Type>
+      <From>I_AO_Voltage_1</From>
+      <To>I_AO_Percentage</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="76b23de5-5efe-4b63-a4f9-a8f94f0e637b">I_AI_PERCENTAGE_1</Type>
+      <From>I_AI_percentage_1</From>
+      <To>I_AO_percentage</To>
+    </RenamedType>
   </Renames>
 </Refactors>

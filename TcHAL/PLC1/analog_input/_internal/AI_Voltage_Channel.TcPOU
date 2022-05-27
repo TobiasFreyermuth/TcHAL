@@ -66,7 +66,7 @@ END_IF]]></ST>
     <Folder Name="Init" Id="{e45797be-9361-0789-1af4-38a69c825e40}" />
     <Folder Name="IO" Id="{447316ab-5715-0154-19ed-19ab5d050206}" />
     <Property Name="errId" Id="{0ad3798c-3d03-013a-0b79-9367dd73f1f9}" FolderPath="HAL\">
-      <Declaration><![CDATA[PROPERTY errId : UINT
+      <Declaration><![CDATA[PROPERTY errId : HAL_ErrorEnum
 ]]></Declaration>
       <Get Name="Get" Id="{ebd85208-d23f-0df1-0fce-04d86fee8ca1}">
         <Declaration><![CDATA[VAR

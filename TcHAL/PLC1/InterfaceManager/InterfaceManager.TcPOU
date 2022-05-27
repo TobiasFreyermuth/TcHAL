@@ -7,7 +7,8 @@ VAR
 	terminals : ARRAY[1..NUMBER_OF_Terminals] OF STRING;
 	I_AO_Voltage_interfaces 	: ARRAY[0..NUMBER_OF_I_HAL_AO_Voltage_INTERFACES] OF I_AO_Voltage_register;
 	I_AI_Voltage_interfaces 	: ARRAY[0..NUMBER_OF_I_HAL_AI_Voltage_INTERFACES] OF I_AI_Voltage_register;
-	I_AI_Percentage_interfaces 	: ARRAY[0..NUMBER_OF_I_AI_Percentage_INTERFACES] OF I_AI_Percentage_register;
+	I_AO_Percentage_interfaces 	: ARRAY[0..NUMBER_OF_I_AI_Percentage_INTERFACES] OF I_AO_Percentage_register;
+    I_AI_Percentage_interfaces 	: ARRAY[0..NUMBER_OF_I_AI_Percentage_INTERFACES] OF I_AI_Percentage_register;
 END_VAR
 VAR CONSTANT 
 	MAX_REGISTRATIONS_PER_CYCLE : UINT:=100;
@@ -18,6 +19,8 @@ END_VAR]]></Declaration>
     <Folder Name="I_AI_Percentage" Id="{577303f0-b576-0bf1-21c6-ff672185f680}" />
     <Folder Name="I_AI_Temperature" Id="{3a72da42-7576-08b7-20c6-fdf1644fb9fe}" />
     <Folder Name="I_AI_Voltage" Id="{3acb5ed8-9878-020f-1ed4-2f1e5d205398}" />
+    <Folder Name="I_AO_Percentage" Id="{9305f51d-ac95-03d4-33a1-d12e0b99febc}" />
+    <Folder Name="I_AO_Voltage" Id="{3ba09c46-516d-0515-07a6-7d010455683f}" />
     <Method Name="FB_init" Id="{4f52967f-62d2-04ad-05eb-d519f626e9cc}">
       <Declaration><![CDATA[METHOD FB_init : BOOL
 VAR_INPUT
@@ -168,6 +171,65 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
+    <Method Name="register_I_AO_Percentage" Id="{9a4170fd-b771-0df4-12fa-a95923656804}" FolderPath="I_AO_Percentage\">
+      <Declaration><![CDATA[METHOD register_I_AO_Percentage : BOOL
+VAR_INPUT
+	interface_to_be_registered	: I_AO_Percentage;
+	terminal_id	: UINT;
+	channel_number	: USINT;
+END_VAR
+VAR_OUTPUT
+	errId	: HAL_ErrorEnum;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="register_I_AO_Voltage" Id="{d93d2b20-df0b-04d6-0db4-e4cf6ad35167}" FolderPath="I_AO_Voltage\">
+      <Declaration><![CDATA[METHOD register_I_AO_Voltage : BOOL
+VAR_INPUT
+	interface_to_be_registered	: I_AO_Voltage;
+	terminal_id	: UINT;
+	channel_number	: USINT;
+END_VAR
+VAR_OUTPUT
+	errId	: HAL_ErrorEnum;
+END_VAR
+VAR
+	i: UINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[register_I_AO_Voltage:=FALSE;
+IF registrations_in_cycle >= MAX_REGISTRATIONS_PER_CYCLE THEN
+	register_I_AO_Voltage := FALSE;
+	errId := HAL_ErrorEnum.max_registration_limit_per_cycle_reached;
+	RETURN;
+ELSE
+	registrations_in_cycle := registrations_in_cycle + 1; 
+END_IF
+
+IF interface_to_be_registered = 0 THEN
+	errId := HAL_ErrorEnum.interface_can_not_be_null;
+ELSIF terminal_id = 0 THEN
+	errId := HAL_ErrorEnum.terminal_name_can_not_be_empty;
+ELSIF channel_number = 0 THEN
+	errId := HAL_ErrorEnum.channel_number_out_of_range;
+ELSE
+	FOR i:=0 TO NUMBER_OF_I_AI_Percentage_INTERFACES DO
+		IF I_AO_Voltage_interfaces[i].registered_interface = 0 THEN
+			I_AO_Voltage_interfaces[i].channel_number 		:= channel_number;
+			I_AO_Voltage_interfaces[i].registered_interface := interface_to_be_registered;
+			I_AO_Voltage_interfaces[i].terminal_id 			:= terminal_id;
+			register_I_AO_Voltage:=TRUE;
+			RETURN;
+		END_IF
+	END_FOR
+	errId := HAL_ErrorEnum.no_empty_space_found_in_register;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="register_terminal" Id="{94654e77-eb1d-0f6f-0c70-9ba97a9da1a5}">
       <Declaration><![CDATA[METHOD register_terminal : BOOL
 VAR_INPUT
@@ -292,30 +354,5 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="InterfaceManager">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="InterfaceManager.FB_init">
-      <LineId Id="3" Count="3" />
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="InterfaceManager.get_terminal_id">
-      <LineId Id="3" Count="8" />
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="InterfaceManager.register_I_AI_Temperature">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="InterfaceManager.register_I_AI_Voltage">
-      <LineId Id="89" Count="26" />
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="InterfaceManager.register_terminal">
-      <LineId Id="31" Count="9" />
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="InterfaceManager.release_I_AI_Percentage">
-      <LineId Id="2" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

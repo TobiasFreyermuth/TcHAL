@@ -4,7 +4,7 @@
     <Declaration><![CDATA[INTERFACE I_AO_Voltage
 ]]></Declaration>
     <Property Name="errId" Id="{2c4d432a-2787-00f0-1d0b-5d87567d5e59}">
-      <Declaration><![CDATA[PROPERTY errId : uint]]></Declaration>
+      <Declaration><![CDATA[PROPERTY errId : HAL_ErrorEnum]]></Declaration>
       <Get Name="Get" Id="{b82f2e52-9aad-085b-03f1-cc63383c5bff}">
         <Declaration><![CDATA[]]></Declaration>
       </Get>

@@ -19,7 +19,11 @@ TYPE HAL_ErrorEnum :
 	no_empty_space_found_in_register,
 	requested_interface_not_found,
 	interface_already_in_use,
-	max_registration_limit_per_cycle_reached
+	max_registration_limit_per_cycle_reached,
+    physical_value_too_big,
+    physical_value_too_small,
+    dx_zero_or_smaller,
+    m_zero_or_smaller
 );
 END_TYPE
 ]]></Declaration>

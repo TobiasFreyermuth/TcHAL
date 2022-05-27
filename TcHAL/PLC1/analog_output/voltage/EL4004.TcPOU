@@ -8,10 +8,10 @@ FUNCTION_BLOCK EL4004 IMPLEMENTS I_terminal_execution
 VAR_INPUT
 END_VAR
 VAR_OUTPUT
-	AO_Voltage_channel_1 		: I_AO_Voltage :=_channel_1;
-	AO_Voltage_channel_2 		: I_AO_Voltage :=_channel_2;
-	AO_Voltage_channel_3 		: I_AO_Voltage :=_channel_3;
-	AO_Voltage_channel_4 		: I_AO_Voltage :=_channel_4;
+	AO_Voltage_channel_1 		: I_AO_Voltage :=_ar_channels[1];
+	AO_Voltage_channel_2 		: I_AO_Voltage :=_ar_channels[2];
+	AO_Voltage_channel_3 		: I_AO_Voltage :=_ar_channels[3];
+	AO_Voltage_channel_4 		: I_AO_Voltage :=_ar_channels[4];
 END_VAR
 VAR
 	WcState_WcState			AT%I*: BOOL;
@@ -24,11 +24,12 @@ VAR
 	AO_Outputs_Channel_3_Analog_output         AT%Q*: INT;
 	AO_Outputs_Channel_4_Analog_output         AT%Q*: INT;
 	
-	_channel_1 : AO_Voltage_Channel(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=1);
-	_channel_2 : AO_Voltage_Channel(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=2);
-	_channel_3 : AO_Voltage_Channel(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=3);
-	_channel_4 : AO_Voltage_Channel(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=4);
-
+	_ar_channels : ARRAY[1..NUMBER_OF_CHANNELS] OF AO_Voltage_Channel[
+		(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=1),
+		(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=2),
+        (adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=3),
+        (adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=4)
+    ];
 	// ===============================================================================
 	// CoE handling  
 	// ==============
@@ -50,8 +51,12 @@ VAR
 	];
 	// ===============================================================================
     
-
-	neg_wcState: f_trig;
+	_I_InterfaceManager : I_InterfaceManager;
+    _terminal_name      : STRING;
+    _terminal_id        : UINT;
+    errId               : HAL_ErrorEnum;
+	neg_wcState         : f_trig;
+    _j                  : USINT;
 END_VAR
 VAR CONSTANT
 	ADC_MIN        	: INT:=0;
@@ -60,30 +65,41 @@ VAR CONSTANT
 	PHYSICAL_MAX 	: INT:=10;
 	
     HARDWARE_REVSION : UINT:=19;
+    NUMBER_OF_CHANNELS : USINT:=4;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[
-_channel_1.wcState:= WcState_WcState;
-_channel_2.wcState:= WcState_WcState;
-_channel_3.wcState:= WcState_WcState;
-_channel_4.wcState:= WcState_WcState;
-	
-_channel_1(terminal_address:=InfoData_AdsAddr_port, CoE_communication_handler:=_I_CoE_com_handler);
-_channel_2(terminal_address:=InfoData_AdsAddr_port, CoE_communication_handler:=_I_CoE_com_handler);
-_channel_3(terminal_address:=InfoData_AdsAddr_port, CoE_communication_handler:=_I_CoE_com_handler);
-_channel_4(terminal_address:=InfoData_AdsAddr_port, CoE_communication_handler:=_I_CoE_com_handler);
-	
-AO_Outputs_Channel_1_Analog_output := _channel_1.terminal_value;
-AO_Outputs_Channel_2_Analog_output := _channel_2.terminal_value;
-AO_Outputs_Channel_3_Analog_output := _channel_3.terminal_value;
-AO_Outputs_Channel_4_Analog_output := _channel_4.terminal_value;
+_ar_channels[1].wcState:= WcState_WcState;
+_ar_channels[2].wcState:= WcState_WcState;
+_ar_channels[3].wcState:= WcState_WcState;
+_ar_channels[4].wcState:= WcState_WcState;
 
-_CoE_prop_handler(terminal_address:=InfoData_AdsAddr_port, CoE_communication_handler:=_I_CoE_com_handler, CoE_properties:=_properties);
+_ar_channels[1](terminal_address:=InfoData_AdsAddr_port, CoE_communication_handler:=_I_CoE_com_handler);
+_ar_channels[2](terminal_address:=InfoData_AdsAddr_port, CoE_communication_handler:=_I_CoE_com_handler);
+_ar_channels[3](terminal_address:=InfoData_AdsAddr_port, CoE_communication_handler:=_I_CoE_com_handler);
+_ar_channels[4](terminal_address:=InfoData_AdsAddr_port, CoE_communication_handler:=_I_CoE_com_handler);
 
-neg_wcState(CLK:=WcState_WcState);
-IF neg_wcState.Q THEN
-    ;
-END_IF]]></ST>
+AO_Outputs_Channel_1_Analog_output := _ar_channels[1].terminal_value;
+AO_Outputs_Channel_2_Analog_output := _ar_channels[2].terminal_value;
+AO_Outputs_Channel_1_Analog_output := _ar_channels[3].terminal_value;
+AO_Outputs_Channel_2_Analog_output := _ar_channels[4].terminal_value;
+
+IF  _I_InterfaceManager <> 0 AND 
+    _I_CoE_com_handler <> 0
+THEN
+    FOR _j:=1 TO NUMBER_OF_CHANNELS DO
+        // should be possible to get rid of the address input 
+        _ar_channels[_j](terminal_address:=InfoData_AdsAddr_port, CoE_communication_handler:=_I_CoE_com_handler);
+    END_FOR
+    
+    _CoE_prop_handler(terminal_address:=InfoData_AdsAddr_port, CoE_communication_handler:=_I_CoE_com_handler, CoE_properties:=_properties);
+
+    neg_wcState(CLK:=WcState_WcState);
+    IF neg_wcState.Q THEN
+        ;
+    END_IF
+END_IF
+]]></ST>
     </Implementation>
     <Method Name="FB_init" Id="{cbadc329-cce1-099c-1ea7-fae3fc9ec2dc}">
       <Declaration><![CDATA[METHOD FB_init : BOOL
@@ -91,14 +107,33 @@ VAR_INPUT
 	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
 	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
 	CoE_communication_handler: I_CoE_communication_handler;
+    InterfaceManager            : I_InterfaceManager;
+	name                        : STRING;
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[THIS^._I_CoE_com_handler        	    := CoE_communication_handler;
-_channel_1.CoE_communication_handler	:= CoE_communication_handler;
-_channel_2.CoE_communication_handler	:= CoE_communication_handler;
-_channel_3.CoE_communication_handler	:= CoE_communication_handler;
-_channel_4.CoE_communication_handler	:= CoE_communication_handler;
+        <ST><![CDATA[
+_I_CoE_com_handler := CoE_communication_handler;
+
+FOR _j:=1 TO NUMBER_OF_CHANNELS DO
+    _ar_channels[_j].CoE_communication_handler := CoE_communication_handler;
+END_FOR
+
+_terminal_name := name;
+_I_InterfaceManager := InterfaceManager;
+
+// register  terminal and all channel interfaces
+IF InterfaceManager <> 0 THEN
+    _I_InterfaceManager.register_terminal(terminal_name:=_terminal_name , errId=>errId , terminalId=>_terminal_id);
+    
+    FOR _j:=1 TO NUMBER_OF_CHANNELS DO
+        _ar_channels[_j].register_channel(terminalId:=_terminal_id , I_interface_manager:=_I_InterfaceManager , errId=>errId );
+        IF errId <> HAL_ErrorEnum.no_error THEN
+            ;  // ToDo: add logging or Error handling 
+        END_IF 
+    END_FOR
+END_IF
+
 ]]></ST>
       </Implementation>
     </Method>

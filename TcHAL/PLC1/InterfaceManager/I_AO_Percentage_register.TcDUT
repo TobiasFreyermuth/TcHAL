@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <DUT Name="I_AO_Percentage_register" Id="{c1c25277-f73e-0e83-3f01-90cea6a30059}">
+    <Declaration><![CDATA[TYPE I_AO_Percentage_register :
+STRUCT
+	registered_interface			: I_AO_Percentage;
+	terminal_id 					: UINT;
+	channel_number 					: USINT;
+	connected_device_id				: UINT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

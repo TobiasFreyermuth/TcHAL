@@ -4,7 +4,7 @@
     <Declaration><![CDATA[INTERFACE I_HAL_DO
 ]]></Declaration>
     <Property Name="errId" Id="{90300fa2-a256-09dc-3624-09027a35ba7c}">
-      <Declaration><![CDATA[PROPERTY errId : uint]]></Declaration>
+      <Declaration><![CDATA[PROPERTY errId : HAL_ErrorEnum]]></Declaration>
       <Get Name="Get" Id="{7eb76d01-9028-0d44-24b8-237afe51e471}">
         <Declaration><![CDATA[]]></Declaration>
       </Get>

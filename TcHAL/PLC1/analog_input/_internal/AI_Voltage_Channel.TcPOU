@@ -13,7 +13,7 @@ VAR
     _adc_max        : INT;
 	_physical_min 	: INT;
 	_physical_max 	: INT;
-	_channel_number : UINT;
+	_channel_number : UsINT;
 	_rValue			: REAL;
 	_wcState		: BOOL;
 	
@@ -63,6 +63,7 @@ END_IF]]></ST>
     </Implementation>
     <Folder Name="config" Id="{6e95f78d-af40-017b-398f-1cfce5df96aa}" />
     <Folder Name="HAL" Id="{50c8dfcf-1b07-0129-1c22-dd74d1561fc6}" />
+    <Folder Name="Init" Id="{e45797be-9361-0789-1af4-38a69c825e40}" />
     <Folder Name="IO" Id="{447316ab-5715-0154-19ed-19ab5d050206}" />
     <Property Name="errId" Id="{0ad3798c-3d03-013a-0b79-9367dd73f1f9}" FolderPath="HAL\">
       <Declaration><![CDATA[PROPERTY errId : UINT
@@ -87,7 +88,7 @@ VAR_INPUT
     adc_max         : INT;
 	physical_min 	: INT;
 	physical_max 	: INT;
-	channel_number  : UINT;
+	channel_number  : UsINT;
 END_VAR
 
 VAR
@@ -480,6 +481,50 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
+    <Method Name="register_channel" Id="{d03375e0-e465-03f4-3300-38b4d67b412c}" FolderPath="Init\">
+      <Declaration><![CDATA[METHOD register_channel : BOOL
+VAR_INPUT
+    terminalId : UINT;
+    I_interface_manager : I_interfaceManager;
+END_VAR
+VAR_OUTPUT
+	errId		: HAL_ErrorEnum;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.register_I_AI_percentage(terminalId:=terminalId , I_interface_manager:=I_interface_manager , errId=>errId );
+IF errId = HAL_ErrorEnum.no_error THEN
+	THIS^.register_I_AI_Voltage(terminalId:=terminalId , I_interface_manager:=I_interface_manager , errId=>errId );
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="register_I_AI_percentage" Id="{976a37c7-083c-00a9-1bb6-cc7ca791fac0}" FolderPath="Init\">
+      <Declaration><![CDATA[METHOD register_I_AI_percentage : BOOL
+VAR_INPUT
+    terminalId : UINT;
+    I_interface_manager : I_interfaceManager;
+END_VAR
+VAR_OUTPUT
+	errId		: HAL_ErrorEnum;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[register_I_AI_percentage:= I_interface_manager.register_I_AI_Percentage(THIS^, terminalId, channel_number := THIS^._channel_number, errId=>errId);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="register_I_AI_Voltage" Id="{82cff85b-97ce-0dfb-0163-aebd0e70cfbd}" FolderPath="Init\">
+      <Declaration><![CDATA[METHOD register_I_AI_Voltage : BOOL
+VAR_INPUT
+    terminalId : UINT;
+    I_interface_manager : I_interfaceManager;
+END_VAR
+VAR_OUTPUT
+	errId		: HAL_ErrorEnum;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[register_I_AI_Voltage:= I_interface_manager.register_I_AI_Voltage(THIS^, terminalId, channel_number := THIS^._channel_number, errId=>errId);
+]]></ST>
+      </Implementation>
+    </Method>
     <Property Name="rValue" Id="{f8a3909e-6aab-059b-371a-65a5c3276b43}" FolderPath="HAL\">
       <Declaration><![CDATA[PROPERTY rValue : REAL
 ]]></Declaration>

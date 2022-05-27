@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
-  <Itf Name="I_coupler_execution" Id="{6334c486-4f7d-0855-1571-e9ab972b5000}">
+  <Itf Name="I_coupler_execution" Id="{58bf683b-17fa-0ab4-29c4-de9a18a652f6}">
     <Declaration><![CDATA[INTERFACE I_coupler_execution
 ]]></Declaration>
-    <Method Name="run" Id="{80b26dca-37f7-09de-3009-8c86e4da57cc}">
+    <Method Name="run" Id="{141afd9f-2786-0c5e-00da-c6ddc0438cd2}">
       <Declaration><![CDATA[METHOD run : BOOL
 VAR_INPUT
 	sync_unit_ok : BOOL;

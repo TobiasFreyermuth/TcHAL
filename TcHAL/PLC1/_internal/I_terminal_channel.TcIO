@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <Itf Name="I_terminal_channel" Id="{93db994c-d83e-0b17-0f4f-4cef94e4d3a0}">
+    <Declaration><![CDATA[INTERFACE I_terminal_channel
+]]></Declaration>
+    <Method Name="register_channel" Id="{ec30830d-c15e-066d-1111-6bcaf61a3a14}">
+      <Declaration><![CDATA[METHOD register_channel : BOOL
+VAR_INPUT
+    terminalId : UINT;
+    I_interface_manager : I_interfaceManager;
+END_VAR
+VAR_OUTPUT
+	errId		: HAL_ErrorEnum;
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

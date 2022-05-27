@@ -5,10 +5,10 @@
 VAR_INPUT
 END_VAR
 VAR_OUTPUT
-	AI_Temperature_channel_1 		: I_AI_Temperature :=_channel_1;
-	AI_Temperature_channel_2 		: I_AI_Temperature :=_channel_2;
-	AI_percent_channe_1				: I_AI_percentage := _channel_1;
-	AI_percent_channe_2				: I_AI_percentage := _channel_2;
+    AI_Temperature_channel_1 	: I_AI_Temperature := _ar_channels[1];
+	AI_Temperature_channel_2 	: I_AI_Temperature := _ar_channels[2];
+	AI_percent_channe_1			: I_AI_percentage := _ar_channels[1];
+	AI_percent_channe_2			: I_AI_percentage := _ar_channels[2];
 END_VAR
 VAR
 // == IO Mapping ==============================================================
@@ -38,9 +38,10 @@ VAR
 	RTD_Inputs_Channel_2_Status_TxPDO_Toggle   	AT%I*: BOOL;
 // ============================================================================
 
-	_channel_1 : AI_Temperature_Channel(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=1);
-	_channel_2 : AI_Temperature_Channel(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX, channel_number:=2);
-
+    _ar_channels : ARRAY[1..NUMBER_OF_CHANNELS] OF AI_Temperature_Channel[
+		(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX,channel_number:=1),
+		(adc_min:=ADC_MIN, adc_max:=ADC_MAX, physical_min:=PHYSICAL_MIN, physical_max:=PHYSICAL_MAX,channel_number:=2)
+    ];
     
 	// ===============================================================================
 	// CoE handling  
@@ -63,12 +64,13 @@ VAR
 	];
 	// ===============================================================================
     
-    
 	_I_InterfaceManager : I_InterfaceManager;
 	_terminal_name      : STRING;
-	reg_errId           : HAL_ErrorEnum;
+    _terminal_id        : UINT;
+    errId               : HAL_ErrorEnum;
 	_InitState          : INT;
-    neg_wcState: f_trig;
+    neg_wcState : f_trig;
+	_j      : USINT;
 END_VAR
 VAR CONSTANT
 	ADC_MIN        	: INT:=0;
@@ -77,78 +79,52 @@ VAR CONSTANT
 	PHYSICAL_MAX 	: INT:=10;
 	
     HARDWARE_REVSION : UINT:=19;
+    NUMBER_OF_CHANNELS : USINT:=2;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[CASE _InitState OF 
-	0:  // init parent
-        IF _I_InterfaceManager <> 0 AND 
-            _I_CoE_com_handler <> 0
-        THEN
-            _InitState := 5;
-		END_IF
-		
-	5: 
-		IF NOT _I_InterfaceManager.register_terminal(terminal_name:=_terminal_name , errId=>reg_errId ) THEN
-			RETURN;
-		ELSE
-			_InitState := 10;
-		END_IF
-        
-	10: // register channel 1 percentage interface 
-		IF _I_InterfaceManager.register_I_AI_Percentage(_channel_1, _terminal_name, channel_number := 1, errId=>reg_errId) THEN 
-			_InitState := 20;
-		END_IF
-	20: // register channel 2 percentage interface 
-		IF _I_InterfaceManager.register_I_AI_Percentage(_channel_2, _terminal_name, channel_number := 2, errId=>reg_errId) THEN 
-			_InitState := 30;
-		END_IF
+      <ST><![CDATA[
+// Channel 1
+_ar_channels[1].wcState							:= WcState_WcState;
+_ar_channels[1].terminal_value 					:= RTD_Inputs_Channel_1_Value;
+_ar_channels[1].io_status_Underrange 			:= RTD_Inputs_Channel_1_Status_Underrange;
+_ar_channels[1].io_status_Overrange 			:= RTD_Inputs_Channel_1_Status_Overrange;
+_ar_channels[1].io_status_Limit_1_greater_value := RTD_Inputs_Channel_1_Status_Limit_1.0;
+_ar_channels[1].io_status_Limit_1_smaller_value	:= RTD_Inputs_Channel_1_Status_Limit_1.1;
+_ar_channels[1].io_status_Limit_2_greater_value := RTD_Inputs_Channel_1_Status_Limit_2.0;
+_ar_channels[1].io_status_Limit_2_smaller_value	:= RTD_Inputs_Channel_1_Status_Limit_2.1;
+_ar_channels[1].io_status_Error 				:= RTD_Inputs_Channel_1_Status_Error;
+_ar_channels[1].io_status_TxPDO_State 			:= RTD_Inputs_Channel_1_Status_TxPDO_State;
+_ar_channels[1].io_status_TxPDO_Toggle 			:= RTD_Inputs_Channel_1_Status_TxPDO_Toggle;
 
-	30: // register channel 1 voltage interface 
-		IF _I_InterfaceManager.register_I_AI_Percentage(_channel_1, _terminal_name, channel_number := 1, errId=>reg_errId) THEN 
-			_InitState := 40;
-		END_IF
-		
-	40: // register channel 2 voltage interface 
-		IF _I_InterfaceManager.register_I_AI_Percentage(_channel_2, _terminal_name, channel_number := 2, errId=>reg_errId) THEN 
-			_InitState := 50;
-		END_IF
-ELSE
-	// Channel 1
-	_channel_1.wcState							:= WcState_WcState;
-	_channel_1.terminal_value 					:= RTD_Inputs_Channel_1_Value;
-	_channel_1.io_status_Underrange 			:= RTD_Inputs_Channel_1_Status_Underrange;
-	_channel_1.io_status_Overrange 				:= RTD_Inputs_Channel_1_Status_Overrange;
-	_channel_1.io_status_Limit_1_greater_value 	:= RTD_Inputs_Channel_1_Status_Limit_1.0;
-	_channel_1.io_status_Limit_1_smaller_value	:= RTD_Inputs_Channel_1_Status_Limit_1.1;
-	_channel_1.io_status_Limit_2_greater_value 	:= RTD_Inputs_Channel_1_Status_Limit_2.0;
-	_channel_1.io_status_Limit_2_smaller_value	:= RTD_Inputs_Channel_1_Status_Limit_2.1;
-	_channel_1.io_status_Error 					:= RTD_Inputs_Channel_1_Status_Error;
-	_channel_1.io_status_TxPDO_State 			:= RTD_Inputs_Channel_1_Status_TxPDO_State;
-	_channel_1.io_status_TxPDO_Toggle 			:= RTD_Inputs_Channel_1_Status_TxPDO_Toggle;
-	
-	// Channel 2
-	_channel_2.wcState							:= WcState_WcState;
-	_channel_2.terminal_value 					:= RTD_Inputs_Channel_2_Value;
-	_channel_2.io_status_Underrange 			:= RTD_Inputs_Channel_2_Status_Underrange;
-	_channel_2.io_status_Overrange 				:= RTD_Inputs_Channel_2_Status_Overrange;
-	_channel_2.io_status_Limit_1_greater_value 	:= RTD_Inputs_Channel_2_Status_Limit_1.0;
-	_channel_2.io_status_Limit_1_smaller_value	:= RTD_Inputs_Channel_2_Status_Limit_1.1;
-	_channel_2.io_status_Limit_2_greater_value 	:= RTD_Inputs_Channel_2_Status_Limit_2.0;
-	_channel_2.io_status_Limit_2_smaller_value	:= RTD_Inputs_Channel_2_Status_Limit_2.1;
-	_channel_2.io_status_Error 					:= RTD_Inputs_Channel_2_Status_Error;
-	_channel_2.io_status_TxPDO_State 			:= RTD_Inputs_Channel_2_Status_TxPDO_State;
-	_channel_2.io_status_TxPDO_Toggle 			:= RTD_Inputs_Channel_2_Status_TxPDO_Toggle;
+// Channel 2
+_ar_channels[2].wcState							:= WcState_WcState;
+_ar_channels[2].terminal_value 					:= RTD_Inputs_Channel_2_Value;
+_ar_channels[2].io_status_Underrange 			:= RTD_Inputs_Channel_2_Status_Underrange;
+_ar_channels[2].io_status_Overrange 			:= RTD_Inputs_Channel_2_Status_Overrange;
+_ar_channels[2].io_status_Limit_1_greater_value := RTD_Inputs_Channel_2_Status_Limit_1.0;
+_ar_channels[2].io_status_Limit_1_smaller_value	:= RTD_Inputs_Channel_2_Status_Limit_1.1;
+_ar_channels[2].io_status_Limit_2_greater_value := RTD_Inputs_Channel_2_Status_Limit_2.0;
+_ar_channels[2].io_status_Limit_2_smaller_value	:= RTD_Inputs_Channel_2_Status_Limit_2.1;
+_ar_channels[2].io_status_Error 				:= RTD_Inputs_Channel_2_Status_Error;
+_ar_channels[2].io_status_TxPDO_State 			:= RTD_Inputs_Channel_2_Status_TxPDO_State;
+_ar_channels[2].io_status_TxPDO_Toggle 			:= RTD_Inputs_Channel_2_Status_TxPDO_Toggle;
 
-	_channel_1(terminal_address:=InfoData_AdsAddr_port, CoE_communication_handler:=_I_CoE_com_handler);
-	_channel_2(terminal_address:=InfoData_AdsAddr_port, CoE_communication_handler:=_I_CoE_com_handler);
-END_CASE
 
-_CoE_prop_handler(terminal_address:=InfoData_AdsAddr_port, CoE_communication_handler:=_I_CoE_com_handler, CoE_properties:=_properties);
+IF  _I_InterfaceManager <> 0 AND 
+    _I_CoE_com_handler <> 0
+THEN
+    FOR _j:=1 TO NUMBER_OF_CHANNELS DO
+        // should be possible to get rid of the address input 
+        _ar_channels[_j](terminal_address:=InfoData_AdsAddr_port, CoE_communication_handler:=_I_CoE_com_handler);
+    END_FOR
+    
+    _CoE_prop_handler(terminal_address:=InfoData_AdsAddr_port, CoE_communication_handler:=_I_CoE_com_handler, CoE_properties:=_properties);
 
-neg_wcState(CLK:=WcState_WcState);
-IF neg_wcState.Q THEN
-    ;
+    neg_wcState(CLK:=WcState_WcState);
+    IF neg_wcState.Q THEN
+        ;
+    END_IF
 END_IF
 ]]></ST>
     </Implementation>
@@ -157,13 +133,34 @@ END_IF
 VAR_INPUT
 	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
 	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
-	CoE_communication_handler: I_CoE_communication_handler;
+	CoE_communication_handler   : I_CoE_communication_handler;
+    InterfaceManager            : I_InterfaceManager;
+	name                        : STRING;
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[THIS^._I_CoE_com_handler                := CoE_communication_handler;
-_channel_1.CoE_communication_handler	:= CoE_communication_handler;
-_channel_2.CoE_communication_handler	:= CoE_communication_handler;
+        <ST><![CDATA[
+_I_CoE_com_handler := CoE_communication_handler;
+
+FOR _j:=1 TO NUMBER_OF_CHANNELS DO
+    _ar_channels[_j].CoE_communication_handler := CoE_communication_handler;
+END_FOR
+
+_terminal_name := name;
+_I_InterfaceManager := InterfaceManager;
+
+// register  terminal and all channel interfaces
+IF InterfaceManager <> 0 THEN
+    _I_InterfaceManager.register_terminal(terminal_name:=_terminal_name , errId=>errId , terminalId=>_terminal_id);
+    
+    FOR _j:=1 TO NUMBER_OF_CHANNELS DO
+        _ar_channels[_j].register_channel(terminalId:=_terminal_id , I_interface_manager:=_I_InterfaceManager , errId=>errId );
+        IF errId <> HAL_ErrorEnum.no_error THEN
+            ;  // ToDo: add logging or Error handling 
+        END_IF 
+    END_FOR
+END_IF
+
 ]]></ST>
       </Implementation>
     </Method>

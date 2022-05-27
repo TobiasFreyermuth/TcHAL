@@ -7,18 +7,30 @@
       <Declaration><![CDATA[METHOD register_I_AI_Percentage : BOOL
 VAR_INPUT
 	interface_to_be_registered		: I_AI_Percentage;
-	terminal_name 					: STRING;
+	terminal_id 					: UINT;
 	channel_number 					: USINT; 
 END_VAR
 VAR_OUTPUT
 	errId		: HAL_ErrorEnum;
 END_VAR]]></Declaration>
     </Method>
+    <Method Name="register_I_AI_Temperature" Id="{44342394-6069-0feb-37e7-94fd86cbe69d}">
+      <Declaration><![CDATA[METHOD register_I_AI_Temperature : BOOL
+VAR_INPUT
+	interface_to_be_registered		: I_AI_Temperature;
+	terminal_id 					: UINT;
+	channel_number 					: USINT; 
+END_VAR
+VAR_OUTPUT
+	errId		: HAL_ErrorEnum;
+END_VAR
+]]></Declaration>
+    </Method>
     <Method Name="register_I_AI_Voltage" Id="{ff6d860c-40ea-058f-1b45-45b6e01389e4}">
       <Declaration><![CDATA[METHOD register_I_AI_Voltage : BOOL
 VAR_INPUT
 	interface_to_be_registered		: I_AI_Voltage;
-	terminal_name 					: STRING;
+	terminal_id 					: UINT;
 	channel_number 					: USINT; 
 END_VAR
 VAR_OUTPUT
@@ -32,6 +44,7 @@ VAR_INPUT
 END_VAR
 VAR_OUTPUT
 	errId : HAL_ErrorEnum;
+    terminalId : UINT;
 END_VAR]]></Declaration>
     </Method>
   </Itf>

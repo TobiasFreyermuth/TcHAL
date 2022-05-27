@@ -8,7 +8,7 @@
 	passed into this function block to be executed, based on the state of the coupler and the sync_unit_ok, 
 	which should be provided by the calling program.
 *)
-FUNCTION_BLOCK EK1101 IMPLEMENTS I_coupler_execution
+FUNCTION_BLOCK EK1101 IMPLEMENTS I_terminal_execution
 VAR
 	ID_ID					AT%I*: UINT;
 	WcState_WcState			AT%I*: BOOL;
@@ -36,14 +36,29 @@ END_IF
 
 ]]></ST>
     </Implementation>
-    <Method Name="run" Id="{167f991e-ffac-0542-186d-6150892df1b1}">
-      <Declaration><![CDATA[METHOD run : BOOL
+    <Method Name="FB_init" Id="{7f6cc58a-36b5-0abd-3a70-1df488315cee}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
 VAR_INPUT
-	sync_unit_ok	: BOOL;
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	CoE_communication_handler   : I_CoE_communication_handler;
+	InterfaceManager            : I_InterfaceManager;
+	name                        : STRING;
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[THIS^._sync_unit_ok := sync_unit_ok;
+        <ST><![CDATA[;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="run" Id="{167f991e-ffac-0542-186d-6150892df1b1}">
+      <Declaration><![CDATA[METHOD run : BOOL
+(*
+VAR_INPUT
+	sync_unit_ok	: BOOL;
+END_VAR
+*)]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//THIS^._sync_unit_ok := sync_unit_ok;
 THIS^();
 
 ]]></ST>

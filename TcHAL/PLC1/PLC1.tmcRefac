@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Refactors>
+  <Renames>
+    <RenamedType>
+      <Type guid="9372fad8-6471-4ac3-9169-c0cd4487ea5e">EL3164_0000_0019_1</Type>
+      <From>EL3164_0000_0019_1</From>
+      <To>EL3164_0000_0020</To>
+    </RenamedType>
+  </Renames>
+</Refactors>

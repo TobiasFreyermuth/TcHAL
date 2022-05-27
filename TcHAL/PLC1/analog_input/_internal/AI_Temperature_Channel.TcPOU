@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
   <POU Name="AI_Temperature_Channel" Id="{6bbe721b-eb3d-04ba-01ae-2009e4a41bd1}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK AI_Temperature_Channel IMPLEMENTS I_AI_Temperature, I_AI_percentage
+    <Declaration><![CDATA[FUNCTION_BLOCK AI_Temperature_Channel IMPLEMENTS I_terminal_channel, I_AI_Temperature, I_AI_percentage
 VAR_INPUT
 	terminal_address		: WORD;
 	CoE_communication_handler	: I_CoE_communication_handler;
@@ -13,7 +13,7 @@ VAR
     _adc_max        : INT;
 	_physical_min 	: INT;
 	_physical_max 	: INT;
-	_channel_number : UINT;
+	_channel_number : USINT;
 	_rValue			: REAL;
 	_wcState		: BOOL;
 	
@@ -62,6 +62,7 @@ END_IF]]></ST>
     </Implementation>
     <Folder Name="config" Id="{bb2195d8-7083-08cc-32cb-38091d042fe0}" />
     <Folder Name="HAL" Id="{6c0feffb-c4d0-0d64-1a03-4b31aee82e86}" />
+    <Folder Name="Init" Id="{086f9c5f-3e4e-0b3f-07c0-098f404f9bd1}" />
     <Folder Name="IO" Id="{3507ca37-d29f-093d-3619-545f2b15d211}" />
     <Property Name="errId" Id="{30eadb91-2fc6-03c4-3e0c-22123c9f8a94}" FolderPath="HAL\">
       <Declaration><![CDATA[PROPERTY errId : HAL_ErrorEnum
@@ -86,7 +87,7 @@ VAR_INPUT
     adc_max         : INT;
 	physical_min 	: INT;
 	physical_max 	: INT;
-	channel_number  : UINT;
+	channel_number  : USINT;
 END_VAR
 
 VAR
@@ -479,6 +480,50 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
+    <Method Name="register_channel" Id="{b7d579a0-2316-0701-2150-59916b5f47b8}" FolderPath="Init\">
+      <Declaration><![CDATA[METHOD register_channel : BOOL
+VAR_INPUT
+    terminalId : UINT;
+    I_interface_manager : I_interfaceManager;
+END_VAR
+VAR_OUTPUT
+	errId		: HAL_ErrorEnum;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.register_I_AI_percentage(terminalId:=terminalId , I_interface_manager:=I_interface_manager , errId=>errId );
+IF errId = HAL_ErrorEnum.no_error THEN
+	THIS^.register_I_AI_Temperature(terminalId:=terminalId , I_interface_manager:=I_interface_manager , errId=>errId );
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="register_I_AI_percentage" Id="{bd38b4df-964d-0c0e-0485-8655839eea37}" FolderPath="Init\">
+      <Declaration><![CDATA[METHOD register_I_AI_percentage : BOOL
+VAR_INPUT
+    terminalId : UINT;
+    I_interface_manager : I_interfaceManager;
+END_VAR
+VAR_OUTPUT
+	errId		: HAL_ErrorEnum;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[register_I_AI_percentage:= I_interface_manager.register_I_AI_Percentage(THIS^, terminalId, channel_number := THIS^._channel_number, errId=>errId);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="register_I_AI_Temperature" Id="{90ea95bc-7809-0e8d-0589-49e6b61cbdd8}" FolderPath="Init\">
+      <Declaration><![CDATA[METHOD register_I_AI_Temperature : BOOL
+VAR_INPUT
+    terminalId : UINT;
+    I_interface_manager : I_interfaceManager;
+END_VAR
+VAR_OUTPUT
+	errId		: HAL_ErrorEnum;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[register_I_AI_Temperature:= I_interface_manager.register_I_AI_Temperature(THIS^, terminalId, channel_number := THIS^._channel_number, errId=>errId);
+]]></ST>
+      </Implementation>
+    </Method>
     <Property Name="rValue" Id="{0ef95a23-2848-052e-1f94-5118a5eab3bc}" FolderPath="HAL\">
       <Declaration><![CDATA[PROPERTY rValue : REAL
 ]]></Declaration>

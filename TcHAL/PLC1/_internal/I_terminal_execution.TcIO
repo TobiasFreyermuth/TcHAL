@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
-  <Itf Name="I_terminal_execution" Id="{1013d006-3a3b-0bdf-1cfb-2a9b89f221d5}">
+  <Itf Name="I_terminal_execution" Id="{4ab99060-c725-0e07-18cc-6cac2ff4817b}">
     <Declaration><![CDATA[INTERFACE I_terminal_execution
 ]]></Declaration>
-    <Method Name="run" Id="{cff3d69d-5408-0591-120d-452081181024}">
+    <Method Name="run" Id="{646af1d4-ffd7-0050-1c03-654e9a07b8d6}">
       <Declaration><![CDATA[METHOD run : BOOL
 VAR_INPUT
 END_VAR
